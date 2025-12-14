@@ -1,11 +1,10 @@
 {
-	"id": "sample-plugin",
-	"name": "Sample Plugin",
-	"version": "1.0.0",
-	"minAppVersion": "0.15.0",
-	"description": "Demonstrates some of the capabilities of the Obsidian API.",
-	"author": "Obsidian",
-	"authorUrl": "https://obsidian.md",
-	"fundingUrl": "https://obsidian.md/pricing",
+	"id": "chatterbox",
+	"name": "ChatterBox",
+	"version": "0.1.0",
+	"minAppVersion": "1.10.0",
+	"description": "Render chat logs and dialogues in Obsidian.",
+	"author": "Ossama W. Obeid",
+	"authorUrl": "https://github.com/owo",
 	"isDesktopOnly": false
 }
