@@ -11,3 +11,6 @@ tab_width = 4
 
 [*.json]
 indent_style = tab
+
+[.eslintrc]
+indent_style = tab
