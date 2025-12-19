@@ -1,8 +1,181 @@
-/*
+/* -------------------------------------------------------------------------- */
+/*                           Error Rendering Styles                           */
+/* -------------------------------------------------------------------------- */
 
-This CSS file will be included with your plugin, and
-available in the app when your plugin is enabled.
+.chatterbox .cbx-error-container {
+    display: block;
+    width: 100%;
+    padding: var(--size-4-1) var(--size-4-2);
+    background-color: rgba(var(--callout-error), 0.1);
+    border-radius: var(--callout-radius);
+}
 
-If your plugin does not need CSS, delete this file.
+.chatterbox .cbx-error-title {
+    display: block;
+    font-size: max(var(--font-ui-small), 1em);
+    font-weight: var(--font-medium);
+    color: var(--text-error);
+}
 
-*/
+.chatterbox ul.cbx-error-items {
+    display: block;
+    color: var(--text-error);
+}
+
+.chatterbox ul.cbx-error-items>li::marker {
+    display: list-item;
+    color: color-mix(in srgb, var(--text-error) 60%, transparent);
+}
+
+
+/* -------------------------------------------------------------------------- */
+/*                                 Base Styles                                */
+/* -------------------------------------------------------------------------- */
+
+.chatterbox,
+.chatterbox-content {
+    display: block;
+    width: 100%;
+}
+
+/* --------------------------------- Capsule -------------------------------- */
+
+.chatterbox .cbx-capsule-container {
+    display: block;
+    width: 100%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.chatterbox .cbx-capsule {
+    display: block;
+    width: fit-content;
+    margin-right: auto;
+    margin-left: auto;
+    padding: 0.25em 1.5em 0.25em 1.5em;
+    border: 1px solid;
+    border-radius: 1.5em;
+    text-align: center;
+}
+
+/* --------------------------------- Comment -------------------------------- */
+
+.chatterbox .cbx-comment-container {
+    display: block;
+    width: 100%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.chatterbox .cbx-comment {
+    display: block;
+    width: fit-content;
+    margin-right: auto;
+    margin-left: auto;
+    text-align: center;
+}
+
+/* -------------------------------- Delimiter ------------------------------- */
+
+.chatterbox .cbx-delim-container {
+    display: block;
+    width: 100%;
+    height: fit-content;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.chatterbox .cbx-delim {
+    display: block;
+    align-items: center;
+    width: fit-content;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.chatterbox .cbx-delim>.dot {
+    display: inline-block;
+    opacity: var(--opacity);
+    width: 6px;
+    height: 6px;
+    margin: 0px 4px;
+    background-color: currentColor;
+    border-radius: 60%;
+}
+
+/* ----------------------------- Markdown Block ----------------------------- */
+
+.chatterbox .cbx-markdown-container {
+    display: block;
+    width: 100%;
+}
+
+.chatterbox .cbx-markdown {
+    display: block;
+    width: 100%;
+}
+
+/* --------------------------------- Speech --------------------------------- */
+
+.chatterbox .cbx-speech-container {
+    display: block;
+    width: 100%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.chatterbox .cbx-speech {
+    display: block;
+    width: 100%;
+}
+
+.chatterbox .cbx-speech-header,
+.chatterbox .cbx-speech-body,
+.chatterbox .cbx-speech-footer {
+    display: block;
+}
+
+.chatterbox .cbx-speech-name {
+    display: block;
+    font-weight: bold;
+}
+
+.chatterbox .cbx-speech-content {
+    display: block;
+    width: 100%;
+}
+
+.chatterbox .cbx-speech-subtext {
+    display: block;
+    color: var(--text-muted);
+}
+
+
+/* -------------------------------------------------------------------------- */
+/*                           Simple Rendering Styles                          */
+/* -------------------------------------------------------------------------- */
+
+/* --------------------------------- Speech --------------------------------- */
+
+.chatterbox.cbx-mode-simple .cbx-speech-body {
+    margin-right: 15px;
+    margin-left: 15px;
+}
+
+.chatterbox.cbx-mode-simple .cbx-speech-footer {
+    margin-right: 15px;
+    margin-left: 15px;
+}
+
+.chatterbox.cbx-mode-simple .cbx-speech-name {
+    font-weight: bold;
+}
+
+.chatterbox.cbx-mode-simple .cbx-speech-content {
+    padding: 10px;
+}
+
+.chatterbox.cbx-mode-simple .cbx-speech-subtext {
+    margin-top: 2px;
+    font-size: 0.85em;
+}
