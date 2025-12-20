@@ -31,6 +31,40 @@
 /*                                 Base Styles                                */
 /* -------------------------------------------------------------------------- */
 
+/* -------------------------------- Variables ------------------------------- */
+.chatterbox {
+    /* General */
+    --cbx-margin-amount: 20px;
+
+    /* Capsule */
+    --capsule-bg-color: transparent;
+    --capsule-border: 1px solid;
+    --capsule-border-radius: 1.5em;
+    --capsule-container-margin: var(--cbx-margin-amount) 0
+        var(--cbx-margin-amount) 0;
+    --capsule-padding: 0.25em 1.5em 0.25em 1.5em;
+
+    /* Comment */
+    --comment-text-color: color-mix(
+        in srgb,
+        var(--text-muted) 50%,
+        var(--text-faint)
+    );
+    --comment-container-margin: var(--cbx-margin-amount) 0
+        var(--cbx-margin-amount) 0;
+
+    /* Delimiter */
+    --delim-margin-amount: calc(2 * var(--cbx-margin-amount));
+    --delim-margin: var(--delim-margin-amount) 0 var(--delim-margin-amount) 0;
+    --delim-dot-color: currentColor;
+    --delim-dot-gap: 4px;
+    --delim-dot-size: 6px;
+
+    /* Speech */
+    --speech-margin: var(--cbx-margin-amount);
+    --speech-subtext-text-color: var(--text-muted);
+}
+
 .chatterbox,
 .chatterbox-content {
     display: block;
@@ -42,8 +76,7 @@
 .chatterbox .cbx-capsule-container {
     display: block;
     width: 100%;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    margin: var(--capsule-container-margin);
 }
 
 .chatterbox .cbx-capsule {
@@ -51,9 +84,9 @@
     width: fit-content;
     margin-right: auto;
     margin-left: auto;
-    padding: 0.25em 1.5em 0.25em 1.5em;
-    border: 1px solid;
-    border-radius: 1.5em;
+    padding: var(--capsule-padding);
+    border: var(--capsule-border);
+    border-radius: var(--capsule-border-radius);
     text-align: center;
 }
 
@@ -62,8 +95,7 @@
 .chatterbox .cbx-comment-container {
     display: block;
     width: 100%;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    margin: var(--comment-container-margin);
 }
 
 .chatterbox .cbx-comment {
@@ -80,8 +112,7 @@
     display: block;
     width: 100%;
     height: fit-content;
-    padding-top: 20px;
-    padding-bottom: 20px;
+    margin: var(--delim-margin);
 }
 
 .chatterbox .cbx-delim {
@@ -94,10 +125,10 @@
 
 .chatterbox .cbx-delim > .dot {
     display: inline-block;
-    width: 6px;
-    height: 6px;
-    margin: 0px 4px;
-    background-color: currentColor;
+    width: var(--delim-dot-size);
+    height: var(--delim-dot-size);
+    margin: 0px var(--delim-dot-gap);
+    background-color: var(--delim-dot-color);
     border-radius: 60%;
 }
 
@@ -118,8 +149,7 @@
 .chatterbox .cbx-speech-container {
     display: block;
     width: 100%;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    margin: var(--speech-margin);
 }
 
 .chatterbox .cbx-speech {
@@ -145,35 +175,35 @@
 
 .chatterbox .cbx-speech-subtext {
     display: inline-block;
-    color: var(--text-muted);
+    color: var(--speech-subtext-text-color);
 }
 
 /* -------------------------------------------------------------------------- */
 /*                           Simple Rendering Styles                          */
 /* -------------------------------------------------------------------------- */
 
+.chatterbox.cbx-mode-simple {
+    --indent-amount: 15px;
+    --content-padding: 10px;
+    --footer-margin-top: 2px;
+}
+
 /* --------------------------------- Speech --------------------------------- */
 
 .chatterbox.cbx-mode-simple .cbx-speech-body {
-    margin-right: 15px;
-    margin-left: 15px;
+    margin: 0 var(--indent-amount) 0 var(--indent-amount);
 }
 
 .chatterbox.cbx-mode-simple .cbx-speech-footer {
-    margin-right: 15px;
-    margin-left: 15px;
-}
-
-.chatterbox.cbx-mode-simple .cbx-speech-name {
-    font-weight: bold;
+    margin: 0 var(--indent-amount) 0 var(--indent-amount);
 }
 
 .chatterbox.cbx-mode-simple .cbx-speech-content {
-    padding: 10px;
+    padding: var(--content-padding);
 }
 
 .chatterbox.cbx-mode-simple .cbx-speech-subtext {
-    margin-top: 2px;
+    margin-top: var(--footer-margin-top);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -183,46 +213,50 @@
 /* -------------------------------- Variables ------------------------------- */
 
 .chatterbox.cbx-mode-bubble {
-    --cbx-bubble-bg-color: rgba(var(--callout-quote), 0.2);
-    --cbx-bubble-border-radius: var(--cbx-bubble-padding);
-    --cbx-bubble-content-margin: 5px;
-    --cbx-bubble-padding: 15px;
-    --cbx-bubble-stem-height: 30px;
-    --cbx-bubble-stem-width: 10px;
-    --cbx-capsule-bg-color: rgba(var(--callout-quote), 0.1);
-    --cbx-capsule-border: 0;
-    --cbx-comment-text-color: color-mix(
+    --bubble-bg-color: rgba(var(--callout-quote), 0.2);
+    --bubble-border-radius: var(--bubble-padding);
+    --bubble-content-margin: 5px;
+    --bubble-padding: 15px;
+    --bubble-stem-height: 30px;
+    --bubble-stem-width: 10px;
+
+    --capsule-bg-color: rgba(var(--callout-quote), 0.1);
+    --capsule-border: 0;
+
+    --comment-text-color: color-mix(
         in srgb,
         var(--text-muted) 50%,
         var(--text-faint)
     );
-    --cbx-delimeter-dot-color: var(--text-muted);
+
+    --delim-dot-color: var(--text-muted);
 }
 
 /* --------------------------------- Capsule -------------------------------- */
 
 .chatterbox.cbx-mode-bubble .cbx-capsule {
-    border: var(--cbx-capsule-border);
-    background-color: var(--cbx-capsule-bg-color);
+    border: var(--capsule-border);
+    background-color: var(--capsule-bg-color);
 }
 
 /* --------------------------------- Comment -------------------------------- */
 
 .chatterbox.cbx-mode-bubble .cbx-comment {
-    color: var(--cbx-comment-text-color);
+    color: var(--comment-text-color);
 }
 
 /* -------------------------------- Delimiter ------------------------------- */
 
-.chatterbox.cbx-mode-bubble  .cbx-delim > .dot {
-    background-color: var(--cbx-delimeter-dot-color);
+.chatterbox.cbx-mode-bubble .cbx-delim > .dot {
+    background-color: var(--delim-dot-color);
 }
 
 /* --------------------------------- Speech --------------------------------- */
 
 .chatterbox.cbx-mode-bubble .cbx-speech-container {
     display: flex;
-    padding: 10px var(--cbx-bubble-stem-width) 10px var(--cbx-bubble-stem-width);
+    margin: var(--cbx-margin-amount) var(--bubble-stem-width)
+        var(--cbx-margin-amount) var(--bubble-stem-width);
 }
 
 .chatterbox.cbx-mode-bubble .cbx-speech-right {
@@ -241,9 +275,9 @@
     position: relative;
     box-sizing: border-box;
     width: fit-content;
-    padding: var(--cbx-bubble-padding);
-    background-color: var(--cbx-bubble-bg-color);
-    border-radius: var(--cbx-bubble-border-radius);
+    padding: var(--bubble-padding);
+    background-color: var(--bubble-bg-color);
+    border-radius: var(--bubble-border-radius);
 }
 
 .chatterbox.cbx-mode-bubble .cbx-speech-right .cbx-speech {
@@ -255,14 +289,14 @@
     content: "";
     position: absolute;
     top: 0;
-    right: calc(-1 * var(--cbx-bubble-stem-width));
-    width: var(--cbx-bubble-stem-width);
-    height: var(--cbx-bubble-stem-height);
+    right: calc(-1 * var(--bubble-stem-width));
+    width: var(--bubble-stem-width);
+    height: var(--bubble-stem-height);
     background: radial-gradient(
-        ellipse var(--cbx-bubble-stem-width) var(--cbx-bubble-stem-height) at
-            bottom right,
+        ellipse var(--bubble-stem-width) var(--bubble-stem-height) at bottom
+            right,
         transparent 99%,
-        var(--cbx-bubble-bg-color) 102%
+        var(--bubble-bg-color) 102%
     );
 }
 
@@ -275,27 +309,27 @@
     content: "";
     position: absolute;
     top: 0;
-    left: calc(-1 * var(--cbx-bubble-stem-width));
-    width: var(--cbx-bubble-stem-width);
-    height: var(--cbx-bubble-stem-height);
+    left: calc(-1 * var(--bubble-stem-width));
+    width: var(--bubble-stem-width);
+    height: var(--bubble-stem-height);
     background: radial-gradient(
-        ellipse var(--cbx-bubble-stem-width) var(--cbx-bubble-stem-height) at
-            bottom left,
+        ellipse var(--bubble-stem-width) var(--bubble-stem-height) at bottom
+            left,
         transparent 99%,
-        var(--cbx-bubble-bg-color) 102%
+        var(--bubble-bg-color) 102%
     );
 }
 
 .chatterbox.cbx-mode-bubble .cbx-speech-header {
-    margin-top: calc(-1 * var(--cbx-bubble-padding) / 2);
-    margin-bottom: var(--cbx-bubble-content-margin);
+    margin-top: calc(-1 * var(--bubble-padding) / 2);
+    margin-bottom: var(--bubble-content-margin);
 }
 
 .chatterbox.cbx-mode-bubble .cbx-speech-footer {
     display: flex;
     justify-content: end;
-    margin-top: var(--cbx-bubble-content-margin);
-    margin-bottom: calc(-1 * var(--cbx-bubble-padding) / 2);
+    margin-top: var(--bubble-content-margin);
+    margin-bottom: calc(-1 * var(--bubble-padding) / 2);
 }
 
 /* This insures a minimum heigth of exactly 1 line plus padding */
