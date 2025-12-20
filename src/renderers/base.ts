@@ -175,14 +175,14 @@ export abstract class CbxRendererBase {
         const contentEl = bodyEl.createDiv({ cls: "cbx-speech-content" });
         contentEl.innerText = msg.content;
 
+        const bgColor = this.config.speakers[msg.speaker]?.bgColor ?? undefined;
+        if (bgColor !== undefined) {
+            contentEl.style.setProperty("--background-color", bgColor);
+        }
+
         const textColor = this.config.speakers[msg.speaker]?.textColor ?? undefined;
         if (textColor !== undefined) {
             bodyEl.style.color = textColor;
-        }
-
-        const bgColor = this.config.speakers[msg.speaker]?.bgColor ?? undefined;
-        if (bgColor !== undefined) {
-            bodyEl.style.backgroundColor = bgColor;
         }
 
         if (msg.subtext !== undefined && msg.subtext.trim().length !== 0) {

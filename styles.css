@@ -183,9 +183,10 @@
 /* -------------------------------------------------------------------------- */
 
 .chatterbox.cbx-mode-simple {
-    --indent-amount: 15px;
     --content-padding: 10px;
+    --background-color: transparent;
     --footer-margin-top: 2px;
+    --indent-amount: 15px;
 }
 
 /* --------------------------------- Speech --------------------------------- */
@@ -200,6 +201,7 @@
 
 .chatterbox.cbx-mode-simple .cbx-speech-content {
     padding: var(--content-padding);
+    background-color: var(--background-color);
 }
 
 .chatterbox.cbx-mode-simple .cbx-speech-subtext {
