@@ -1,6 +1,7 @@
 import { SpeechDir, SpeechMsg } from "src/messages";
 import { CbxRendererBase } from "./base";
 
+
 /**
  * Renderer for the "bubble" mode.
  */
@@ -55,7 +56,7 @@ export default class CbxBubbleRenderer extends CbxRendererBase {
 
         const bgColor = this.config.speakers[msg.speaker]?.bgColor ?? undefined;
         if (bgColor !== undefined) {
-            speechEl.style.backgroundColor = bgColor;
+            speechEl?.style.setProperty("--bubble-bg-color", bgColor);
         }
 
         if (msg.subtext !== undefined && msg.subtext.trim().length !== 0) {
