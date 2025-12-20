@@ -61,7 +61,7 @@
     --delim-dot-size: 6px;
 
     /* Speech */
-    --speech-margin: var(--cbx-margin-amount);
+    --speech-margin: var(--cbx-margin-amount) 0 var(--cbx-margin-amount) 0;
     --speech-subtext-text-color: var(--text-muted);
 }
 
@@ -255,12 +255,12 @@
 
 .chatterbox.cbx-mode-bubble .cbx-speech-container {
     display: flex;
-    margin: var(--cbx-margin-amount) var(--bubble-stem-width)
-        var(--cbx-margin-amount) var(--bubble-stem-width);
+    margin: var(--cbx-margin-amount) 0 var(--cbx-margin-amount) 0;
 }
 
 .chatterbox.cbx-mode-bubble .cbx-speech-right {
     justify-content: end;
+    padding-right: var(--bubble-stem-width);
 }
 
 .chatterbox.cbx-mode-bubble .cbx-speech-center {
@@ -269,6 +269,7 @@
 
 .chatterbox.cbx-mode-bubble .cbx-speech-left {
     justify-content: start;
+    padding-left: var(--bubble-stem-width);
 }
 
 .chatterbox.cbx-mode-bubble .cbx-speech {
