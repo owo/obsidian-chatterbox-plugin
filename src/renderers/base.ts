@@ -144,13 +144,13 @@ export abstract class CbxRendererBase {
         const bodyEl = speechEl.createDiv({ cls: "cbx-speech-body" });
 
         switch (msg.dir) {
-            case SpeechDir.left:
+            case SpeechDir.Left:
                 msgContainerEl.addClass("cbx-speech-left");
                 break;
-            case SpeechDir.center:
+            case SpeechDir.Center:
                 msgContainerEl.addClass("cbx-speech-center");
                 break;
-            case SpeechDir.right:
+            case SpeechDir.Right:
             default:
                 msgContainerEl.addClass("cbx-speech-right");
                 break;

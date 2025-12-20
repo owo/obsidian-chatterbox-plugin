@@ -13,9 +13,9 @@ export enum MessageType {
  * Represents the rendering direction of a speech message.
  */
 export enum SpeechDir {
-    left,
-    right,
-    center,
+    Left,
+    Right,
+    Center,
 }
 
 /**

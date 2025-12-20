@@ -89,9 +89,9 @@ function parseSpeechParams(params: string): SpeechParams | null {
  * {@link SpeechDir} value.
  */
 const DIR_MAP: Record<string, SpeechDir> = {
-    ">": SpeechDir.right,
-    "<": SpeechDir.left,
-    "^": SpeechDir.center,
+    ">": SpeechDir.Right,
+    "<": SpeechDir.Left,
+    "^": SpeechDir.Center,
 };
 
 /**
@@ -109,7 +109,7 @@ class CbxParser {
     currMsgType: MessageType | null = null;
     currFence: string | undefined = undefined;
     currSpeechParams: SpeechParams | undefined = undefined;
-    currSpeechDir: SpeechDir = SpeechDir.right;
+    currSpeechDir: SpeechDir = SpeechDir.Right;
     currShowName: boolean | undefined = undefined;
 
     /**
@@ -162,7 +162,7 @@ class CbxParser {
         this.currMsgType = null;
         this.currFence = undefined;
         this.currSpeechParams = undefined;
-        this.currSpeechDir = SpeechDir.right;
+        this.currSpeechDir = SpeechDir.Right;
         this.state = ParserState.Single;
     }
 
@@ -325,7 +325,7 @@ class CbxParser {
 
             this.messages.push({
                 type: MessageType.Speech,
-                dir: DIR_MAP[match.groups.speechDir] ?? SpeechDir.left,
+                dir: DIR_MAP[match.groups.speechDir] ?? SpeechDir.Left,
                 speaker: speechParams.speaker,
                 subtext: speechParams.subtext,
                 content: match.groups.content,
@@ -356,7 +356,7 @@ class CbxParser {
 
             this.currMsgType = MessageType.Speech;
             this.currSpeechParams = speechParams;
-            this.currSpeechDir = DIR_MAP[match.groups.fence[0]] ?? SpeechDir.left;
+            this.currSpeechDir = DIR_MAP[match.groups.fence[0]] ?? SpeechDir.Left;
             this.currFence = match.groups.fence;
             this.currShowName = match.groups.hideName !== "!";
 
