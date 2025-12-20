@@ -29,12 +29,8 @@ export default class CbxBubbleRenderer extends CbxRendererBase {
 
         speechEl.style.maxWidth = `${this.config.maxSpeechWidth}%`;
 
-        if (msg.showName) {
-            const name = this.config.speakers[msg.speaker]?.name ?? msg.speaker;
-            if (name.trim().length === 0) {
-                return;
-            }
-
+        const name = this.config.speakers[msg.speaker]?.name ?? msg.speaker;
+        if (msg.showName && name.trim().length !== 0) {
             const headerEl = speechEl.createDiv({ cls: "cbx-speech-header" });
             const nameEl = headerEl.createDiv({ cls: "cbx-speech-name" });
             const nameColor = this.config.speakers[msg.speaker]?.nameColor ?? undefined;

@@ -142,12 +142,14 @@ export abstract class CbxRendererBase {
     ): Promise<void> {
         const speechEl = msgContainerEl.createDiv({ cls: "cbx-speech" });
 
-        if (msg.showName) {
-            const name = this.config.speakers[msg.speaker]?.name ?? msg.speaker;
-            if (name.trim().length === 0) {
-                return;
-            }
+        const bgColor = this.config.speakers[msg.speaker]?.bgColor ?? undefined;
+        if (bgColor !== undefined) {
+            speechEl.style.setProperty("--speech-bg-color", bgColor);
+        }
 
+
+        const name = this.config.speakers[msg.speaker]?.name ?? msg.speaker;
+        if (msg.showName && name.trim().length !== 0) {
             const headerEl = speechEl.createDiv({ cls: "cbx-speech-header" });
             const nameColor = this.config.speakers[msg.speaker]?.nameColor ?? undefined;
             const nameEl = headerEl.createDiv({ cls: "cbx-speech-name" });
@@ -174,11 +176,6 @@ export abstract class CbxRendererBase {
 
         const contentEl = bodyEl.createDiv({ cls: "cbx-speech-content" });
         contentEl.innerText = msg.content;
-
-        const bgColor = this.config.speakers[msg.speaker]?.bgColor ?? undefined;
-        if (bgColor !== undefined) {
-            contentEl.style.setProperty("--background-color", bgColor);
-        }
 
         const textColor = this.config.speakers[msg.speaker]?.textColor ?? undefined;
         if (textColor !== undefined) {
