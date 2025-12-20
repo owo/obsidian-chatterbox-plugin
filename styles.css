@@ -22,11 +22,10 @@
     color: var(--text-error);
 }
 
-.chatterbox ul.cbx-error-items>li::marker {
+.chatterbox ul.cbx-error-items > li::marker {
     display: list-item;
     color: color-mix(in srgb, var(--text-error) 60%, transparent);
 }
-
 
 /* -------------------------------------------------------------------------- */
 /*                                 Base Styles                                */
@@ -93,9 +92,8 @@
     margin-left: auto;
 }
 
-.chatterbox .cbx-delim>.dot {
+.chatterbox .cbx-delim > .dot {
     display: inline-block;
-    opacity: var(--opacity);
     width: 6px;
     height: 6px;
     margin: 0px 4px;
@@ -136,7 +134,7 @@
 }
 
 .chatterbox .cbx-speech-name {
-    display: block;
+    display: inline-block;
     font-weight: bold;
 }
 
@@ -146,10 +144,9 @@
 }
 
 .chatterbox .cbx-speech-subtext {
-    display: block;
+    display: inline-block;
     color: var(--text-muted);
 }
-
 
 /* -------------------------------------------------------------------------- */
 /*                           Simple Rendering Styles                          */
@@ -177,5 +174,134 @@
 
 .chatterbox.cbx-mode-simple .cbx-speech-subtext {
     margin-top: 2px;
-    font-size: 0.85em;
+}
+
+/* -------------------------------------------------------------------------- */
+/*                           Bubble Rendering Styles                          */
+/* -------------------------------------------------------------------------- */
+
+/* -------------------------------- Variables ------------------------------- */
+
+.chatterbox.cbx-mode-bubble {
+    --cbx-bubble-bg-color: rgba(var(--callout-quote), 0.2);
+    --cbx-bubble-border-radius: var(--cbx-bubble-padding);
+    --cbx-bubble-content-margin: 5px;
+    --cbx-bubble-padding: 15px;
+    --cbx-bubble-stem-height: 30px;
+    --cbx-bubble-stem-width: 10px;
+    --cbx-capsule-bg-color: rgba(var(--callout-quote), 0.1);
+    --cbx-capsule-border: 0;
+    --cbx-comment-text-color: color-mix(
+        in srgb,
+        var(--text-muted) 50%,
+        var(--text-faint)
+    );
+    --cbx-delimeter-dot-color: var(--text-muted);
+}
+
+/* --------------------------------- Capsule -------------------------------- */
+
+.chatterbox.cbx-mode-bubble .cbx-capsule {
+    border: var(--cbx-capsule-border);
+    background-color: var(--cbx-capsule-bg-color);
+}
+
+/* --------------------------------- Comment -------------------------------- */
+
+.chatterbox.cbx-mode-bubble .cbx-comment {
+    color: var(--cbx-comment-text-color);
+}
+
+/* -------------------------------- Delimiter ------------------------------- */
+
+.chatterbox.cbx-mode-bubble  .cbx-delim > .dot {
+    background-color: var(--cbx-delimeter-dot-color);
+}
+
+/* --------------------------------- Speech --------------------------------- */
+
+.chatterbox.cbx-mode-bubble .cbx-speech-container {
+    display: flex;
+    padding: 10px var(--cbx-bubble-stem-width) 10px var(--cbx-bubble-stem-width);
+}
+
+.chatterbox.cbx-mode-bubble .cbx-speech-right {
+    justify-content: end;
+}
+
+.chatterbox.cbx-mode-bubble .cbx-speech-center {
+    justify-content: center;
+}
+
+.chatterbox.cbx-mode-bubble .cbx-speech-left {
+    justify-content: start;
+}
+
+.chatterbox.cbx-mode-bubble .cbx-speech {
+    position: relative;
+    box-sizing: border-box;
+    width: fit-content;
+    padding: var(--cbx-bubble-padding);
+    background-color: var(--cbx-bubble-bg-color);
+    border-radius: var(--cbx-bubble-border-radius);
+}
+
+.chatterbox.cbx-mode-bubble .cbx-speech-right .cbx-speech {
+    border-top-right-radius: 0;
+}
+
+/* Right speech bubble stem */
+.chatterbox.cbx-mode-bubble .cbx-speech-right .cbx-speech::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: calc(-1 * var(--cbx-bubble-stem-width));
+    width: var(--cbx-bubble-stem-width);
+    height: var(--cbx-bubble-stem-height);
+    background: radial-gradient(
+        ellipse var(--cbx-bubble-stem-width) var(--cbx-bubble-stem-height) at
+            bottom right,
+        transparent 99%,
+        var(--cbx-bubble-bg-color) 102%
+    );
+}
+
+.chatterbox.cbx-mode-bubble .cbx-speech-left .cbx-speech {
+    border-top-left-radius: 0;
+}
+
+/* Left speech bubble stem */
+.chatterbox.cbx-mode-bubble .cbx-speech-left .cbx-speech::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: calc(-1 * var(--cbx-bubble-stem-width));
+    width: var(--cbx-bubble-stem-width);
+    height: var(--cbx-bubble-stem-height);
+    background: radial-gradient(
+        ellipse var(--cbx-bubble-stem-width) var(--cbx-bubble-stem-height) at
+            bottom left,
+        transparent 99%,
+        var(--cbx-bubble-bg-color) 102%
+    );
+}
+
+.chatterbox.cbx-mode-bubble .cbx-speech-header {
+    margin-top: calc(-1 * var(--cbx-bubble-padding) / 2);
+    margin-bottom: var(--cbx-bubble-content-margin);
+}
+
+.chatterbox.cbx-mode-bubble .cbx-speech-footer {
+    display: flex;
+    justify-content: end;
+    margin-top: var(--cbx-bubble-content-margin);
+    margin-bottom: calc(-1 * var(--cbx-bubble-padding) / 2);
+}
+
+/* This insures a minimum heigth of exactly 1 line plus padding */
+.chatterbox.cbx-mode-bubble .cbx-speech-content::before {
+    user-select: none;
+    -webkit-user-select: none;
+    content: "\200b";
+    display: inline-block;
 }

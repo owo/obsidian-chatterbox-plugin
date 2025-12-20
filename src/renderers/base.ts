@@ -147,14 +147,14 @@ export abstract class CbxRendererBase {
 
         switch (msg.dir) {
             case SpeechDir.left:
-                speechEl.addClass("cbx-speech-left");
+                msgContainerEl.addClass("cbx-speech-left");
                 break;
             case SpeechDir.center:
-                speechEl.addClass("cbx-speech-center");
+                msgContainerEl.addClass("cbx-speech-center");
                 break;
             case SpeechDir.right:
             default:
-                speechEl.addClass("cbx-speech-right");
+                msgContainerEl.addClass("cbx-speech-right");
                 break;
         }
 

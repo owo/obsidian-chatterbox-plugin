@@ -2,6 +2,7 @@ import { type App, type MarkdownPostProcessorContext, Plugin } from 'obsidian';
 
 import { parseChatterbox, ParseResult } from './parsing/parser';
 import renderCbxError from './renderers/error';
+import CbxBubbleRenderer from './renderers/bubble';
 import CbxSimpleRenderer from './renderers/simple';
 
 
@@ -26,10 +27,15 @@ function parseAndRenderChatterbox(
         return;
     }
 
+    let renderer = null;
     switch (parseRes.data.config.mode) {
+        case 'bubble':
+            renderer = new CbxBubbleRenderer(app, ctx, parseRes.data.config);
+            renderer.render(parseRes.data.messages, rootEl);
+            break;
         case 'simple':
         default:
-            const renderer = new CbxSimpleRenderer(app, ctx, parseRes.data.config);
+            renderer = new CbxSimpleRenderer(app, ctx, parseRes.data.config);
             renderer.render(parseRes.data.messages, rootEl);
             break;
     }

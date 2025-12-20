@@ -3,9 +3,9 @@ import * as zod from "zod";
 
 
 // Config defaults
-const DEFAULT_MAX_CAPSULE_WIDTH = 60;
-const DEFAULT_MAX_COMMENT_WIDTH = 60;
-const DEFAULT_MAX_MESSAGE_WIDTH = 60;
+const DEFAULT_MAX_CAPSULE_WIDTH = 80;
+const DEFAULT_MAX_COMMENT_WIDTH = 80;
+const DEFAULT_MAX_MESSAGE_WIDTH = 80;
 const DEFAULT_MODE = "simple";
 
 // TODO: Try using Zod Mini to reduce build size
@@ -73,7 +73,7 @@ export const CbxConfigValidator = zod.object({
     maxSpeechWidth: zod.optional(PercentageValidator)
         .catch(DEFAULT_MAX_MESSAGE_WIDTH)
         .default(DEFAULT_MAX_MESSAGE_WIDTH),
-    mode: zod.optional(zod.enum(["simple"]))
+    mode: zod.optional(zod.enum(["bubble", "simple"]))
         .catch(DEFAULT_MODE)
         .default(DEFAULT_MODE),
     speakers: zod.optional(zod.record(zod.string(), SpeakerInfoValidator))
