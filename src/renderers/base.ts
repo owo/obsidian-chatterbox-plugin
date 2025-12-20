@@ -141,20 +141,6 @@ export abstract class CbxRendererBase {
         msgContainerEl: HTMLElement
     ): Promise<void> {
         const speechEl = msgContainerEl.createDiv({ cls: "cbx-speech" });
-        const bodyEl = speechEl.createDiv({ cls: "cbx-speech-body" });
-
-        switch (msg.dir) {
-            case SpeechDir.Left:
-                msgContainerEl.addClass("cbx-speech-left");
-                break;
-            case SpeechDir.Center:
-                msgContainerEl.addClass("cbx-speech-center");
-                break;
-            case SpeechDir.Right:
-            default:
-                msgContainerEl.addClass("cbx-speech-right");
-                break;
-        }
 
         if (msg.showName) {
             const name = this.config.speakers[msg.speaker]?.name ?? msg.speaker;
@@ -170,6 +156,20 @@ export abstract class CbxRendererBase {
             if (nameColor !== undefined) {
                 nameEl.style.color = nameColor;
             }
+        }
+
+        const bodyEl = speechEl.createDiv({ cls: "cbx-speech-body" });
+        switch (msg.dir) {
+            case SpeechDir.Left:
+                msgContainerEl.addClass("cbx-speech-left");
+                break;
+            case SpeechDir.Center:
+                msgContainerEl.addClass("cbx-speech-center");
+                break;
+            case SpeechDir.Right:
+            default:
+                msgContainerEl.addClass("cbx-speech-right");
+                break;
         }
 
         const contentEl = bodyEl.createDiv({ cls: "cbx-speech-content" });
