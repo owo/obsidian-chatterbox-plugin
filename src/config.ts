@@ -58,7 +58,7 @@ const PercentageValidator = zod.pipe(
     })
 );
 
-function createPercantage() {
+function createPercentage() {
     return zod.catch(
         zod.optional(PercentageValidator),
         undefined
@@ -69,9 +69,9 @@ function createPercantage() {
  * Validates an entire Chatterbox config object.
  */
 export const CbxConfigValidator = zod.object({
-    maxCapsuleWidth: createPercantage(),
-    maxCommentWidth: createPercantage(),
-    maxSpeechWidth: createPercantage(),
+    maxCapsuleWidth: createPercentage(),
+    maxCommentWidth: createPercentage(),
+    maxSpeechWidth: createPercentage(),
     mode: zod.catch(
         zod.optional(zod.enum(["bubble", "simple"])),
         undefined

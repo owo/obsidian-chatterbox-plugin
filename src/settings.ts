@@ -15,7 +15,7 @@ speakers:
     nameColor: "#BD640B"
 `;
 
-const APPLY_OBSIDIAN_MD_FIX_DESC = `Attempt to fix visual discrepencies caused when rendering text
+const APPLY_OBSIDIAN_MD_FIX_DESC = `Attempt to fix visual discrepancies caused when rendering text
 content as Markdown.`;
 
 /**
