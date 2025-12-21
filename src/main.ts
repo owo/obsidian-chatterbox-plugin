@@ -1,5 +1,6 @@
 import { type App, type MarkdownPostProcessorContext, Plugin } from 'obsidian';
 
+import { CBX_DEFAULT_SETTINGS, ChatterboxSettings, ChatterboxSettingTab } from "./settings";
 import { parseChatterbox } from './parsing/parser';
 import renderCbxError from './renderers/error';
 import CbxBubbleRenderer from './renderers/bubble';
@@ -18,10 +19,10 @@ async function parseAndRenderChatterbox(
     source: string,
     rootEl: HTMLElement,
     app: App,
-    ctx: MarkdownPostProcessorContext
+    ctx: MarkdownPostProcessorContext,
+    settings: ChatterboxSettings,
 ) {
     const parseRes = parseChatterbox(source);
-
     if (parseRes.isError) {
         renderCbxError(parseRes.errorList, rootEl);
         return;
@@ -30,12 +31,12 @@ async function parseAndRenderChatterbox(
     let renderer = null;
     switch (parseRes.data.config.mode) {
         case 'bubble':
-            renderer = new CbxBubbleRenderer(app, ctx, parseRes.data.config);
+            renderer = new CbxBubbleRenderer(app, ctx, parseRes.data.config, settings);
             await renderer.render(parseRes.data.messages, rootEl);
             break;
         case 'simple':
         default:
-            renderer = new CbxSimpleRenderer(app, ctx, parseRes.data.config);
+            renderer = new CbxSimpleRenderer(app, ctx, parseRes.data.config, settings);
             await renderer.render(parseRes.data.messages, rootEl);
             break;
     }
@@ -45,11 +46,32 @@ async function parseAndRenderChatterbox(
  * Implements the Chatterbox plugin.
  */
 export default class ChatterboxPlugin extends Plugin {
+    settings: ChatterboxSettings;
+
     async onload() {
+        await this.loadSettings();
+
         this.registerMarkdownCodeBlockProcessor('chatterbox', async (source, rootEl, ctx) => {
-            await parseAndRenderChatterbox(source, rootEl, this.app, ctx);
+            await parseAndRenderChatterbox(source, rootEl, this.app, ctx, this.settings);
         });
+
+        this.addSettingTab(new ChatterboxSettingTab(this.app, this));
     }
 
     onunload() { }
+
+    /**
+     * Load Chatterbox settings from file.
+     */
+    async loadSettings() {
+        const data = await this.loadData() as Partial<ChatterboxSettings>;
+        this.settings = Object.assign({}, CBX_DEFAULT_SETTINGS, data);
+    }
+
+    /**
+     * Save Chatterbox settings to file.
+     */
+    async saveSettings() {
+        await this.saveData(this.settings);
+    }
 }

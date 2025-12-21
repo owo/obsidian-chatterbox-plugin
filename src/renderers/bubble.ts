@@ -1,5 +1,6 @@
 import { SpeechDir, SpeechMsg } from "src/messages";
 import { CbxRendererBase } from "./base";
+import { fixObsidianRenderedMarkdown } from "./utils";
 
 
 /**
@@ -44,7 +45,11 @@ export default class CbxBubbleRenderer extends CbxRendererBase {
         const bodyEl = speechEl.createDiv({ cls: "cbx-speech-body" });
         const contentEl = bodyEl.createDiv({ cls: "cbx-speech-content" });
         if (msg.renderMd) {
+            contentEl.addClass("markdown-rendered");
             await this.renderObsidianMarkDown(msg.content, contentEl);
+            if (this.settings.applyObsidianMarkdownFixes) {
+                fixObsidianRenderedMarkdown(contentEl);
+            }
         }
         else {
             contentEl.innerText = msg.content;

@@ -173,6 +173,14 @@
     width: 100%;
 }
 
+.chatterbox .cbx-speech-content .cbx-md-fix-first {
+    margin-top: 0;
+}
+
+.chatterbox .cbx-speech-content .cbx-md-fix-last {
+    margin-bottom: 0;
+}
+
 .chatterbox .cbx-speech-subtext {
     display: inline-block;
     color: var(--speech-subtext-text-color);
@@ -198,8 +206,7 @@
 
 .chatterbox.cbx-mode-simple .cbx-speech-header {
     --margin-offset: calc(var(--speech-padding) / 2);
-    margin: calc(-1 * var(--margin-offset)) 0
-        var(--margin-offset) 0;
+    margin: calc(-1 * var(--margin-offset)) 0 var(--margin-offset) 0;
 }
 
 .chatterbox.cbx-mode-simple .cbx-speech-body {
@@ -208,8 +215,8 @@
 
 .chatterbox.cbx-mode-simple .cbx-speech-footer {
     --margin-offset: calc(var(--speech-padding) / 2);
-    margin: var(--margin-offset) 0
-        calc(-1 * var(--margin-offset)) var(--indent-amount);
+    margin: var(--margin-offset) 0 calc(-1 * var(--margin-offset))
+        var(--indent-amount);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -337,12 +344,4 @@
     justify-content: end;
     margin-top: var(--bubble-content-margin);
     margin-bottom: calc(-1 * var(--bubble-padding) / 2);
-}
-
-/* This insures a minimum heigth of exactly 1 line plus padding */
-.chatterbox.cbx-mode-bubble .cbx-speech-content::before {
-    user-select: none;
-    -webkit-user-select: none;
-    content: "\200b";
-    display: inline-block;
 }

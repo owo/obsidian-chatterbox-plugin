@@ -16,6 +16,8 @@ import {
     MessageType,
     SpeechDir,
 } from "src/messages";
+import { ChatterboxSettings } from "src/settings";
+import { fixObsidianRenderedMarkdown } from "./utils";
 
 
 /**
@@ -25,6 +27,7 @@ export abstract class CbxRendererBase {
     protected readonly app: App;
     protected readonly ctx: MarkdownPostProcessorContext
     protected readonly config: CbxConfig;
+    protected readonly settings: ChatterboxSettings;
 
     /**
      * The CSS style class that will be applied to the top-level Chatterbox HTML element.
@@ -43,10 +46,12 @@ export abstract class CbxRendererBase {
         app: App,
         ctx: MarkdownPostProcessorContext,
         config: CbxConfig,
+        settings: ChatterboxSettings,
     ) {
         this.app = app;
         this.ctx = ctx;
         this.config = config;
+        this.settings = settings;
     }
 
     /**
@@ -177,6 +182,9 @@ export abstract class CbxRendererBase {
         const contentEl = bodyEl.createDiv({ cls: "cbx-speech-content" });
         if (msg.renderMd) {
             await this.renderObsidianMarkDown(msg.content, contentEl);
+            if (this.settings.applyObsidianMarkdownFixes) {
+                fixObsidianRenderedMarkdown(contentEl);
+            }
         }
         else {
             contentEl.innerText = msg.content;
