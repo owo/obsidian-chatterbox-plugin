@@ -7,15 +7,15 @@ import {
 
 import { DEFAULT_MAX_CAPSULE_WIDTH, DEFAULT_MAX_COMMENT_WIDTH, type CbxConfig } from "src/config";
 import {
-    type CapsuleMsg,
-    type CommentMsg,
-    type DelimiterMsg,
-    type MarkdownMsg,
-    type Message,
-    type SpeechMsg,
-    MessageType,
+    type CapsuleEntry,
+    type CommentEntry,
+    type DelimiterEntry,
+    type MarkdownEntry,
+    type CbxEntry,
+    type SpeechEntry,
+    EntryType,
     SpeechDir,
-} from "src/messages";
+} from "src/entries";
 import { ChatterboxSettings } from "src/settings";
 import { fixObsidianRenderedMarkdown } from "./utils";
 
@@ -72,48 +72,48 @@ export abstract class CbxRendererBase {
     }
 
     /**
-     * Render a capsule message to a given HTML element.
+     * Render a capsule entry to a given HTML element.
      * 
-     * @param msg The capsule message to render.
-     * @param msgContainerEl The HTML element to render to.
+     * @param entry The capsule entry to render.
+     * @param entryContainerEl The HTML element to render to.
      */
-    protected async renderCapsuleMessage(
-        msg: CapsuleMsg,
-        msgContainerEl: HTMLElement
+    protected async renderCapsuleEntry(
+        entry: CapsuleEntry,
+        entryContainerEl: HTMLElement
     ): Promise<void> {
-        const innerEl = msgContainerEl.createDiv({ cls: "cbx-capsule" });
+        const innerEl = entryContainerEl.createDiv({ cls: "cbx-capsule" });
 
         innerEl.style.maxWidth = `${this.config.maxCapsuleWidth ?? DEFAULT_MAX_CAPSULE_WIDTH}%`;
-        innerEl.innerText = msg.content;
+        innerEl.innerText = entry.content;
     }
 
     /**
-     * Render a comment message to a given HTML element.
+     * Render a comment entry to a given HTML element.
      * 
-     * @param msg The comment message to render.
-     * @param msgContainerEl The HTML element to render to.
+     * @param entry The comment entry to render.
+     * @param entryContainerEl The HTML element to render to.
      */
-    protected async renderCommentMessage(
-        msg: CommentMsg,
-        msgContainerEl: HTMLElement
+    protected async renderCommentEntry(
+        entry: CommentEntry,
+        entryContainerEl: HTMLElement
     ): Promise<void> {
-        const commentEl = msgContainerEl.createDiv({ cls: "cbx-comment" });
+        const commentEl = entryContainerEl.createDiv({ cls: "cbx-comment" });
 
         commentEl.style.maxWidth = `${this.config.maxCommentWidth ?? DEFAULT_MAX_COMMENT_WIDTH}%`;
-        commentEl.innerText = msg.content;
+        commentEl.innerText = entry.content;
     }
 
     /**
-     * Render a delimiter message to a given HTML element.
+     * Render a delimiter entry to a given HTML element.
      * 
-     * @param msg The delimiter message to render.
-     * @param msgContainerEl The HTML element to render to.
+     * @param entry The delimiter entry to render.
+     * @param entryContainerEl The HTML element to render to.
      */
-    protected async renderDelimiterMessage(
-        msg: DelimiterMsg,
-        msgContainerEl: HTMLElement
+    protected async renderDelimiterEntry(
+        entry: DelimiterEntry,
+        entryContainerEl: HTMLElement
     ): Promise<void> {
-        const delimEl = msgContainerEl.createDiv({ cls: "cbx-delim" });
+        const delimEl = entryContainerEl.createDiv({ cls: "cbx-delim" });
 
         delimEl.createDiv({ cls: "dot" });
         delimEl.createDiv({ cls: "dot" });
@@ -121,42 +121,42 @@ export abstract class CbxRendererBase {
     }
 
     /**
-     * Render a Markdown block message to a given HTML element.
+     * Render a Markdown block entry to a given HTML element.
      * 
-     * @param msg The Markdown block message to render.
-     * @param msgContainerEl The HTML element to render to.
+     * @param entry The Markdown block entry to render.
+     * @param entryContainerEl The HTML element to render to.
      */
-    protected async renderMarkdownMessage(
-        msg: MarkdownMsg,
-        msgContainerEl: HTMLElement
+    protected async renderMarkdownEntry(
+        entry: MarkdownEntry,
+        entryContainerEl: HTMLElement
     ): Promise<void> {
-        const mdEl = msgContainerEl.createDiv({ cls: "cbx-markdown" });
+        const mdEl = entryContainerEl.createDiv({ cls: "cbx-markdown" });
 
-        await this.renderObsidianMarkDown(msg.content, mdEl);
+        await this.renderObsidianMarkDown(entry.content, mdEl);
     }
 
     /**
-     * Render a speech message to a given HTML element.
+     * Render a speech entry to a given HTML element.
      * 
-     * @param msg The speech message to be rendered.
-     * @param msgContainerEl The HTML element to render to.
+     * @param entry The speech entry to be rendered.
+     * @param entryContainerEl The HTML element to render to.
      */
-    protected async renderSpeechMessage(
-        msg: SpeechMsg,
-        msgContainerEl: HTMLElement
+    protected async renderSpeechEntry(
+        entry: SpeechEntry,
+        entryContainerEl: HTMLElement
     ): Promise<void> {
-        const speechEl = msgContainerEl.createDiv({ cls: "cbx-speech" });
+        const speechEl = entryContainerEl.createDiv({ cls: "cbx-speech" });
 
-        const bgColor = this.config.speakers?.[msg.speaker]?.bgColor ?? undefined;
+        const bgColor = this.config.speakers?.[entry.speaker]?.bgColor ?? undefined;
         if (bgColor !== undefined) {
             speechEl.style.setProperty("--speech-bg-color", bgColor);
         }
 
 
-        const name = this.config.speakers?.[msg.speaker]?.name ?? msg.speaker;
-        if (msg.showName && name.trim().length !== 0) {
+        const name = this.config.speakers?.[entry.speaker]?.name ?? entry.speaker;
+        if (entry.showName && name.trim().length !== 0) {
             const headerEl = speechEl.createDiv({ cls: "cbx-speech-header" });
-            const nameColor = this.config.speakers?.[msg.speaker]?.nameColor ?? undefined;
+            const nameColor = this.config.speakers?.[entry.speaker]?.nameColor ?? undefined;
             const nameEl = headerEl.createDiv({ cls: "cbx-speech-name" });
 
             nameEl.innerText = name;
@@ -166,77 +166,77 @@ export abstract class CbxRendererBase {
         }
 
         const bodyEl = speechEl.createDiv({ cls: "cbx-speech-body" });
-        switch (msg.dir) {
+        switch (entry.dir) {
             case SpeechDir.Left:
-                msgContainerEl.addClass("cbx-speech-left");
+                entryContainerEl.addClass("cbx-speech-left");
                 break;
             case SpeechDir.Center:
-                msgContainerEl.addClass("cbx-speech-center");
+                entryContainerEl.addClass("cbx-speech-center");
                 break;
             case SpeechDir.Right:
             default:
-                msgContainerEl.addClass("cbx-speech-right");
+                entryContainerEl.addClass("cbx-speech-right");
                 break;
         }
 
         const contentEl = bodyEl.createDiv({ cls: "cbx-speech-content" });
-        if (msg.renderMd) {
-            await this.renderObsidianMarkDown(msg.content, contentEl);
+        if (entry.renderMd) {
+            await this.renderObsidianMarkDown(entry.content, contentEl);
             if (this.settings.applyObsidianMarkdownFixes) {
                 fixObsidianRenderedMarkdown(contentEl);
             }
         }
         else {
-            contentEl.innerText = msg.content;
+            contentEl.innerText = entry.content;
         }
 
-        const textColor = this.config.speakers?.[msg.speaker]?.textColor ?? undefined;
+        const textColor = this.config.speakers?.[entry.speaker]?.textColor ?? undefined;
         if (textColor !== undefined) {
             bodyEl.style.color = textColor;
         }
 
-        if (msg.subtext !== undefined && msg.subtext.trim().length !== 0) {
+        if (entry.subtext !== undefined && entry.subtext.trim().length !== 0) {
             const footerEl = speechEl.createDiv({ cls: "cbx-speech-footer" });
             const subtextEl = footerEl.createDiv({ cls: "cbx-speech-subtext" });
-            subtextEl.innerText = msg.subtext;
+            subtextEl.innerText = entry.subtext;
         }
     }
 
     /**
-     * Render a list of messages to a given HTML element.
+     * Render a list of entries to a given HTML element.
      * 
-     * @param messages Messages to be rendered.
+     * @param entries Entries to be rendered.
      * @param rootEl The HTML element to render to.
      */
-    public async render(messages: Message[], rootEl: HTMLElement) {
+    public async render(entries: CbxEntry[], rootEl: HTMLElement) {
         rootEl.addClass("chatterbox");
         rootEl.addClass(this.cssClass);
 
         const cbxContentEl = rootEl.createDiv({ cls: "chatterbox-content" });
 
-        for (const msg of messages) {
-            const msgContainerEl = cbxContentEl.createDiv({ cls: "cbx-msg-container" });
+        for (const entry of entries) {
+            const entryContainerEl = cbxContentEl.createDiv({ cls: "cbx-entry-container" });
 
-            switch (msg.type) {
-                case MessageType.Capsule:
-                    msgContainerEl.addClass("cbx-capsule-container")
-                    await this.renderCapsuleMessage(msg, msgContainerEl);
+            switch (entry.type) {
+                case EntryType.Capsule:
+                    entryContainerEl.addClass("cbx-capsule-container")
+                    await this.renderCapsuleEntry(entry, entryContainerEl);
                     break;
-                case MessageType.Comment:
-                    msgContainerEl.addClass("cbx-comment-container")
-                    await this.renderCommentMessage(msg, msgContainerEl);
+                case EntryType.Comment:
+                    entryContainerEl.addClass("cbx-comment-container")
+                    await this.renderCommentEntry(entry, entryContainerEl);
                     break;
-                case MessageType.Delimiter:
-                    msgContainerEl.addClass("cbx-delim-container")
-                    await this.renderDelimiterMessage(msg, msgContainerEl);
+                case EntryType.Delimiter:
+                    entryContainerEl.addClass("cbx-delim-container")
+                    await this.renderDelimiterEntry(entry, entryContainerEl);
                     break;
-                case MessageType.Markdown:
-                    msgContainerEl.addClass("cbx-markdown-container")
-                    await this.renderMarkdownMessage(msg, msgContainerEl);
+                case EntryType.Markdown:
+                    entryContainerEl.addClass("cbx-markdown-container")
+                    await this.renderMarkdownEntry(entry, entryContainerEl);
                     break;
-                case MessageType.Speech:
-                    msgContainerEl.addClass("cbx-speech-container")
-                    await this.renderSpeechMessage(msg, msgContainerEl);
+                case EntryType.Speech:
+                    entryContainerEl.addClass("cbx-speech-container")
+                    await this.renderSpeechEntry(entry, entryContainerEl);
                     break;
             }
         }

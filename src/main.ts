@@ -1,12 +1,12 @@
-import { type App, type MarkdownPostProcessorContext, Plugin } from 'obsidian';
+import { type App, type MarkdownPostProcessorContext, Plugin } from "obsidian";
 
 import { CBX_DEFAULT_SETTINGS, ChatterboxSettings, ChatterboxSettingTab } from "./settings";
-import { CbxConfigValidator } from './config';
-import { parseChatterbox } from './parsing/parser';
-import renderCbxError from './renderers/error';
-import CbxBubbleRenderer from './renderers/bubble';
-import CbxSimpleRenderer from './renderers/simple';
-import { parseCbxFrontmatter } from './parsing/frontmatter';
+import { CbxConfigValidator } from "./config";
+import { parseChatterbox } from "./parsing/parser";
+import renderCbxError from "./renderers/error";
+import CbxBubbleRenderer from "./renderers/bubble";
+import CbxSimpleRenderer from "./renderers/simple";
+import { parseCbxFrontmatter } from "./parsing/frontmatter";
 
 
 /**
@@ -41,12 +41,12 @@ async function parseAndRenderChatterbox(
     switch (combinedConfig.mode) {
         case "bubble":
             renderer = new CbxBubbleRenderer(app, ctx, combinedConfig, settings);
-            await renderer.render(parseRes.data.messages, rootEl);
+            await renderer.render(parseRes.data.entries, rootEl);
             break;
         case "simple":
         default:
             renderer = new CbxSimpleRenderer(app, ctx, combinedConfig, settings);
-            await renderer.render(parseRes.data.messages, rootEl);
+            await renderer.render(parseRes.data.entries, rootEl);
             break;
     }
 }

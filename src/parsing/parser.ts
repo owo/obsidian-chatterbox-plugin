@@ -1,11 +1,11 @@
 import { type CbxConfig, CbxConfigValidator } from "src/config";
 import {
-    type CapsuleMsg,
-    type CommentMsg,
-    type Message,
-    MessageType,
+    type CapsuleEntry,
+    type CommentEntry,
+    type CbxEntry,
+    EntryType,
     SpeechDir,
-} from "src/messages";
+} from "src/entries";
 import { CbxConfigError, parseCbxFrontmatter } from "./frontmatter";
 import {
     COMMENT_OR_CAPSULE_BLOCK_RE,
@@ -22,7 +22,7 @@ import {
  */
 export interface CbxData {
     config: CbxConfig;
-    messages: Message[];
+    entries: CbxEntry[];
 }
 
 /**
@@ -34,7 +34,7 @@ export interface ParseSuccess {
 }
 
 /**
- * Returned by {@link CbxParser} when parsing was unssuccessful.
+ * Returned by {@link CbxParser} when parsing was unsuccessful.
  */
 export interface ParseError {
     isError: true,
@@ -59,7 +59,7 @@ enum ParserState {
 }
 
 /**
- * Contains the parsed parameters of a single speech message.
+ * Contains the parsed parameters of a single speech entry.
  */
 interface SpeechParams {
     speaker: string;
@@ -67,7 +67,7 @@ interface SpeechParams {
 }
 
 /**
- * Parses that speech parameters at the begining of a speech message entry.
+ * Parses that speech parameters at the beginning of a speech entry entry.
  * 
  * @param params The speech parameters to be parsed.
  * @returns A {@link SpeechParams} instance with the parsed speech parameters if it is valid,
@@ -103,10 +103,10 @@ class CbxParser {
     state: ParserState = ParserState.Single;
     lines: string[] = [];
     config: CbxConfig = CbxConfigValidator.parse({});
-    messages: Message[] = [];
+    entries: CbxEntry[] = [];
     currLine: number = 0;
     currContent: string[] = [];
-    currMsgType: MessageType | null = null;
+    currEntryType: EntryType | null = null;
     currFence: string | undefined = undefined;
     currSpeechParams: SpeechParams | undefined = undefined;
     currRenderMd: boolean = false;
@@ -156,11 +156,11 @@ class CbxParser {
     }
 
     /**
-     * Partially resets internal parser state after fully  parsing a multi-line message block.
+     * Partially resets internal parser state after fully  parsing a multi-line entry block.
      */
     private softResetState() {
         this.currContent = [];
-        this.currMsgType = null;
+        this.currEntryType = null;
         this.currFence = undefined;
         this.currSpeechParams = undefined;
         this.currSpeechDir = SpeechDir.Right;
@@ -169,32 +169,32 @@ class CbxParser {
     }
 
     /**
-     * Pushes the appropriate message entry for a completed multi-line block to the list of parsed
-     * messages.
+     * Pushes the appropriate entry entry for a completed multi-line block to the list of parsed
+     * entries.
      */
-    private pushBlockMessage() {
-        switch (this.currMsgType) {
-            case MessageType.Capsule:
-                this.messages.push({
-                    type: MessageType.Capsule,
+    private pushBlockEntry() {
+        switch (this.currEntryType) {
+            case EntryType.Capsule:
+                this.entries.push({
+                    type: EntryType.Capsule,
                     content: this.currContent.join("\n"),
                 });
                 break;
-            case MessageType.Comment:
-                this.messages.push({
-                    type: MessageType.Comment,
+            case EntryType.Comment:
+                this.entries.push({
+                    type: EntryType.Comment,
                     content: this.currContent.join("\n"),
                 });
                 break;
-            case MessageType.Markdown:
-                this.messages.push({
-                    type: MessageType.Markdown,
+            case EntryType.Markdown:
+                this.entries.push({
+                    type: EntryType.Markdown,
                     content: this.currContent.join("\n"),
                 });
                 break;
-            case MessageType.Speech:
-                this.messages.push({
-                    type: MessageType.Speech,
+            case EntryType.Speech:
+                this.entries.push({
+                    type: EntryType.Speech,
                     content: this.currContent.join("\n"),
                     speaker: this.currSpeechParams?.speaker ?? "",
                     subtext: this.currSpeechParams?.subtext,
@@ -207,7 +207,7 @@ class CbxParser {
     }
 
     /**
-     * Tries to parse a given line as a single-line comment or capsule message.
+     * Tries to parse a given line as a single-line comment or capsule entry.
      * 
      * @param line The line to parse.
      * @returns `true` if parsing was successful, `false` otherwise.
@@ -220,18 +220,18 @@ class CbxParser {
             const isCapsule = match.groups.capsule === "()";
 
             if (isCapsule) {
-                const msg: CapsuleMsg = {
-                    type: MessageType.Capsule,
+                const entry: CapsuleEntry = {
+                    type: EntryType.Capsule,
                     content,
                 }
-                this.messages.push(msg);
+                this.entries.push(entry);
             }
             else {
-                const msg: CommentMsg = {
-                    type: MessageType.Comment,
+                const entry: CommentEntry = {
+                    type: EntryType.Comment,
                     content,
                 }
-                this.messages.push(msg);
+                this.entries.push(entry);
             }
 
             return true;
@@ -241,7 +241,7 @@ class CbxParser {
     }
 
     /**
-     * Tries to parse a given line as the start of a multi-line comment or capsule message block.
+     * Tries to parse a given line as the start of a multi-line comment or capsule entry block.
      * 
      * @param line The line to parse.
      * @returns `true` if parsing was successful, `false` otherwise.
@@ -253,7 +253,7 @@ class CbxParser {
             const isCapsule = match.groups.capsule === "()";
 
             this.currFence = match.groups.fence;
-            this.currMsgType = isCapsule ? MessageType.Capsule : MessageType.Comment;
+            this.currEntryType = isCapsule ? EntryType.Capsule : EntryType.Comment;
 
             const content = match.groups.content.trimStart();
             if (content.length > 0) {
@@ -269,14 +269,14 @@ class CbxParser {
     }
 
     /**
-     * Tries to parse a given line as a delimiter message entry.
+     * Tries to parse a given line as a delimiter entry entry.
      * 
      * @param line The line to parse.
      * @returns `true` if parsing was successful, `false` otherwise.
      */
     private tryParseDelimiter(line: string): boolean {
         if (DELIMITER_RE.test(line)) {
-            this.messages.push({ type: MessageType.Delimiter });
+            this.entries.push({ type: EntryType.Delimiter });
 
             return true;
         }
@@ -285,7 +285,7 @@ class CbxParser {
     }
 
     /**
-     * Tries to parse a given line as the start of a multi-line Markdown message block.
+     * Tries to parse a given line as the start of a multi-line Markdown entry block.
      * 
      * @param line The line to parse.
      * @returns `true` if parsing was successful, `false` otherwise.
@@ -295,7 +295,7 @@ class CbxParser {
 
         if (match != null && match.groups) {
             this.currFence = match.groups.fence;
-            this.currMsgType = MessageType.Markdown;
+            this.currEntryType = EntryType.Markdown;
 
             const content = match.groups.content.trimStart();
             if (content.length > 0) {
@@ -311,7 +311,7 @@ class CbxParser {
     }
 
     /**
-     * Tries to parse a given line as a single-line speech message.
+     * Tries to parse a given line as a single-line speech entry.
      * 
      * @param line The line to parse.
      * @returns `true` if parsing was successful, `false` otherwise.
@@ -326,8 +326,8 @@ class CbxParser {
                 return false;
             }
 
-            this.messages.push({
-                type: MessageType.Speech,
+            this.entries.push({
+                type: EntryType.Speech,
                 dir: DIR_MAP[match.groups.speechDir] ?? SpeechDir.Left,
                 speaker: speechParams.speaker,
                 subtext: speechParams.subtext,
@@ -343,7 +343,7 @@ class CbxParser {
     }
 
     /**
-     * Tries to parse a given line as the start of a multi-line speech message block.
+     * Tries to parse a given line as the start of a multi-line speech entry block.
      * 
      * @param line The line to parse.
      * @returns `true` if parsing was successful, `false` otherwise.
@@ -358,7 +358,7 @@ class CbxParser {
                 return false;
             }
 
-            this.currMsgType = MessageType.Speech;
+            this.currEntryType = EntryType.Speech;
             this.currSpeechParams = speechParams;
             this.currSpeechDir = DIR_MAP[match.groups.fence[0]] ?? SpeechDir.Left;
             this.currFence = match.groups.fence;
@@ -407,7 +407,7 @@ class CbxParser {
                     continue;
                 }
 
-                this.pushBlockMessage();
+                this.pushBlockEntry();
                 this.softResetState();
 
                 continue;
@@ -424,14 +424,14 @@ class CbxParser {
 
         // Push any unclosed blocks if parser is in Block mode.
         if (this.state === ParserState.Block) {
-            this.pushBlockMessage();
+            this.pushBlockEntry();
         }
 
         const result: ParseSuccess = {
             isError: false,
             data: {
                 config: this.config,
-                messages: this.messages,
+                entries: this.entries,
             },
         };
 

@@ -65,7 +65,7 @@ export class ChatterboxSettingTab extends PluginSettingTab {
             })
 
         new Setting(containerEl)
-            .setName('Apply Obsidian Markdown fixes')
+            .setName("Apply Obsidian Markdown fixes")
             .setDesc(APPLY_OBSIDIAN_MD_FIX_DESC)
             .addToggle(toggle => {
                 toggle.setValue(this.plugin.settings.applyObsidianMarkdownFixes)

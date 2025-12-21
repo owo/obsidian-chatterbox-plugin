@@ -44,7 +44,7 @@ export function parseCbxFrontmatter(source: string): CbxConfigResult {
         const errorList: string[] = [];
 
         for (const issue of fmValidated.error.issues) {
-            const errorPath = issue.path.join(' → ');
+            const errorPath = issue.path.join(" → ");
             const errorItem = `${issue.message} @ ${errorPath}`;
             errorList.push(errorItem);
         }

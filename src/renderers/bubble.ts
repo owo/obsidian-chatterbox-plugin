@@ -1,4 +1,4 @@
-import { SpeechDir, SpeechMsg } from "src/messages";
+import { SpeechDir, SpeechEntry } from "src/entries";
 import { CbxRendererBase } from "./base";
 import { fixObsidianRenderedMarkdown } from "./utils";
 import { DEFAULT_MAX_SPEECH_WIDTH } from "src/config";
@@ -10,32 +10,32 @@ import { DEFAULT_MAX_SPEECH_WIDTH } from "src/config";
 export default class CbxBubbleRenderer extends CbxRendererBase {
     cssClass: string = "cbx-mode-bubble";
 
-    protected override async renderSpeechMessage(
-        msg: SpeechMsg,
-        msgContainerEl: HTMLElement
+    protected override async renderSpeechEntry(
+        entry: SpeechEntry,
+        entryContainerEl: HTMLElement
     ): Promise<void> {
-        const speechEl = msgContainerEl.createDiv({ cls: "cbx-speech" });
+        const speechEl = entryContainerEl.createDiv({ cls: "cbx-speech" });
 
-        switch (msg.dir) {
+        switch (entry.dir) {
             case SpeechDir.Left:
-                msgContainerEl.addClass("cbx-speech-left");
+                entryContainerEl.addClass("cbx-speech-left");
                 break;
             case SpeechDir.Center:
-                msgContainerEl.addClass("cbx-speech-center");
+                entryContainerEl.addClass("cbx-speech-center");
                 break;
             case SpeechDir.Right:
             default:
-                msgContainerEl.addClass("cbx-speech-right");
+                entryContainerEl.addClass("cbx-speech-right");
                 break;
         }
 
         speechEl.style.maxWidth = `${this.config.maxSpeechWidth ?? DEFAULT_MAX_SPEECH_WIDTH}%`;
 
-        const name = this.config.speakers?.[msg.speaker]?.name ?? msg.speaker;
-        if (msg.showName && name.trim().length !== 0) {
+        const name = this.config.speakers?.[entry.speaker]?.name ?? entry.speaker;
+        if (entry.showName && name.trim().length !== 0) {
             const headerEl = speechEl.createDiv({ cls: "cbx-speech-header" });
             const nameEl = headerEl.createDiv({ cls: "cbx-speech-name" });
-            const nameColor = this.config.speakers?.[msg.speaker]?.nameColor ?? undefined;
+            const nameColor = this.config.speakers?.[entry.speaker]?.nameColor ?? undefined;
 
             nameEl.innerText = name;
             if (nameColor !== undefined) {
@@ -45,31 +45,31 @@ export default class CbxBubbleRenderer extends CbxRendererBase {
 
         const bodyEl = speechEl.createDiv({ cls: "cbx-speech-body" });
         const contentEl = bodyEl.createDiv({ cls: "cbx-speech-content" });
-        if (msg.renderMd) {
+        if (entry.renderMd) {
             contentEl.addClass("markdown-rendered");
-            await this.renderObsidianMarkDown(msg.content, contentEl);
+            await this.renderObsidianMarkDown(entry.content, contentEl);
             if (this.settings.applyObsidianMarkdownFixes) {
                 fixObsidianRenderedMarkdown(contentEl);
             }
         }
         else {
-            contentEl.innerText = msg.content;
+            contentEl.innerText = entry.content;
         }
 
-        const textColor = this.config.speakers?.[msg.speaker]?.textColor ?? undefined;
+        const textColor = this.config.speakers?.[entry.speaker]?.textColor ?? undefined;
         if (textColor !== undefined) {
             bodyEl.style.color = textColor;
         }
 
-        const bgColor = this.config.speakers?.[msg.speaker]?.bgColor ?? undefined;
+        const bgColor = this.config.speakers?.[entry.speaker]?.bgColor ?? undefined;
         if (bgColor !== undefined) {
             speechEl?.style.setProperty("--bubble-bg-color", bgColor);
         }
 
-        if (msg.subtext !== undefined && msg.subtext.trim().length !== 0) {
+        if (entry.subtext !== undefined && entry.subtext.trim().length !== 0) {
             const footerEl = speechEl.createDiv({ cls: "cbx-speech-footer" });
             const subtextEl = footerEl.createDiv({ cls: "cbx-speech-subtext" });
-            subtextEl.innerText = msg.subtext;
+            subtextEl.innerText = entry.subtext;
         }
     }
 }
