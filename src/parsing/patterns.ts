@@ -15,6 +15,7 @@ const SPEECH_PARAMS = /(?<speechParams>.*)/.source;
 const SPEECH_DIR_SINGLE = /(?<speechDir>[<>^])/.source;
 const SPEECH_DIR_FENCE = /(?<fence>(<<<+)|(>>>+)|(\^\^\^+))/.source;
 const SPEECH_HIDE_NAME_MARKER = /(?<hideName>!)?/.source;
+const SPEECH_RENDER_MD_MARKER = /(?<renderMd>@)?/.source;
 
 const MARKDOWN_FENCE = /(?<fence>@@@+)/.source;
 
@@ -72,6 +73,7 @@ export const SPEECH_RE = RegExp(
     WS_SEQ_OPTIONAL +
     SPEECH_DIR_SINGLE +
     SPEECH_HIDE_NAME_MARKER +
+    SPEECH_RENDER_MD_MARKER +
     WS +
     CONTENT +
     END_ANCHOR
@@ -86,6 +88,7 @@ export const SPEECH_BLOCK_RE = RegExp(
     WS_SEQ_OPTIONAL +
     SPEECH_DIR_FENCE +
     SPEECH_HIDE_NAME_MARKER +
+    SPEECH_RENDER_MD_MARKER +
     BLOCK_CONTENT +
     END_ANCHOR
 );

@@ -109,6 +109,7 @@ class CbxParser {
     currMsgType: MessageType | null = null;
     currFence: string | undefined = undefined;
     currSpeechParams: SpeechParams | undefined = undefined;
+    currRenderMd: boolean = false;
     currSpeechDir: SpeechDir = SpeechDir.Right;
     currShowName: boolean | undefined = undefined;
 
@@ -163,6 +164,7 @@ class CbxParser {
         this.currFence = undefined;
         this.currSpeechParams = undefined;
         this.currSpeechDir = SpeechDir.Right;
+        this.currRenderMd = false;
         this.state = ParserState.Single;
     }
 
@@ -198,6 +200,7 @@ class CbxParser {
                     subtext: this.currSpeechParams?.subtext,
                     dir: this.currSpeechDir,
                     showName: this.currShowName,
+                    renderMd: this.currRenderMd,
                 });
                 break;
         }
@@ -330,6 +333,7 @@ class CbxParser {
                 subtext: speechParams.subtext,
                 content: match.groups.content,
                 showName: match.groups.hideName !== "!",
+                renderMd: this.currRenderMd = match.groups.renderMd === "@",
             });
 
             return true;
@@ -359,6 +363,7 @@ class CbxParser {
             this.currSpeechDir = DIR_MAP[match.groups.fence[0]] ?? SpeechDir.Left;
             this.currFence = match.groups.fence;
             this.currShowName = match.groups.hideName !== "!";
+            this.currRenderMd = match.groups.renderMd === "@";
 
             const content = match.groups.content.trimStart();
             if (content.length > 0) {

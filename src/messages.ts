@@ -59,6 +59,7 @@ export interface SpeechMsg {
     dir: SpeechDir;
     subtext?: string;
     showName?: boolean;
+    renderMd: boolean;
 }
 
 /**

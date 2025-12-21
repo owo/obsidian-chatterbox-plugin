@@ -43,7 +43,12 @@ export default class CbxBubbleRenderer extends CbxRendererBase {
 
         const bodyEl = speechEl.createDiv({ cls: "cbx-speech-body" });
         const contentEl = bodyEl.createDiv({ cls: "cbx-speech-content" });
-        contentEl.innerText = msg.content;
+        if (msg.renderMd) {
+            await this.renderObsidianMarkDown(msg.content, contentEl);
+        }
+        else {
+            contentEl.innerText = msg.content;
+        }
 
         const textColor = this.config.speakers[msg.speaker]?.textColor ?? undefined;
         if (textColor !== undefined) {

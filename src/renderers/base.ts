@@ -175,7 +175,12 @@ export abstract class CbxRendererBase {
         }
 
         const contentEl = bodyEl.createDiv({ cls: "cbx-speech-content" });
-        contentEl.innerText = msg.content;
+        if (msg.renderMd) {
+            await this.renderObsidianMarkDown(msg.content, contentEl);
+        }
+        else {
+            contentEl.innerText = msg.content;
+        }
 
         const textColor = this.config.speakers[msg.speaker]?.textColor ?? undefined;
         if (textColor !== undefined) {
