@@ -1,6 +1,7 @@
 import { SpeechDir, SpeechMsg } from "src/messages";
 import { CbxRendererBase } from "./base";
 import { fixObsidianRenderedMarkdown } from "./utils";
+import { DEFAULT_MAX_SPEECH_WIDTH } from "src/config";
 
 
 /**
@@ -28,13 +29,13 @@ export default class CbxBubbleRenderer extends CbxRendererBase {
                 break;
         }
 
-        speechEl.style.maxWidth = `${this.config.maxSpeechWidth}%`;
+        speechEl.style.maxWidth = `${this.config.maxSpeechWidth ?? DEFAULT_MAX_SPEECH_WIDTH}%`;
 
-        const name = this.config.speakers[msg.speaker]?.name ?? msg.speaker;
+        const name = this.config.speakers?.[msg.speaker]?.name ?? msg.speaker;
         if (msg.showName && name.trim().length !== 0) {
             const headerEl = speechEl.createDiv({ cls: "cbx-speech-header" });
             const nameEl = headerEl.createDiv({ cls: "cbx-speech-name" });
-            const nameColor = this.config.speakers[msg.speaker]?.nameColor ?? undefined;
+            const nameColor = this.config.speakers?.[msg.speaker]?.nameColor ?? undefined;
 
             nameEl.innerText = name;
             if (nameColor !== undefined) {
@@ -55,12 +56,12 @@ export default class CbxBubbleRenderer extends CbxRendererBase {
             contentEl.innerText = msg.content;
         }
 
-        const textColor = this.config.speakers[msg.speaker]?.textColor ?? undefined;
+        const textColor = this.config.speakers?.[msg.speaker]?.textColor ?? undefined;
         if (textColor !== undefined) {
             bodyEl.style.color = textColor;
         }
 
-        const bgColor = this.config.speakers[msg.speaker]?.bgColor ?? undefined;
+        const bgColor = this.config.speakers?.[msg.speaker]?.bgColor ?? undefined;
         if (bgColor !== undefined) {
             speechEl?.style.setProperty("--bubble-bg-color", bgColor);
         }

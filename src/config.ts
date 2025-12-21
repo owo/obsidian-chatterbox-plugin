@@ -3,10 +3,10 @@ import * as zod from "zod/v4-mini";
 
 
 // Config defaults
-const DEFAULT_MAX_CAPSULE_WIDTH = 80;
-const DEFAULT_MAX_COMMENT_WIDTH = 80;
-const DEFAULT_MAX_SPEECH_WIDTH = 80;
-const DEFAULT_MODE = "simple";
+export const DEFAULT_MAX_CAPSULE_WIDTH = 80;
+export const DEFAULT_MAX_COMMENT_WIDTH = 80;
+export const DEFAULT_MAX_SPEECH_WIDTH = 80;
+export const DEFAULT_MODE = "simple";
 
 
 // TODO: Figure out how to document all Zod objects.
@@ -38,7 +38,7 @@ const ColorStringValidator = zod.pipe(
  */
 const SpeakerInfoValidator = zod.object({
     bgColor: zod.catch(zod.optional(ColorStringValidator), undefined),
-    name: zod.optional(zod.string()),
+    name: zod.catch(zod.optional(zod.string()), undefined),
     nameColor: zod.catch(zod.optional(ColorStringValidator), undefined),
     textColor: zod.catch(zod.optional(ColorStringValidator), undefined),
 });
@@ -58,13 +58,10 @@ const PercentageValidator = zod.pipe(
     })
 );
 
-function createDefaultPercantage(defaultVal: number) {
-    return zod._default(
-        zod.catch(
-            zod.optional(PercentageValidator),
-            defaultVal
-        ),
-        defaultVal
+function createPercantage() {
+    return zod.catch(
+        zod.optional(PercentageValidator),
+        undefined
     );
 }
 
@@ -72,22 +69,16 @@ function createDefaultPercantage(defaultVal: number) {
  * Validates an entire Chatterbox config object.
  */
 export const CbxConfigValidator = zod.object({
-    maxCapsuleWidth: createDefaultPercantage(DEFAULT_MAX_CAPSULE_WIDTH),
-    maxCommentWidth: createDefaultPercantage(DEFAULT_MAX_COMMENT_WIDTH),
-    maxSpeechWidth: createDefaultPercantage(DEFAULT_MAX_SPEECH_WIDTH),
-    mode: zod._default(
-        zod.catch(
-            zod.optional(zod.enum(["bubble", "simple"])),
-            DEFAULT_MODE
-        ),
-        DEFAULT_MODE,
+    maxCapsuleWidth: createPercantage(),
+    maxCommentWidth: createPercantage(),
+    maxSpeechWidth: createPercantage(),
+    mode: zod.catch(
+        zod.optional(zod.enum(["bubble", "simple"])),
+        undefined
     ),
-    speakers: zod._default(
-        zod.catch(
-            zod.optional(zod.record(zod.string(), SpeakerInfoValidator)),
-            () => ({} as Record<string, SpeakerInfo>)
-        ),
-        () => ({} as Record<string, SpeakerInfo>)
+    speakers: zod.catch(
+        zod.optional(zod.record(zod.string(), SpeakerInfoValidator)),
+        undefined,
     ),
 });
 

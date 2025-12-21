@@ -1,10 +1,12 @@
 import { type App, type MarkdownPostProcessorContext, Plugin } from 'obsidian';
 
 import { CBX_DEFAULT_SETTINGS, ChatterboxSettings, ChatterboxSettingTab } from "./settings";
+import { CbxConfigValidator } from './config';
 import { parseChatterbox } from './parsing/parser';
 import renderCbxError from './renderers/error';
 import CbxBubbleRenderer from './renderers/bubble';
 import CbxSimpleRenderer from './renderers/simple';
+import { parseCbxFrontmatter } from './parsing/frontmatter';
 
 
 /**
@@ -28,15 +30,22 @@ async function parseAndRenderChatterbox(
         return;
     }
 
+    const fmResult = parseCbxFrontmatter(settings.defaultFrontmatter);
+    const settingsConfig = fmResult.isError ? CbxConfigValidator.parse({}) : fmResult.config;
+    const combinedConfig = {
+        ...settingsConfig,
+        ...parseRes.data.config,
+    };
+
     let renderer = null;
-    switch (parseRes.data.config.mode) {
-        case 'bubble':
-            renderer = new CbxBubbleRenderer(app, ctx, parseRes.data.config, settings);
+    switch (combinedConfig.mode) {
+        case "bubble":
+            renderer = new CbxBubbleRenderer(app, ctx, combinedConfig, settings);
             await renderer.render(parseRes.data.messages, rootEl);
             break;
-        case 'simple':
+        case "simple":
         default:
-            renderer = new CbxSimpleRenderer(app, ctx, parseRes.data.config, settings);
+            renderer = new CbxSimpleRenderer(app, ctx, combinedConfig, settings);
             await renderer.render(parseRes.data.messages, rootEl);
             break;
     }
@@ -51,7 +60,7 @@ export default class ChatterboxPlugin extends Plugin {
     async onload() {
         await this.loadSettings();
 
-        this.registerMarkdownCodeBlockProcessor('chatterbox', async (source, rootEl, ctx) => {
+        this.registerMarkdownCodeBlockProcessor("chatterbox", async (source, rootEl, ctx) => {
             await parseAndRenderChatterbox(source, rootEl, this.app, ctx, this.settings);
         });
 

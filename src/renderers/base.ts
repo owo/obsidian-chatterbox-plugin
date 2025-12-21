@@ -5,7 +5,7 @@ import {
     MarkdownRenderChild,
 } from "obsidian";
 
-import type { CbxConfig } from "src/config";
+import { DEFAULT_MAX_CAPSULE_WIDTH, DEFAULT_MAX_COMMENT_WIDTH, type CbxConfig } from "src/config";
 import {
     type CapsuleMsg,
     type CommentMsg,
@@ -83,7 +83,7 @@ export abstract class CbxRendererBase {
     ): Promise<void> {
         const innerEl = msgContainerEl.createDiv({ cls: "cbx-capsule" });
 
-        innerEl.style.maxWidth = `${this.config.maxCapsuleWidth}%`;
+        innerEl.style.maxWidth = `${this.config.maxCapsuleWidth ?? DEFAULT_MAX_CAPSULE_WIDTH}%`;
         innerEl.innerText = msg.content;
     }
 
@@ -99,7 +99,7 @@ export abstract class CbxRendererBase {
     ): Promise<void> {
         const commentEl = msgContainerEl.createDiv({ cls: "cbx-comment" });
 
-        commentEl.style.maxWidth = `${this.config.maxCommentWidth}%`;
+        commentEl.style.maxWidth = `${this.config.maxCommentWidth ?? DEFAULT_MAX_COMMENT_WIDTH}%`;
         commentEl.innerText = msg.content;
     }
 
@@ -147,16 +147,16 @@ export abstract class CbxRendererBase {
     ): Promise<void> {
         const speechEl = msgContainerEl.createDiv({ cls: "cbx-speech" });
 
-        const bgColor = this.config.speakers[msg.speaker]?.bgColor ?? undefined;
+        const bgColor = this.config.speakers?.[msg.speaker]?.bgColor ?? undefined;
         if (bgColor !== undefined) {
             speechEl.style.setProperty("--speech-bg-color", bgColor);
         }
 
 
-        const name = this.config.speakers[msg.speaker]?.name ?? msg.speaker;
+        const name = this.config.speakers?.[msg.speaker]?.name ?? msg.speaker;
         if (msg.showName && name.trim().length !== 0) {
             const headerEl = speechEl.createDiv({ cls: "cbx-speech-header" });
-            const nameColor = this.config.speakers[msg.speaker]?.nameColor ?? undefined;
+            const nameColor = this.config.speakers?.[msg.speaker]?.nameColor ?? undefined;
             const nameEl = headerEl.createDiv({ cls: "cbx-speech-name" });
 
             nameEl.innerText = name;
@@ -190,7 +190,7 @@ export abstract class CbxRendererBase {
             contentEl.innerText = msg.content;
         }
 
-        const textColor = this.config.speakers[msg.speaker]?.textColor ?? undefined;
+        const textColor = this.config.speakers?.[msg.speaker]?.textColor ?? undefined;
         if (textColor !== undefined) {
             bodyEl.style.color = textColor;
         }

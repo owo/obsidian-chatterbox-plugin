@@ -5,6 +5,16 @@ import ChatterboxPlugin from "./main";
 
 // TODO: Update currently rendered Chatterbox blocks when settings change.
 
+const DEFAULT_FRONTMATTER_DESC = `Default YAML frontmatter to include in all Chatterbox blocks.`;
+const DEFAULT_FRONTMATTER_PH = `// Example: \n
+mode: bubble
+maxSpeechWidth: 60
+speakers:
+  john:
+    name: John Smith
+    nameColor: "#BD640B"
+`;
+
 const APPLY_OBSIDIAN_MD_FIX_DESC = `Attempt to fix visual discrepencies caused when rendering text
 content as Markdown.`;
 
@@ -12,6 +22,7 @@ content as Markdown.`;
  * Container for Chatterbox plugin settings.
  */
 export interface ChatterboxSettings {
+    defaultFrontmatter: string;
     applyObsidianMarkdownFixes: boolean;
 }
 
@@ -19,6 +30,7 @@ export interface ChatterboxSettings {
  * Default Chatterbox plugin settings.
  */
 export const CBX_DEFAULT_SETTINGS: ChatterboxSettings = {
+    defaultFrontmatter: "",
     applyObsidianMarkdownFixes: true,
 }
 
@@ -37,6 +49,20 @@ export class ChatterboxSettingTab extends PluginSettingTab {
         const { containerEl } = this;
 
         containerEl.empty();
+
+        new Setting(containerEl)
+            .setName("Default frontmatter")
+            .setDesc(DEFAULT_FRONTMATTER_DESC)
+            .addTextArea(text => {
+                text.setValue(this.plugin.settings.defaultFrontmatter)
+                    .setPlaceholder(DEFAULT_FRONTMATTER_PH)
+                    .onChange(async (value) => {
+                        this.plugin.settings.defaultFrontmatter = value;
+                        await this.plugin.saveSettings();
+                    }).then(text => {
+                        text.inputEl.addClass("cbx-setting-default-frontmatter")
+                    });
+            })
 
         new Setting(containerEl)
             .setName('Apply Obsidian Markdown fixes')
