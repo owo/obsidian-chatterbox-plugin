@@ -9,7 +9,7 @@ export default function renderCbxError(errorList: string[], containerEl: HTMLEle
     const errContainerEl = cbxRootEl.createDiv({ cls: "cbx-error-container" });
 
     const errHeaderEl = errContainerEl.createDiv({ cls: "cbx-error-title" });
-    errHeaderEl.textContent = "Chatterbox Error";
+    errHeaderEl.textContent = "Chatterbox error";
 
     const errItemsEl = errContainerEl.createEl("ul", { cls: "cbx-error-items" });
     for (const err of errorList) {

@@ -195,7 +195,7 @@ export abstract class CbxRendererBase {
      * @param messages Messages to be rendered.
      * @param rootEl The HTML element to render to.
      */
-    public render(messages: Message[], rootEl: HTMLElement) {
+    public async render(messages: Message[], rootEl: HTMLElement) {
         rootEl.addClass("chatterbox");
         rootEl.addClass(this.cssClass);
 
@@ -207,23 +207,23 @@ export abstract class CbxRendererBase {
             switch (msg.type) {
                 case MessageType.Capsule:
                     msgContainerEl.addClass("cbx-capsule-container")
-                    this.renderCapsuleMessage(msg, msgContainerEl);
+                    await this.renderCapsuleMessage(msg, msgContainerEl);
                     break;
                 case MessageType.Comment:
                     msgContainerEl.addClass("cbx-comment-container")
-                    this.renderCommentMessage(msg, msgContainerEl);
+                    await this.renderCommentMessage(msg, msgContainerEl);
                     break;
                 case MessageType.Delimiter:
                     msgContainerEl.addClass("cbx-delim-container")
-                    this.renderDelimiterMessage(msg, msgContainerEl);
+                    await this.renderDelimiterMessage(msg, msgContainerEl);
                     break;
                 case MessageType.Markdown:
                     msgContainerEl.addClass("cbx-markdown-container")
-                    this.renderMarkdownMessage(msg, msgContainerEl);
+                    await this.renderMarkdownMessage(msg, msgContainerEl);
                     break;
                 case MessageType.Speech:
                     msgContainerEl.addClass("cbx-speech-container")
-                    this.renderSpeechMessage(msg, msgContainerEl);
+                    await this.renderSpeechMessage(msg, msgContainerEl);
                     break;
             }
         }

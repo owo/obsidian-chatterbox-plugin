@@ -16,7 +16,7 @@ export interface CbxConfigError {
 export type CbxConfigResult = CbxConfigSuccess | CbxConfigError;
 
 export function parseCbxFrontmatter(source: string): CbxConfigResult {
-    let fmParsed: any = null;
+    let fmParsed: unknown = null;
 
     try {
         fmParsed = parseYaml(source);

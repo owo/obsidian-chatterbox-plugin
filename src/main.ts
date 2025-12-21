@@ -1,6 +1,6 @@
 import { type App, type MarkdownPostProcessorContext, Plugin } from 'obsidian';
 
-import { parseChatterbox, ParseResult } from './parsing/parser';
+import { parseChatterbox } from './parsing/parser';
 import renderCbxError from './renderers/error';
 import CbxBubbleRenderer from './renderers/bubble';
 import CbxSimpleRenderer from './renderers/simple';
@@ -14,7 +14,7 @@ import CbxSimpleRenderer from './renderers/simple';
  * @param app Reference to the Obsidian application instance.
  * @param ctx Reference to the registered post processor for the plugin.
  */
-function parseAndRenderChatterbox(
+async function parseAndRenderChatterbox(
     source: string,
     rootEl: HTMLElement,
     app: App,
@@ -31,12 +31,12 @@ function parseAndRenderChatterbox(
     switch (parseRes.data.config.mode) {
         case 'bubble':
             renderer = new CbxBubbleRenderer(app, ctx, parseRes.data.config);
-            renderer.render(parseRes.data.messages, rootEl);
+            await renderer.render(parseRes.data.messages, rootEl);
             break;
         case 'simple':
         default:
             renderer = new CbxSimpleRenderer(app, ctx, parseRes.data.config);
-            renderer.render(parseRes.data.messages, rootEl);
+            await renderer.render(parseRes.data.messages, rootEl);
             break;
     }
 }
@@ -46,8 +46,8 @@ function parseAndRenderChatterbox(
  */
 export default class ChatterboxPlugin extends Plugin {
     async onload() {
-        this.registerMarkdownCodeBlockProcessor('chatterbox', (source, rootEl, ctx) => {
-            parseAndRenderChatterbox(source, rootEl, this.app, ctx);
+        this.registerMarkdownCodeBlockProcessor('chatterbox', async (source, rootEl, ctx) => {
+            await parseAndRenderChatterbox(source, rootEl, this.app, ctx);
         });
     }
 
