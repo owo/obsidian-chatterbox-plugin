@@ -3,11 +3,19 @@ import { parseYaml } from "obsidian";
 import { type CbxConfig, CbxConfigValidator } from "src/config";
 
 
+/**
+ * Returned by {@link parseCbxFrontmatter} when frontmatter is valid YAML.
+ * The `config` property contains the parsed Chatterbox configuration.
+ */
 export interface CbxConfigSuccess {
     isError: false;
     config: CbxConfig;
 }
 
+/**
+ * Returned by {@link parseCbxFrontmatter} when frontmatter is not valid YAML.
+ * The `errorList` property contains a list of error messages corresponding to each error detected.
+ */
 export interface CbxConfigError {
     isError: true;
     errorList: string[];
@@ -15,6 +23,13 @@ export interface CbxConfigError {
 
 export type CbxConfigResult = CbxConfigSuccess | CbxConfigError;
 
+/**
+ * Parses and validates Chatterbox frontmatter YAML.
+ * 
+ * @param source Frontmatter source to parse.
+ * @returns A {@link CbxConfigSuccess} instance if source is valid YAML,
+ *          a {@link CbxConfigError} instance otherwise.
+ */
 export function parseCbxFrontmatter(source: string): CbxConfigResult {
     let fmParsed: unknown = null;
 
