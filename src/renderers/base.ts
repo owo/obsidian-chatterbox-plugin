@@ -5,7 +5,7 @@ import {
     MarkdownRenderChild,
 } from "obsidian";
 
-import { DEFAULT_MAX_CAPSULE_WIDTH, DEFAULT_MAX_COMMENT_WIDTH, type CbxConfig } from "src/config";
+import type { CbxConfig } from "src/config";
 import {
     type CapsuleEntry,
     type CommentEntry,
@@ -81,10 +81,10 @@ export abstract class CbxRendererBase {
         entry: CapsuleEntry,
         entryContainerEl: HTMLElement
     ): Promise<void> {
-        const innerEl = entryContainerEl.createDiv({ cls: "cbx-capsule" });
+        const capsuleEl = entryContainerEl.createDiv({ cls: "cbx-capsule" });
 
-        innerEl.style.maxWidth = `${this.config.maxCapsuleWidth ?? DEFAULT_MAX_CAPSULE_WIDTH}%`;
-        innerEl.innerText = entry.content;
+        // capsuleEl.style.maxWidth = `${this.config.maxCapsuleWidth ?? ""}`;
+        capsuleEl.innerText = entry.content;
     }
 
     /**
@@ -99,7 +99,7 @@ export abstract class CbxRendererBase {
     ): Promise<void> {
         const commentEl = entryContainerEl.createDiv({ cls: "cbx-comment" });
 
-        commentEl.style.maxWidth = `${this.config.maxCommentWidth ?? DEFAULT_MAX_COMMENT_WIDTH}%`;
+        // commentEl.style.maxWidth = `${this.config.maxCommentWidth ?? ""}`;
         commentEl.innerText = entry.content;
     }
 
@@ -211,6 +211,15 @@ export abstract class CbxRendererBase {
     public async render(entries: CbxEntry[], rootEl: HTMLElement) {
         rootEl.addClass("chatterbox");
         rootEl.addClass(this.cssClass);
+
+        const cbxProps = [
+            ["--capsule-max-width", this.config.maxCapsuleWidth],
+            ["--comment-max-width", this.config.maxCommentWidth],
+            ["--speech-max-width", this.config.maxSpeechWidth],
+        ];
+        rootEl.setCssProps({
+            ...(Object.fromEntries(cbxProps) as Record<string, string>)
+        });
 
         const cbxContentEl = rootEl.createDiv({ cls: "chatterbox-content" });
 

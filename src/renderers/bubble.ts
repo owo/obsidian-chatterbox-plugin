@@ -1,7 +1,6 @@
 import { SpeechDir, SpeechEntry } from "src/entries";
 import { CbxRendererBase } from "./base";
 import { fixObsidianRenderedMarkdown } from "./utils";
-import { DEFAULT_MAX_SPEECH_WIDTH } from "src/config";
 
 
 /**
@@ -28,8 +27,6 @@ export default class CbxBubbleRenderer extends CbxRendererBase {
                 entryContainerEl.addClass("cbx-speech-right");
                 break;
         }
-
-        speechEl.style.maxWidth = `${this.config.maxSpeechWidth ?? DEFAULT_MAX_SPEECH_WIDTH}%`;
 
         const fullName = this.config.speakers?.[entry.speaker]?.fullName ?? entry.speaker;
         if (entry.showName && fullName.trim().length !== 0) {

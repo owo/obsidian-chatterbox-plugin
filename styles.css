@@ -52,6 +52,7 @@
     --capsule-container-margin: var(--cbx-margin-amount) 0
         var(--cbx-margin-amount) 0;
     --capsule-padding: 0.25em 1.5em 0.25em 1.5em;
+    --capsule-max-width: 80%;
 
     /* Comment */
     --comment-text-color: color-mix(
@@ -61,6 +62,7 @@
     );
     --comment-container-margin: var(--cbx-margin-amount) 0
         var(--cbx-margin-amount) 0;
+    --comment-max-width: 80%;
 
     /* Delimiter */
     --delim-margin-amount: calc(2 * var(--cbx-margin-amount));
@@ -72,6 +74,7 @@
     /* Speech */
     --speech-margin: var(--cbx-margin-amount) 0 var(--cbx-margin-amount) 0;
     --speech-subtext-text-color: var(--text-muted);
+    --speech-max-width: 80%;
 }
 
 .chatterbox,
@@ -91,6 +94,7 @@
 .chatterbox .cbx-capsule {
     display: block;
     width: fit-content;
+    max-width: var(--capsule-max-width);
     margin-right: auto;
     margin-left: auto;
     padding: var(--capsule-padding);
@@ -110,6 +114,7 @@
 .chatterbox .cbx-comment {
     display: block;
     width: fit-content;
+    max-width: var(--comment-max-width);
     margin-right: auto;
     margin-left: auto;
     text-align: center;
@@ -164,6 +169,7 @@
 .chatterbox .cbx-speech {
     display: block;
     width: 100%;
+    max-width: var(--speech-max-width);
 }
 
 .chatterbox .cbx-speech-header,
@@ -209,6 +215,7 @@
 /* --------------------------------- Speech --------------------------------- */
 
 .chatterbox.cbx-mode-simple .cbx-speech {
+    max-width: 100%;
     padding: var(--speech-padding);
     background-color: var(--speech-bg-color);
 }

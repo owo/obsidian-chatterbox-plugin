@@ -21,6 +21,27 @@ const MARKDOWN_FENCE = /(?<fence>@@@+)/.source;
 
 const DELIMITER_MARKER = /\.\.\./.source;
 
+const CSS_LENGTH_NUMBER = /(?:\d*\.?\d+)/.source;
+const CSS_LENGTH_UNIT = [
+    // Keep these sorted by length first, then alphabetically (except "%" is last)
+    "rcap",
+    "cap", "rch", "rem", "rex", "ric", "rlh",
+    "ch", "cm", "em", "ex", "ic", "in", "lh", "mm", "pc", "pt", "px",
+    "Q", "%"
+].join("|");
+
+/**
+ * Validates a CSS length string. Accepts most absolute and relative length units.
+ * Notable exceptions are relative viewport and container query length units.
+ */
+export const CSS_LENGTH_STRING_RE = RegExp(
+    START_ANCHOR +
+    CSS_LENGTH_NUMBER +
+    CSS_LENGTH_UNIT +
+    /|0/.source +
+    END_ANCHOR
+);
+
 /**
  * Regular expression matching a single-line comment or capsule entry.
  */
