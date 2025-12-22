@@ -2,7 +2,7 @@
 	"name": "obsidian-chatterbox-plugin",
 	"version": "0.1.0",
 	"description": "Render chat logs and dialogues in Obsidian.",
-	"main": "src/main.js",
+	"main": "main.js",
 	"scripts": {
 		"dev": "node esbuild.config.mjs",
 		"build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
