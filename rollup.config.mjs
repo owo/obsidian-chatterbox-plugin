@@ -15,7 +15,7 @@ const config = [
     {
         input: "src/main.ts",
         output: {
-            file: "build/main.js",
+            file: "main.js",
             format: "cjs",
             sourcemap: !isProduction,
         },
