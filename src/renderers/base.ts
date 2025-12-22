@@ -216,7 +216,8 @@ export abstract class CbxRendererBase {
             ["--capsule-max-width", this.config.maxCapsuleWidth],
             ["--comment-max-width", this.config.maxCommentWidth],
             ["--speech-max-width", this.config.maxSpeechWidth],
-        ];
+        ] as Iterable<readonly [PropertyKey, unknown]>;
+
         rootEl.setCssProps({
             ...(Object.fromEntries(cbxProps) as Record<string, string>)
         });
