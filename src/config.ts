@@ -2,6 +2,7 @@ import { TinyColor } from "@ctrl/tinycolor";
 import * as zod from "zod/v4-mini";
 import { CSS_LENGTH_STRING_RE } from "./parsing/patterns";
 
+zod.config(zod.locales.en());
 
 // Config defaults
 export const DEFAULT_MODE = "simple";
