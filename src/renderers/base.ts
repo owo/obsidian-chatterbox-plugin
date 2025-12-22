@@ -212,6 +212,12 @@ export abstract class CbxRendererBase {
         rootEl.addClass("chatterbox");
         rootEl.addClass(this.cssClass);
 
+        // HACK: This should be removed if and when the Obsidian app fixes the issue
+        //       reported at https://forum.obsidian.md/t/markdownrenderer-produces-inconsistent-output-for-embedded-notes/109207/5
+        if (this.settings.applyObsidianMarkdownFixes) {
+            rootEl.addClass(".cbx-fix-obsidian-embed");
+        }
+
         const cbxProps = [
             ["--capsule-max-width", this.config.maxCapsuleWidth],
             ["--comment-max-width", this.config.maxCommentWidth],
