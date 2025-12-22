@@ -11,7 +11,7 @@ mode: bubble
 maxSpeechWidth: 60
 speakers:
   john:
-    name: John Smith
+    fullName: John Smith
     nameColor: "#BD640B"
 `;
 

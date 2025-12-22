@@ -38,7 +38,7 @@ const ColorStringValidator = zod.pipe(
  */
 const SpeakerInfoValidator = zod.object({
     bgColor: zod.catch(zod.optional(ColorStringValidator), undefined),
-    name: zod.catch(zod.optional(zod.string()), undefined),
+    fullName: zod.catch(zod.optional(zod.string()), undefined),
     nameColor: zod.catch(zod.optional(ColorStringValidator), undefined),
     textColor: zod.catch(zod.optional(ColorStringValidator), undefined),
 });
