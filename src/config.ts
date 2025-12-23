@@ -5,7 +5,7 @@ import { CSS_LENGTH_STRING_RE } from "./parsing/patterns";
 zod.config(zod.locales.en());
 
 // Config defaults
-export const DEFAULT_MODE = "simple";
+export const DEFAULT_MODE = "bubble";
 
 // TODO: Figure out how to document all Zod objects.
 

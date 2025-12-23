@@ -39,13 +39,13 @@ async function parseAndRenderChatterbox(
 
     let renderer = null;
     switch (combinedConfig.mode) {
-        case "bubble":
-            renderer = new CbxBubbleRenderer(app, ctx, combinedConfig, settings);
+        case "simple":
+            renderer = new CbxSimpleRenderer(app, ctx, combinedConfig, settings);
             await renderer.render(parseRes.data.entries, rootEl);
             break;
-        case "simple":
+        case "bubble":
         default:
-            renderer = new CbxSimpleRenderer(app, ctx, combinedConfig, settings);
+            renderer = new CbxBubbleRenderer(app, ctx, combinedConfig, settings);
             await renderer.render(parseRes.data.entries, rootEl);
             break;
     }
