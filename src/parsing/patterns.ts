@@ -11,7 +11,7 @@ const COMMENT_SINGLE = /#/.source;
 const COMMENT_FENCE = /(?<fence>###+)/.source;
 const CAPSULE_MARKER = /(?<capsule>\(\))?/.source;
 
-const SPEECH_PARAMS = /(?<speechParams>.*)/.source;
+const SPEECH_PARAMS = /(?<speechParams>.*?)/.source;
 const SPEECH_DIR_SINGLE = /(?<speechDir>[<>^])/.source;
 const SPEECH_DIR_FENCE = /(?<fence>(<<<+)|(>>>+)|(\^\^\^+))/.source;
 const SPEECH_HIDE_NAME_MARKER = /(?<hideName>!)?/.source;
