@@ -75,7 +75,7 @@ export abstract class CbxRendererBase {
         let currOrder = 1;
 
         for (const entry of entries) {
-            
+
 
             if (entry.type !== EntryType.Speech || entry.speaker === "") {
                 continue;
@@ -302,7 +302,8 @@ export abstract class CbxRendererBase {
             ["--capsule-max-width", this.config.maxCapsuleWidth],
             ["--comment-max-width", this.config.maxCommentWidth],
             ["--speech-max-width", this.config.maxSpeechWidth],
-        ] as Iterable<readonly [PropertyKey, unknown]>;
+        ]
+            .filter(x => x[1] !== undefined) as Iterable<readonly [PropertyKey, unknown]>;
 
         rootEl.setCssProps({
             ...(Object.fromEntries(cbxProps) as Record<string, string>)
