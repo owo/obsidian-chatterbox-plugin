@@ -29,6 +29,11 @@ export default class CbxBubbleRenderer extends CbxRendererBase {
         }
 
         const fullName = this.config.speakers?.[entry.speaker]?.fullName ?? entry.speaker;
+
+        entryContainerEl.dataset.cbxSpeakerOrder = this.speakerOrderMap.get(entry.speaker);
+        entryContainerEl.dataset.cbxSpeakerName = entry.speaker;
+        entryContainerEl.dataset.cbxSpeakerFullName = fullName;
+
         if (entry.showName && fullName.trim().length !== 0) {
             const headerEl = speechEl.createDiv({ cls: "cbx-speech-header" });
 

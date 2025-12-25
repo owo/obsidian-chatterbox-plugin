@@ -32,6 +32,7 @@ export abstract class CbxRendererBase {
     protected readonly ctx: MarkdownPostProcessorContext
     protected readonly config: CbxConfig;
     protected readonly settings: ChatterboxSettings;
+    protected readonly speakerOrderMap: Map<string, string> = new Map();
     protected readonly autoNameColorMap: Map<string, string> = new Map();
 
     /**
@@ -57,6 +58,35 @@ export abstract class CbxRendererBase {
         this.ctx = ctx;
         this.config = config;
         this.settings = settings;
+    }
+
+    /**
+     * Assigns an ordering ID to each speaker based on the order of their appearance in the
+     * entry list.
+     * 
+     * The nameless speaker is always assigned the ID "0", all other IDs increment starting from
+     * "1".
+     * 
+     * @param entries The list of entries used to determine the order of speakers.
+     */
+    protected populateSpeakerOrderMap(entries: CbxEntry[]) {
+        this.speakerOrderMap.set("", "0");
+
+        let currOrder = 1;
+
+        for (const entry of entries) {
+            
+
+            if (entry.type !== EntryType.Speech || entry.speaker === "") {
+                continue;
+            }
+
+            const speaker = entry.speaker;
+            if (!this.speakerOrderMap.has(speaker)) {
+                this.speakerOrderMap.set(speaker, String(currOrder));
+                currOrder += 1;
+            }
+        }
     }
 
     /**
@@ -191,6 +221,11 @@ export abstract class CbxRendererBase {
         }
 
         const fullName = this.config.speakers?.[entry.speaker]?.fullName ?? entry.speaker;
+
+        entryContainerEl.dataset.cbxSpeakerOrder = this.speakerOrderMap.get(entry.speaker);
+        entryContainerEl.dataset.cbxSpeakerName = entry.speaker;
+        entryContainerEl.dataset.cbxSpeakerFullName = fullName;
+
         if (entry.showName && fullName.trim().length !== 0) {
             const headerEl = speechEl.createDiv({ cls: "cbx-speech-header" });
 
@@ -259,6 +294,10 @@ export abstract class CbxRendererBase {
             rootEl.addClass("cbx-fix-obsidian-embed");
         }
 
+        if (this.config.chatterboxId !== undefined) {
+            rootEl.dataset.chatterboxId = this.config.chatterboxId;
+        }
+
         const cbxProps = [
             ["--capsule-max-width", this.config.maxCapsuleWidth],
             ["--comment-max-width", this.config.maxCommentWidth],
@@ -268,6 +307,8 @@ export abstract class CbxRendererBase {
         rootEl.setCssProps({
             ...(Object.fromEntries(cbxProps) as Record<string, string>)
         });
+
+        this.populateSpeakerOrderMap(entries);
 
         if (this.config.autoColorNames ?? DEFAULT_AUTO_COLOR_NAMES) {
             this.populateAutoNameColorMap(entries);

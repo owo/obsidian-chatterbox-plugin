@@ -86,6 +86,10 @@ function createOptionalBoolean() {
  */
 export const CbxConfigValidator = zod.object({
     autoColorNames: createOptionalBoolean(),
+    chatterboxId: zod.catch(
+        zod.optional(zod.string()),
+        undefined,
+    ),
     maxCapsuleWidth: createOptionalCssLength(),
     maxCommentWidth: createOptionalCssLength(),
     maxSpeechWidth: createOptionalCssLength(),
