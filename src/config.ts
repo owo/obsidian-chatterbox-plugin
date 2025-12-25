@@ -5,7 +5,8 @@ import { CSS_LENGTH_STRING_RE } from "./parsing/patterns";
 zod.config(zod.locales.en());
 
 // Config defaults
-export const DEFAULT_MODE = "bubble";
+export const DEFAULT_AUTO_COLOR_NAMES: boolean = true;
+export const DEFAULT_MODE: string = "bubble";
 
 // TODO: Figure out how to document all Zod objects.
 
@@ -73,10 +74,18 @@ function createOptionalCssLength() {
     );
 }
 
+function createOptionalBoolean() {
+    return zod.catch(
+        zod.optional(zod.boolean()),
+        undefined,
+    );
+}
+
 /**
  * Validates an entire Chatterbox config object.
  */
 export const CbxConfigValidator = zod.object({
+    autoColorNames: createOptionalBoolean(),
     maxCapsuleWidth: createOptionalCssLength(),
     maxCommentWidth: createOptionalCssLength(),
     maxSpeechWidth: createOptionalCssLength(),

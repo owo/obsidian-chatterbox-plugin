@@ -5,7 +5,7 @@ import {
     MarkdownRenderChild,
 } from "obsidian";
 
-import type { CbxConfig } from "src/config";
+import { type CbxConfig, DEFAULT_AUTO_COLOR_NAMES } from "src/config";
 import {
     type CapsuleEntry,
     type CommentEntry,
@@ -20,6 +20,10 @@ import { ChatterboxSettings } from "src/settings";
 import { fixObsidianRenderedMarkdown } from "./utils";
 
 
+// This should correspond to the number of `--auto-color-text-*` CSS variables (starting from 1
+// with no holes).
+const NUM_TEXT_AUTO_COLORS: number = 8;
+
 /**
  * Base class to be extended by all Chatterbox renderer classes.
  */
@@ -28,6 +32,7 @@ export abstract class CbxRendererBase {
     protected readonly ctx: MarkdownPostProcessorContext
     protected readonly config: CbxConfig;
     protected readonly settings: ChatterboxSettings;
+    protected readonly autoNameColorMap: Map<string, string> = new Map();
 
     /**
      * The CSS style class that will be applied to the top-level Chatterbox HTML element.
@@ -52,6 +57,39 @@ export abstract class CbxRendererBase {
         this.ctx = ctx;
         this.config = config;
         this.settings = settings;
+    }
+
+    /**
+     * Assigns an auto color to each speaker that doesn't have a `nameColor` value assigned in the
+     * config.
+     * Colors are assigned based on the order of appearance of speakers in the entry list and
+     * cycle around a predefined set of colors.
+     * The nameless speaker isn't assigned a color.
+     * 
+     * Classes extending this base class should not need to override this.
+     * 
+     * @param entries The list of entries used to determine the order of speakers.
+     */
+    protected populateAutoNameColorMap(entries: CbxEntry[]) {
+        let currSpeakerNum = 0;
+
+        for (const entry of entries) {
+            if (entry.type !== EntryType.Speech || entry.speaker === "") {
+                continue;
+            }
+
+            const speaker = entry.speaker;
+            const speakerConfig = this.config.speakers?.[speaker];
+
+            if (speakerConfig?.nameColor === undefined && !this.autoNameColorMap.has(speaker)) {
+                const colorNum = (currSpeakerNum % NUM_TEXT_AUTO_COLORS) + 1;
+                const autoColor = `var(--auto-color-text-${String(colorNum)})`;
+
+                this.autoNameColorMap.set(speaker, autoColor);
+
+                currSpeakerNum += 1;
+            }
+        }
     }
 
     /**
@@ -152,14 +190,17 @@ export abstract class CbxRendererBase {
             speechEl.style.setProperty("--speech-bg-color", bgColor);
         }
 
-
         const fullName = this.config.speakers?.[entry.speaker]?.fullName ?? entry.speaker;
         if (entry.showName && fullName.trim().length !== 0) {
             const headerEl = speechEl.createDiv({ cls: "cbx-speech-header" });
-            const nameColor = this.config.speakers?.[entry.speaker]?.nameColor ?? undefined;
-            const nameEl = headerEl.createDiv({ cls: "cbx-speech-name" });
 
+            const nameEl = headerEl.createDiv({ cls: "cbx-speech-name" });
             nameEl.innerText = fullName;
+
+            const autoNameColor = this.autoNameColorMap.get(entry.speaker);
+            const configNameColor = this.config.speakers?.[entry.speaker]?.nameColor;
+            const nameColor = configNameColor ?? autoNameColor ?? undefined;
+
             if (nameColor !== undefined) {
                 nameEl.style.color = nameColor;
             }
@@ -227,6 +268,10 @@ export abstract class CbxRendererBase {
         rootEl.setCssProps({
             ...(Object.fromEntries(cbxProps) as Record<string, string>)
         });
+
+        if (this.config.autoColorNames ?? DEFAULT_AUTO_COLOR_NAMES) {
+            this.populateAutoNameColorMap(entries);
+        }
 
         const cbxContentEl = rootEl.createDiv({ cls: "chatterbox-content" });
 

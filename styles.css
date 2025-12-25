@@ -45,6 +45,25 @@
     /* General */
     --cbx-margin-amount: 20px;
 
+    /* Auto-colors */
+    --auto-color-rgb-1: var(--color-red-rgb);
+    --auto-color-rgb-2: var(--color-blue-rgb);
+    --auto-color-rgb-3: var(--color-orange-rgb);
+    --auto-color-rgb-4: var(--color-purple-rgb);
+    --auto-color-rgb-5: var(--color-green-rgb);
+    --auto-color-rgb-6: var(--color-pink-rgb);
+    --auto-color-rgb-7: var(--color-cyan-rgb);
+    --auto-color-rgb-8: var(--color-yellow-rgb);
+
+    --auto-color-text-1: rgb(var(--auto-color-rgb-1));
+    --auto-color-text-2: rgb(var(--auto-color-rgb-2));
+    --auto-color-text-3: rgb(var(--auto-color-rgb-3));
+    --auto-color-text-4: rgb(var(--auto-color-rgb-4));
+    --auto-color-text-5: rgb(var(--auto-color-rgb-5));
+    --auto-color-text-6: rgb(var(--auto-color-rgb-6));
+    --auto-color-text-7: rgb(var(--auto-color-rgb-7));
+    --auto-color-text-8: rgb(var(--auto-color-rgb-8));
+
     /* Capsule */
     --capsule-bg-color: transparent;
     --capsule-border: 1px solid;

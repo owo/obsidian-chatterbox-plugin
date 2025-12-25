@@ -31,16 +31,21 @@ export default class CbxBubbleRenderer extends CbxRendererBase {
         const fullName = this.config.speakers?.[entry.speaker]?.fullName ?? entry.speaker;
         if (entry.showName && fullName.trim().length !== 0) {
             const headerEl = speechEl.createDiv({ cls: "cbx-speech-header" });
-            const nameEl = headerEl.createDiv({ cls: "cbx-speech-name" });
-            const nameColor = this.config.speakers?.[entry.speaker]?.nameColor ?? undefined;
 
+            const nameEl = headerEl.createDiv({ cls: "cbx-speech-name" });
             nameEl.innerText = fullName;
+
+            const autoNameColor = this.autoNameColorMap.get(entry.speaker);
+            const configNameColor = this.config.speakers?.[entry.speaker]?.nameColor;
+            const nameColor = configNameColor ?? autoNameColor ?? undefined;
+
             if (nameColor !== undefined) {
                 nameEl.style.color = nameColor;
             }
         }
 
         const bodyEl = speechEl.createDiv({ cls: "cbx-speech-body" });
+
         const contentEl = bodyEl.createDiv({ cls: "cbx-speech-content" });
         if (entry.renderMd) {
             contentEl.addClass("markdown-rendered");
