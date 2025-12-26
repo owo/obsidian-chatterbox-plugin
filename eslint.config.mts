@@ -1,11 +1,9 @@
-import tseslint from 'typescript-eslint';
 import obsidianmd from "eslint-plugin-obsidianmd";
 import globals from "globals";
-import { globalIgnores } from "eslint/config";
+import { type Config, defineConfig, globalIgnores } from "eslint/config";
 
 
-// TODO: Convert this to use defineConfig instead.
-export default tseslint.config(
+export default defineConfig(
     {
         languageOptions: {
             globals: {
@@ -23,7 +21,7 @@ export default tseslint.config(
             },
         },
     },
-    ...obsidianmd.configs.recommended,
+    ...(obsidianmd.configs?.recommended as Config[]),
     globalIgnores([
         "node_modules",
         "build",
