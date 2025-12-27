@@ -70,7 +70,7 @@
     --capsule-border-radius: 1.5em;
     --capsule-container-margin: var(--cbx-margin-amount) 0
         var(--cbx-margin-amount) 0;
-    --capsule-padding: 0.25em 1.5em 0.25em 1.5em;
+    --capsule-padding: 0.5em 1.5em 0.5em 1.5em;
     --capsule-max-width: 80%;
 
     /* Comment */
