@@ -1,4 +1,4 @@
-import { SpeechDir, SpeechEntry } from "src/entries";
+import { MessageDir, MessageEntry } from "src/entries";
 import { decodeHTMLEntities, fixObsidianRenderedMarkdown } from "src/utils";
 import { CbxRendererBase } from "./base";
 
@@ -9,39 +9,39 @@ import { CbxRendererBase } from "./base";
 export default class CbxBubbleRenderer extends CbxRendererBase {
     cssClass: string = "cbx-mode-bubble";
 
-    protected override async renderSpeechEntry(
-        entry: SpeechEntry,
+    protected override async renderMessageEntry(
+        entry: MessageEntry,
         entryContainerEl: HTMLElement
     ): Promise<void> {
-        const speechEl = entryContainerEl.createDiv({ cls: "cbx-speech" });
+        const messageEl = entryContainerEl.createDiv({ cls: "cbx-message" });
 
         switch (entry.dir) {
-            case SpeechDir.Left:
-                entryContainerEl.addClass("cbx-speech-left");
+            case MessageDir.Left:
+                entryContainerEl.addClass("cbx-message-left");
                 break;
-            case SpeechDir.Center:
-                entryContainerEl.addClass("cbx-speech-center");
+            case MessageDir.Center:
+                entryContainerEl.addClass("cbx-message-center");
                 break;
-            case SpeechDir.Right:
+            case MessageDir.Right:
             default:
-                entryContainerEl.addClass("cbx-speech-right");
+                entryContainerEl.addClass("cbx-message-right");
                 break;
         }
 
-        const fullName = this.config.speakers?.[entry.speaker]?.fullName ?? entry.speaker;
+        const fullName = this.config.authors?.[entry.author]?.fullName ?? entry.author;
 
-        entryContainerEl.dataset.cbxSpeakerOrder = this.speakerOrderMap.get(entry.speaker);
-        entryContainerEl.dataset.cbxSpeakerName = entry.speaker;
-        entryContainerEl.dataset.cbxSpeakerFullName = fullName;
+        entryContainerEl.dataset.cbxAuthorOrder = this.authorOrderMap.get(entry.author);
+        entryContainerEl.dataset.cbxAuthorName = entry.author;
+        entryContainerEl.dataset.cbxAuthorFullName = fullName;
 
         if (entry.showName && fullName.trim().length !== 0) {
-            const headerEl = speechEl.createDiv({ cls: "cbx-speech-header" });
+            const headerEl = messageEl.createDiv({ cls: "cbx-message-header" });
 
-            const nameEl = headerEl.createDiv({ cls: "cbx-speech-name" });
+            const nameEl = headerEl.createDiv({ cls: "cbx-message-name" });
             nameEl.innerText = fullName;
 
-            const autoNameColor = this.autoNameColorMap.get(entry.speaker);
-            const configNameColor = this.config.speakers?.[entry.speaker]?.nameColor;
+            const autoNameColor = this.autoNameColorMap.get(entry.author);
+            const configNameColor = this.config.authors?.[entry.author]?.nameColor;
             const nameColor = configNameColor ?? autoNameColor ?? undefined;
 
             if (nameColor !== undefined) {
@@ -49,9 +49,9 @@ export default class CbxBubbleRenderer extends CbxRendererBase {
             }
         }
 
-        const bodyEl = speechEl.createDiv({ cls: "cbx-speech-body" });
+        const bodyEl = messageEl.createDiv({ cls: "cbx-message-body" });
 
-        const contentEl = bodyEl.createDiv({ cls: "cbx-speech-content" });
+        const contentEl = bodyEl.createDiv({ cls: "cbx-message-content" });
         if (entry.renderMd) {
             contentEl.addClass("markdown-rendered");
             await this.renderObsidianMarkDown(entry.content, contentEl);
@@ -63,19 +63,19 @@ export default class CbxBubbleRenderer extends CbxRendererBase {
             contentEl.innerText = decodeHTMLEntities(entry.content);
         }
 
-        const textColor = this.config.speakers?.[entry.speaker]?.textColor ?? undefined;
+        const textColor = this.config.authors?.[entry.author]?.textColor ?? undefined;
         if (textColor !== undefined) {
             bodyEl.style.color = textColor;
         }
 
-        const bgColor = this.config.speakers?.[entry.speaker]?.bgColor ?? undefined;
+        const bgColor = this.config.authors?.[entry.author]?.bgColor ?? undefined;
         if (bgColor !== undefined) {
-            speechEl?.style.setProperty("--bubble-bg-color", bgColor);
+            messageEl?.style.setProperty("--bubble-bg-color", bgColor);
         }
 
         if (entry.subtext !== undefined && entry.subtext.trim().length !== 0) {
-            const footerEl = speechEl.createDiv({ cls: "cbx-speech-footer" });
-            const subtextEl = footerEl.createDiv({ cls: "cbx-speech-subtext" });
+            const footerEl = messageEl.createDiv({ cls: "cbx-message-footer" });
+            const subtextEl = footerEl.createDiv({ cls: "cbx-message-subtext" });
             subtextEl.innerText = entry.subtext;
         }
     }

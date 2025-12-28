@@ -5,7 +5,7 @@ import {
     type CommentEntry,
     type CbxEntry,
     EntryType,
-    SpeechDir,
+    MessageDir,
 } from "src/entries";
 import { CbxConfigError, parseCbxFrontmatter } from "./frontmatter";
 import {
@@ -13,8 +13,8 @@ import {
     COMMENT_OR_CAPSULE_RE,
     DELIMITER_RE,
     MARKDOWN_BLOCK_RE,
-    SPEECH_BLOCK_RE,
-    SPEECH_RE,
+    MESSAGE_BLOCK_RE,
+    MESSAGE_RE,
 } from "./patterns";
 
 
@@ -60,39 +60,39 @@ enum ParserState {
 }
 
 /**
- * Contains the parsed parameters of a single speech entry.
+ * Contains the parsed parameters of a single message entry.
  */
-interface SpeechParams {
-    speaker: string;
+interface MessageParams {
+    author: string;
     subtext?: string;
 }
 
 /**
- * Parses that speech parameters at the beginning of a speech entry entry.
+ * Parses the message parameters at the beginning of a message entry entry.
  * 
- * @param params The speech parameters to be parsed.
- * @returns A {@link SpeechParams} instance with the parsed speech parameters if it is valid,
+ * @param params The message parameters to be parsed.
+ * @returns A {@link MessageParams} instance with the parsed message parameters if it is valid,
  *          `null` otherwise.
  */
-function parseSpeechParams(params: string): SpeechParams | null {
+function parseMessageParams(params: string): MessageParams | null {
     const parts = params.split("|", 2);
-    const speaker = parts[0].trim();
+    const author = parts[0].trim();
     const subtext = (parts[1] ?? "").trim();
 
     return {
-        speaker: decodeHTMLEntities(speaker),
+        author: decodeHTMLEntities(author),
         subtext: subtext.length > 0 ? decodeHTMLEntities(subtext) : undefined,
     };
 }
 
 /**
- * A mapping from a speech direction marker in Chatterbox syntax to its respective
- * {@link SpeechDir} value.
+ * A mapping from a message direction marker in Chatterbox syntax to its respective
+ * {@link MessageDir} value.
  */
-const DIR_MAP: Record<string, SpeechDir> = {
-    ">": SpeechDir.Right,
-    "<": SpeechDir.Left,
-    "^": SpeechDir.Center,
+const DIR_MAP: Record<string, MessageDir> = {
+    ">": MessageDir.Right,
+    "<": MessageDir.Left,
+    "^": MessageDir.Center,
 };
 
 /**
@@ -109,9 +109,9 @@ class CbxParser {
     currContent: string[] = [];
     currEntryType: EntryType | null = null;
     currFence: string | undefined = undefined;
-    currSpeechParams: SpeechParams | undefined = undefined;
+    currMessageParams: MessageParams | undefined = undefined;
     currRenderMd: boolean = false;
-    currSpeechDir: SpeechDir = SpeechDir.Right;
+    currMessageDir: MessageDir = MessageDir.Right;
     currShowName: boolean | undefined = undefined;
 
     /**
@@ -163,8 +163,8 @@ class CbxParser {
         this.currContent = [];
         this.currEntryType = null;
         this.currFence = undefined;
-        this.currSpeechParams = undefined;
-        this.currSpeechDir = SpeechDir.Right;
+        this.currMessageParams = undefined;
+        this.currMessageDir = MessageDir.Right;
         this.currRenderMd = false;
         this.state = ParserState.Single;
     }
@@ -193,13 +193,13 @@ class CbxParser {
                     content: this.currContent.join("\n"),
                 });
                 break;
-            case EntryType.Speech:
+            case EntryType.Message:
                 this.entries.push({
-                    type: EntryType.Speech,
+                    type: EntryType.Message,
                     content: this.currContent.join("\n"),
-                    speaker: this.currSpeechParams?.speaker ?? "",
-                    subtext: this.currSpeechParams?.subtext,
-                    dir: this.currSpeechDir,
+                    author: this.currMessageParams?.author ?? "",
+                    subtext: this.currMessageParams?.subtext,
+                    dir: this.currMessageDir,
                     showName: this.currShowName,
                     renderMd: this.currRenderMd,
                 });
@@ -312,26 +312,26 @@ class CbxParser {
     }
 
     /**
-     * Tries to parse a given line as a single-line speech entry.
+     * Tries to parse a given line as a single-line message entry.
      * 
      * @param line The line to parse.
      * @returns `true` if parsing was successful, `false` otherwise.
      */
-    private tryParseSpeech(line: string): boolean {
-        const match = SPEECH_RE.exec(line);
+    private tryParseMessage(line: string): boolean {
+        const match = MESSAGE_RE.exec(line);
 
         if (match != null && match.groups) {
-            const speechParams = parseSpeechParams(match.groups.speechParams);
+            const messageParams = parseMessageParams(match.groups.messageParams);
 
-            if (speechParams === null) {
+            if (messageParams === null) {
                 return false;
             }
 
             this.entries.push({
-                type: EntryType.Speech,
-                dir: DIR_MAP[match.groups.speechDir] ?? SpeechDir.Left,
-                speaker: speechParams.speaker,
-                subtext: speechParams.subtext,
+                type: EntryType.Message,
+                dir: DIR_MAP[match.groups.messageDir] ?? MessageDir.Left,
+                author: messageParams.author,
+                subtext: messageParams.subtext,
                 content: match.groups.content,
                 showName: match.groups.hideName !== "!",
                 renderMd: this.currRenderMd = match.groups.renderMd === "@",
@@ -344,24 +344,24 @@ class CbxParser {
     }
 
     /**
-     * Tries to parse a given line as the start of a multi-line speech entry block.
+     * Tries to parse a given line as the start of a multi-line message entry block.
      * 
      * @param line The line to parse.
      * @returns `true` if parsing was successful, `false` otherwise.
      */
-    private tryParseSpeechBlock(line: string): boolean {
-        const match = SPEECH_BLOCK_RE.exec(line);
+    private tryParseMessageBlock(line: string): boolean {
+        const match = MESSAGE_BLOCK_RE.exec(line);
 
         if (match != null && match.groups) {
-            const speechParams = parseSpeechParams(match.groups.speechParams);
+            const messageParams = parseMessageParams(match.groups.messageParams);
 
-            if (speechParams === null) {
+            if (messageParams === null) {
                 return false;
             }
 
-            this.currEntryType = EntryType.Speech;
-            this.currSpeechParams = speechParams;
-            this.currSpeechDir = DIR_MAP[match.groups.fence[0]] ?? SpeechDir.Left;
+            this.currEntryType = EntryType.Message;
+            this.currMessageParams = messageParams;
+            this.currMessageDir = DIR_MAP[match.groups.fence[0]] ?? MessageDir.Left;
             this.currFence = match.groups.fence;
             this.currShowName = match.groups.hideName !== "!";
             this.currRenderMd = match.groups.renderMd === "@";
@@ -415,11 +415,11 @@ class CbxParser {
             }
 
             // In Single mode we iteratively try to match the current line to a valid pattern.
-            if (this.tryParseSpeechBlock(line)) { continue; }
+            if (this.tryParseMessageBlock(line)) { continue; }
             else if (this.tryParseCommentOrCapsuleBlock(line)) { continue; }
             else if (this.tryParseMarkdownBlock(line)) { continue; }
             else if (this.tryParseDelimiter(line)) { continue; }
-            else if (this.tryParseSpeech(line)) { continue; }
+            else if (this.tryParseMessage(line)) { continue; }
             else if (this.tryParseCommentOrCapsule(line)) { continue; }
         }
 

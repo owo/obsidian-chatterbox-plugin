@@ -13,9 +13,9 @@ import {
     type DelimiterEntry,
     type MarkdownEntry,
     type CbxEntry,
-    type SpeechEntry,
+    type MessageEntry,
     EntryType,
-    SpeechDir,
+    MessageDir,
 } from "src/entries";
 import { ChatterboxSettings } from "src/settings";
 
@@ -32,7 +32,7 @@ export abstract class CbxRendererBase {
     protected readonly ctx: MarkdownPostProcessorContext
     protected readonly config: CbxConfig;
     protected readonly settings: ChatterboxSettings;
-    protected readonly speakerOrderMap: Map<string, string> = new Map();
+    protected readonly authorOrderMap: Map<string, string> = new Map();
     protected readonly autoNameColorMap: Map<string, string> = new Map();
 
     /**
@@ -61,63 +61,63 @@ export abstract class CbxRendererBase {
     }
 
     /**
-     * Assigns an ordering ID to each speaker based on the order of their appearance in the
+     * Assigns an ordering ID to each author based on the order of their appearance in the
      * entry list.
      * 
-     * The nameless speaker is always assigned the ID "0", all other IDs increment starting from
+     * The nameless author is always assigned the ID "0", all other IDs increment starting from
      * "1".
      * 
-     * @param entries The list of entries used to determine the order of speakers.
+     * @param entries The list of entries used to determine the order of authors.
      */
-    protected populateSpeakerOrderMap(entries: CbxEntry[]) {
-        this.speakerOrderMap.set("", "0");
+    protected populateAuthorOrderMap(entries: CbxEntry[]) {
+        this.authorOrderMap.set("", "0");
 
         let currOrder = 1;
 
         for (const entry of entries) {
 
 
-            if (entry.type !== EntryType.Speech || entry.speaker === "") {
+            if (entry.type !== EntryType.Message || entry.author === "") {
                 continue;
             }
 
-            const speaker = entry.speaker;
-            if (!this.speakerOrderMap.has(speaker)) {
-                this.speakerOrderMap.set(speaker, String(currOrder));
+            const author = entry.author;
+            if (!this.authorOrderMap.has(author)) {
+                this.authorOrderMap.set(author, String(currOrder));
                 currOrder += 1;
             }
         }
     }
 
     /**
-     * Assigns an auto color to each speaker that doesn't have a `nameColor` value assigned in the
+     * Assigns an auto color to each author that doesn't have a `nameColor` value assigned in the
      * config.
-     * Colors are assigned based on the order of appearance of speakers in the entry list and
+     * Colors are assigned based on the order of appearance of authors in the entry list and
      * cycle around a predefined set of colors.
-     * The nameless speaker isn't assigned a color.
+     * The nameless author isn't assigned a color.
      * 
      * Classes extending this base class should not need to override this.
      * 
-     * @param entries The list of entries used to determine the order of speakers.
+     * @param entries The list of entries used to determine the order of authors.
      */
     protected populateAutoNameColorMap(entries: CbxEntry[]) {
-        let currSpeakerNum = 0;
+        let currAuthorNum = 0;
 
         for (const entry of entries) {
-            if (entry.type !== EntryType.Speech || entry.speaker === "") {
+            if (entry.type !== EntryType.Message || entry.author === "") {
                 continue;
             }
 
-            const speaker = entry.speaker;
-            const speakerConfig = this.config.speakers?.[speaker];
+            const author = entry.author;
+            const authorConfig = this.config.authors?.[author];
 
-            if (speakerConfig?.nameColor === undefined && !this.autoNameColorMap.has(speaker)) {
-                const colorNum = (currSpeakerNum % NUM_TEXT_AUTO_COLORS) + 1;
+            if (authorConfig?.nameColor === undefined && !this.autoNameColorMap.has(author)) {
+                const colorNum = (currAuthorNum % NUM_TEXT_AUTO_COLORS) + 1;
                 const autoColor = `var(--auto-color-text-${String(colorNum)})`;
 
-                this.autoNameColorMap.set(speaker, autoColor);
+                this.autoNameColorMap.set(author, autoColor);
 
-                currSpeakerNum += 1;
+                currAuthorNum += 1;
             }
         }
     }
@@ -202,36 +202,36 @@ export abstract class CbxRendererBase {
     }
 
     /**
-     * Render a speech entry to a given HTML element.
+     * Render a message entry to a given HTML element.
      * 
-     * @param entry The speech entry to be rendered.
+     * @param entry The message entry to be rendered.
      * @param entryContainerEl The HTML element to render to.
      */
-    protected async renderSpeechEntry(
-        entry: SpeechEntry,
+    protected async renderMessageEntry(
+        entry: MessageEntry,
         entryContainerEl: HTMLElement
     ): Promise<void> {
-        const speechEl = entryContainerEl.createDiv({ cls: "cbx-speech" });
+        const messageEl = entryContainerEl.createDiv({ cls: "cbx-message" });
 
-        const bgColor = this.config.speakers?.[entry.speaker]?.bgColor ?? undefined;
+        const bgColor = this.config.authors?.[entry.author]?.bgColor ?? undefined;
         if (bgColor !== undefined) {
-            speechEl.style.setProperty("--speech-bg-color", bgColor);
+            messageEl.style.setProperty("--message-bg-color", bgColor);
         }
 
-        const fullName = this.config.speakers?.[entry.speaker]?.fullName ?? entry.speaker;
+        const fullName = this.config.authors?.[entry.author]?.fullName ?? entry.author;
 
-        entryContainerEl.dataset.cbxSpeakerOrder = this.speakerOrderMap.get(entry.speaker);
-        entryContainerEl.dataset.cbxSpeakerName = entry.speaker;
-        entryContainerEl.dataset.cbxSpeakerFullName = fullName;
+        entryContainerEl.dataset.cbxAuthorOrder = this.authorOrderMap.get(entry.author);
+        entryContainerEl.dataset.cbxAuthorName = entry.author;
+        entryContainerEl.dataset.cbxAuthorFullName = fullName;
 
         if (entry.showName && fullName.trim().length !== 0) {
-            const headerEl = speechEl.createDiv({ cls: "cbx-speech-header" });
+            const headerEl = messageEl.createDiv({ cls: "cbx-message-header" });
 
-            const nameEl = headerEl.createDiv({ cls: "cbx-speech-name" });
+            const nameEl = headerEl.createDiv({ cls: "cbx-message-name" });
             nameEl.innerText = fullName;
 
-            const autoNameColor = this.autoNameColorMap.get(entry.speaker);
-            const configNameColor = this.config.speakers?.[entry.speaker]?.nameColor;
+            const autoNameColor = this.autoNameColorMap.get(entry.author);
+            const configNameColor = this.config.authors?.[entry.author]?.nameColor;
             const nameColor = configNameColor ?? autoNameColor ?? undefined;
 
             if (nameColor !== undefined) {
@@ -239,21 +239,21 @@ export abstract class CbxRendererBase {
             }
         }
 
-        const bodyEl = speechEl.createDiv({ cls: "cbx-speech-body" });
+        const bodyEl = messageEl.createDiv({ cls: "cbx-message-body" });
         switch (entry.dir) {
-            case SpeechDir.Left:
-                entryContainerEl.addClass("cbx-speech-left");
+            case MessageDir.Left:
+                entryContainerEl.addClass("cbx-message-left");
                 break;
-            case SpeechDir.Center:
-                entryContainerEl.addClass("cbx-speech-center");
+            case MessageDir.Center:
+                entryContainerEl.addClass("cbx-message-center");
                 break;
-            case SpeechDir.Right:
+            case MessageDir.Right:
             default:
-                entryContainerEl.addClass("cbx-speech-right");
+                entryContainerEl.addClass("cbx-message-right");
                 break;
         }
 
-        const contentEl = bodyEl.createDiv({ cls: "cbx-speech-content" });
+        const contentEl = bodyEl.createDiv({ cls: "cbx-message-content" });
         if (entry.renderMd) {
             await this.renderObsidianMarkDown(entry.content, contentEl);
             if (this.settings.applyObsidianMarkdownFixes) {
@@ -264,14 +264,14 @@ export abstract class CbxRendererBase {
             contentEl.innerText = decodeHTMLEntities(entry.content);
         }
 
-        const textColor = this.config.speakers?.[entry.speaker]?.textColor ?? undefined;
+        const textColor = this.config.authors?.[entry.author]?.textColor ?? undefined;
         if (textColor !== undefined) {
             bodyEl.style.color = textColor;
         }
 
         if (entry.subtext !== undefined && entry.subtext.trim().length !== 0) {
-            const footerEl = speechEl.createDiv({ cls: "cbx-speech-footer" });
-            const subtextEl = footerEl.createDiv({ cls: "cbx-speech-subtext" });
+            const footerEl = messageEl.createDiv({ cls: "cbx-message-footer" });
+            const subtextEl = footerEl.createDiv({ cls: "cbx-message-subtext" });
             subtextEl.innerText = entry.subtext;
         }
     }
@@ -299,7 +299,7 @@ export abstract class CbxRendererBase {
         const cbxProps = [
             ["--capsule-max-width", this.config.maxCapsuleWidth],
             ["--comment-max-width", this.config.maxCommentWidth],
-            ["--speech-max-width", this.config.maxSpeechWidth],
+            ["--message-max-width", this.config.maxMessageWidth],
         ]
             .filter(x => x[1] !== undefined) as Iterable<readonly [PropertyKey, unknown]>;
 
@@ -307,7 +307,7 @@ export abstract class CbxRendererBase {
             ...(Object.fromEntries(cbxProps) as Record<string, string>)
         });
 
-        this.populateSpeakerOrderMap(entries);
+        this.populateAuthorOrderMap(entries);
 
         if (this.config.autoColorNames ?? DEFAULT_AUTO_COLOR_NAMES) {
             this.populateAutoNameColorMap(entries);
@@ -335,9 +335,9 @@ export abstract class CbxRendererBase {
                     entryContainerEl.addClass("cbx-markdown-container")
                     await this.renderMarkdownEntry(entry, entryContainerEl);
                     break;
-                case EntryType.Speech:
-                    entryContainerEl.addClass("cbx-speech-container")
-                    await this.renderSpeechEntry(entry, entryContainerEl);
+                case EntryType.Message:
+                    entryContainerEl.addClass("cbx-message-container")
+                    await this.renderMessageEntry(entry, entryContainerEl);
                     break;
             }
         }

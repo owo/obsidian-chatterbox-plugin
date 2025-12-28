@@ -58,9 +58,9 @@ const CssLengthStringValidator = zod.pipe(
 
 
 /**
- * Validates a speaker info entry.
+ * Validates a author info entry.
  */
-const SpeakerInfoValidator = zod.object({
+const AuthorInfoValidator = zod.object({
     bgColor: zod.catch(zod.optional(CssColorStringValidator), undefined),
     fullName: zod.catch(zod.optional(zod.string()), undefined),
     nameColor: zod.catch(zod.optional(CssColorStringValidator), undefined),
@@ -92,16 +92,16 @@ export const CbxConfigValidator = zod.object({
     ),
     maxCapsuleWidth: createOptionalCssLength(),
     maxCommentWidth: createOptionalCssLength(),
-    maxSpeechWidth: createOptionalCssLength(),
+    maxMessageWidth: createOptionalCssLength(),
     mode: zod.catch(
         zod.optional(zod.enum(["bubble", "simple"])),
         undefined
     ),
-    speakers: zod.catch(
-        zod.optional(zod.record(zod.string(), SpeakerInfoValidator)),
+    authors: zod.catch(
+        zod.optional(zod.record(zod.string(), AuthorInfoValidator)),
         undefined,
     ),
 });
 
-export type SpeakerInfo = zod.infer<typeof SpeakerInfoValidator>;
+export type AuthorInfo = zod.infer<typeof AuthorInfoValidator>;
 export type CbxConfig = zod.infer<typeof CbxConfigValidator>;

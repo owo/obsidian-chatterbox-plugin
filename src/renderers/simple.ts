@@ -1,4 +1,4 @@
-import { SpeechDir, SpeechEntry } from "src/entries";
+import { MessageDir, MessageEntry } from "src/entries";
 import { decodeHTMLEntities, fixObsidianRenderedMarkdown } from "src/utils";
 import { CbxRendererBase } from "./base";
 
@@ -9,32 +9,32 @@ import { CbxRendererBase } from "./base";
 export default class CbxSimpleRenderer extends CbxRendererBase {
     cssClass: string = "cbx-mode-simple";
 
-    protected override async renderSpeechEntry(
-        entry: SpeechEntry,
+    protected override async renderMessageEntry(
+        entry: MessageEntry,
         entryContainerEl: HTMLElement
     ): Promise<void> {
-        const speechEl = entryContainerEl.createDiv({ cls: "cbx-speech" });
+        const messageEl = entryContainerEl.createDiv({ cls: "cbx-message" });
 
-        const bgColor = this.config.speakers?.[entry.speaker]?.bgColor ?? undefined;
+        const bgColor = this.config.authors?.[entry.author]?.bgColor ?? undefined;
         if (bgColor !== undefined) {
-            speechEl.style.setProperty("--speech-bg-color", bgColor);
+            messageEl.style.setProperty("--message-bg-color", bgColor);
         }
 
-        const fullName = this.config.speakers?.[entry.speaker]?.fullName ?? entry.speaker;
+        const fullName = this.config.authors?.[entry.author]?.fullName ?? entry.author;
 
-        entryContainerEl.dataset.cbxSpeakerOrder = this.speakerOrderMap.get(entry.speaker);
-        entryContainerEl.dataset.cbxSpeakerName = entry.speaker;
-        entryContainerEl.dataset.cbxSpeakerFullName = fullName;
+        entryContainerEl.dataset.cbxAuthorOrder = this.authorOrderMap.get(entry.author);
+        entryContainerEl.dataset.cbxAuthorName = entry.author;
+        entryContainerEl.dataset.cbxAuthorFullName = fullName;
 
-        const headerEl = speechEl.createDiv({ cls: "cbx-speech-header" });
+        const headerEl = messageEl.createDiv({ cls: "cbx-message-header" });
 
         if (entry.showName && fullName.trim().length !== 0) {
 
-            const nameEl = headerEl.createDiv({ cls: "cbx-speech-name" });
+            const nameEl = headerEl.createDiv({ cls: "cbx-message-name" });
             nameEl.innerText = fullName;
 
-            const autoNameColor = this.autoNameColorMap.get(entry.speaker);
-            const configNameColor = this.config.speakers?.[entry.speaker]?.nameColor;
+            const autoNameColor = this.autoNameColorMap.get(entry.author);
+            const configNameColor = this.config.authors?.[entry.author]?.nameColor;
             const nameColor = configNameColor ?? autoNameColor ?? undefined;
 
             if (nameColor !== undefined) {
@@ -43,25 +43,25 @@ export default class CbxSimpleRenderer extends CbxRendererBase {
         }
 
         if (entry.subtext !== undefined && entry.subtext.trim().length !== 0) {
-            const subtextEl = headerEl.createDiv({ cls: "cbx-speech-subtext" });
+            const subtextEl = headerEl.createDiv({ cls: "cbx-message-subtext" });
             subtextEl.innerText = entry.subtext;
         }
 
-        const bodyEl = speechEl.createDiv({ cls: "cbx-speech-body" });
+        const bodyEl = messageEl.createDiv({ cls: "cbx-message-body" });
         switch (entry.dir) {
-            case SpeechDir.Left:
-                entryContainerEl.addClass("cbx-speech-left");
+            case MessageDir.Left:
+                entryContainerEl.addClass("cbx-message-left");
                 break;
-            case SpeechDir.Center:
-                entryContainerEl.addClass("cbx-speech-center");
+            case MessageDir.Center:
+                entryContainerEl.addClass("cbx-message-center");
                 break;
-            case SpeechDir.Right:
+            case MessageDir.Right:
             default:
-                entryContainerEl.addClass("cbx-speech-right");
+                entryContainerEl.addClass("cbx-message-right");
                 break;
         }
 
-        const contentEl = bodyEl.createDiv({ cls: "cbx-speech-content" });
+        const contentEl = bodyEl.createDiv({ cls: "cbx-message-content" });
         if (entry.renderMd) {
             await this.renderObsidianMarkDown(entry.content, contentEl);
             if (this.settings.applyObsidianMarkdownFixes) {
@@ -72,7 +72,7 @@ export default class CbxSimpleRenderer extends CbxRendererBase {
             contentEl.innerText = decodeHTMLEntities(entry.content);
         }
 
-        const textColor = this.config.speakers?.[entry.speaker]?.textColor ?? undefined;
+        const textColor = this.config.authors?.[entry.author]?.textColor ?? undefined;
         if (textColor !== undefined) {
             bodyEl.style.color = textColor;
         }

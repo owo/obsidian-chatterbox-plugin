@@ -11,11 +11,11 @@ const COMMENT_SINGLE = /#/.source;
 const COMMENT_FENCE = /(?<fence>###+)/.source;
 const CAPSULE_MARKER = /(?<capsule>\(\))?/.source;
 
-const SPEECH_PARAMS = /(?<speechParams>.*?)/.source;
-const SPEECH_DIR_SINGLE = /(?<speechDir>[<>^])/.source;
-const SPEECH_DIR_FENCE = /(?<fence>(<<<+)|(>>>+)|(\^\^\^+))/.source;
-const SPEECH_HIDE_NAME_MARKER = /(?<hideName>!)?/.source;
-const SPEECH_RENDER_MD_MARKER = /(?<renderMd>@)?/.source;
+const MESSAGE_PARAMS = /(?<messageParams>.*?)/.source;
+const MESSAGE_DIR_SINGLE = /(?<messageDir>[<>^])/.source;
+const MESSAGE_DIR_FENCE = /(?<fence>(<<<+)|(>>>+)|(\^\^\^+))/.source;
+const MESSAGE_HIDE_NAME_MARKER = /(?<hideName>!)?/.source;
+const MESSAGE_RENDER_MD_MARKER = /(?<renderMd>@)?/.source;
 
 const MARKDOWN_FENCE = /(?<fence>@@@+)/.source;
 
@@ -86,30 +86,30 @@ export const MARKDOWN_BLOCK_RE = RegExp(
 );
 
 /**
- * Regular expression matching a single-line speech entry.
+ * Regular expression matching a single-line message entry.
  */
-export const SPEECH_RE = RegExp(
+export const MESSAGE_RE = RegExp(
     START_ANCHOR +
-    SPEECH_PARAMS +
+    MESSAGE_PARAMS +
     WS_SEQ_OPTIONAL +
-    SPEECH_DIR_SINGLE +
-    SPEECH_HIDE_NAME_MARKER +
-    SPEECH_RENDER_MD_MARKER +
+    MESSAGE_DIR_SINGLE +
+    MESSAGE_HIDE_NAME_MARKER +
+    MESSAGE_RENDER_MD_MARKER +
     WS +
     CONTENT +
     END_ANCHOR
 );
 
 /**
- * Regular expression matching the start of a multi-line speech block.
+ * Regular expression matching the start of a multi-line message block.
  */
-export const SPEECH_BLOCK_RE = RegExp(
+export const MESSAGE_BLOCK_RE = RegExp(
     START_ANCHOR +
-    SPEECH_PARAMS +
+    MESSAGE_PARAMS +
     WS_SEQ_OPTIONAL +
-    SPEECH_DIR_FENCE +
-    SPEECH_HIDE_NAME_MARKER +
-    SPEECH_RENDER_MD_MARKER +
+    MESSAGE_DIR_FENCE +
+    MESSAGE_HIDE_NAME_MARKER +
+    MESSAGE_RENDER_MD_MARKER +
     BLOCK_CONTENT +
     END_ANCHOR
 );

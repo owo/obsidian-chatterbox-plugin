@@ -6,13 +6,13 @@ export enum EntryType {
     Comment,
     Delimiter,
     Markdown,
-    Speech,
+    Message,
 }
 
 /**
- * Represents the rendering direction of a speech entry.
+ * Represents the rendering direction of a message entry.
  */
-export enum SpeechDir {
+export enum MessageDir {
     Left,
     Right,
     Center,
@@ -50,13 +50,13 @@ export interface MarkdownEntry {
 }
 
 /**
- * Contains information for a single speech entry.
+ * Contains information for a single message entry.
  */
-export interface SpeechEntry {
-    type: EntryType.Speech;
-    speaker: string;
+export interface MessageEntry {
+    type: EntryType.Message;
+    author: string;
     content: string;
-    dir: SpeechDir;
+    dir: MessageDir;
     subtext?: string;
     showName?: boolean;
     renderMd: boolean;
@@ -70,4 +70,4 @@ export type CbxEntry =
     CommentEntry |
     DelimiterEntry |
     MarkdownEntry |
-    SpeechEntry;
+    MessageEntry;

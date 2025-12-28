@@ -72,11 +72,11 @@
     --delim-dot-gap: 4px;
     --delim-dot-size: 6px;
 
-    /* Speech */
-    --speech-margin: var(--cbx-margin-amount) 0 var(--cbx-margin-amount) 0;
-    --speech-subtext-text-color: var(--text-muted);
-    --speech-subtext-font-size: 0.85em;
-    --speech-max-width: 80%;
+    /* Message */
+    --message-margin: var(--cbx-margin-amount) 0 var(--cbx-margin-amount) 0;
+    --message-subtext-text-color: var(--text-muted);
+    --message-subtext-font-size: 0.85em;
+    --message-max-width: 80%;
 }
 
 .chatterbox {
@@ -195,48 +195,48 @@
     width: 100%;
 }
 
-/* --------------------------------- Speech --------------------------------- */
+/* --------------------------------- Message -------------------------------- */
 
-.chatterbox .cbx-speech-container {
+.chatterbox .cbx-message-container {
     display: block;
     width: 100%;
-    margin: var(--speech-margin);
+    margin: var(--message-margin);
 }
 
-.chatterbox .cbx-speech {
+.chatterbox .cbx-message {
     display: block;
     width: 100%;
-    max-width: var(--speech-max-width);
+    max-width: var(--message-max-width);
 }
 
-.chatterbox .cbx-speech-header,
-.chatterbox .cbx-speech-body,
-.chatterbox .cbx-speech-footer {
+.chatterbox .cbx-message-header,
+.chatterbox .cbx-message-body,
+.chatterbox .cbx-message-footer {
     display: block;
 }
 
-.chatterbox .cbx-speech-name {
+.chatterbox .cbx-message-name {
     display: inline-block;
     font-weight: bold;
 }
 
-.chatterbox .cbx-speech-content {
+.chatterbox .cbx-message-content {
     display: block;
     width: 100%;
 }
 
-.chatterbox .cbx-speech-content .cbx-md-fix-first {
+.chatterbox .cbx-message-content .cbx-md-fix-first {
     margin-top: 0;
 }
 
-.chatterbox .cbx-speech-content .cbx-md-fix-last {
+.chatterbox .cbx-message-content .cbx-md-fix-last {
     margin-bottom: 0;
 }
 
-.chatterbox .cbx-speech-subtext {
+.chatterbox .cbx-message-subtext {
     display: inline-block;
-    font-size: var(--speech-subtext-font-size);
-    color: var(--speech-subtext-text-color);
+    font-size: var(--message-subtext-font-size);
+    color: var(--message-subtext-text-color);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -244,24 +244,24 @@
 /* -------------------------------------------------------------------------- */
 
 .chatterbox.cbx-mode-simple {
-    --speech-bg-color: transparent;
-    --speech-indent: 1.5em;
-    --speech-subtext-margin: 0.7em;
+    --message-bg-color: transparent;
+    --message-indent: 1.5em;
+    --message-subtext-margin: 0.7em;
 }
 
-/* --------------------------------- Speech --------------------------------- */
+/* --------------------------------- Message -------------------------------- */
 
-.chatterbox.cbx-mode-simple .cbx-speech {
+.chatterbox.cbx-mode-simple .cbx-message {
     max-width: 100%;
-    background-color: var(--speech-bg-color);
+    background-color: var(--message-bg-color);
 }
 
-.chatterbox.cbx-mode-simple .cbx-speech-body {
-    margin: 0 0 0 var(--speech-indent);
+.chatterbox.cbx-mode-simple .cbx-message-body {
+    margin: 0 0 0 var(--message-indent);
 }
 
-.chatterbox.cbx-mode-simple .cbx-speech-subtext {
-    margin-inline-start: var(--speech-subtext-margin);
+.chatterbox.cbx-mode-simple .cbx-message-subtext {
+    margin-inline-start: var(--message-subtext-margin);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -294,28 +294,28 @@
     background-color: var(--capsule-bg-color);
 }
 
-/* --------------------------------- Speech --------------------------------- */
+/* --------------------------------- Message -------------------------------- */
 
-.chatterbox.cbx-mode-bubble .cbx-speech-container {
+.chatterbox.cbx-mode-bubble .cbx-message-container {
     display: flex;
     margin: var(--cbx-margin-amount) 0 var(--cbx-margin-amount) 0;
 }
 
-.chatterbox.cbx-mode-bubble .cbx-speech-right {
+.chatterbox.cbx-mode-bubble .cbx-message-right {
     justify-content: end;
     padding-right: var(--bubble-stem-width);
 }
 
-.chatterbox.cbx-mode-bubble .cbx-speech-center {
+.chatterbox.cbx-mode-bubble .cbx-message-center {
     justify-content: center;
 }
 
-.chatterbox.cbx-mode-bubble .cbx-speech-left {
+.chatterbox.cbx-mode-bubble .cbx-message-left {
     justify-content: start;
     padding-left: var(--bubble-stem-width);
 }
 
-.chatterbox.cbx-mode-bubble .cbx-speech {
+.chatterbox.cbx-mode-bubble .cbx-message {
     position: relative;
     box-sizing: border-box;
     width: fit-content;
@@ -324,12 +324,12 @@
     border-radius: var(--bubble-border-radius);
 }
 
-.chatterbox.cbx-mode-bubble .cbx-speech-right .cbx-speech {
+.chatterbox.cbx-mode-bubble .cbx-message-right .cbx-message {
     border-top-right-radius: 0;
 }
 
-/* Right speech bubble stem */
-.chatterbox.cbx-mode-bubble .cbx-speech-right .cbx-speech::after {
+/* Right message bubble stem */
+.chatterbox.cbx-mode-bubble .cbx-message-right .cbx-message::after {
     content: "";
     position: absolute;
     top: 0;
@@ -344,12 +344,12 @@
     );
 }
 
-.chatterbox.cbx-mode-bubble .cbx-speech-left .cbx-speech {
+.chatterbox.cbx-mode-bubble .cbx-message-left .cbx-message {
     border-top-left-radius: 0;
 }
 
-/* Left speech bubble stem */
-.chatterbox.cbx-mode-bubble .cbx-speech-left .cbx-speech::after {
+/* Left message bubble stem */
+.chatterbox.cbx-mode-bubble .cbx-message-left .cbx-message::after {
     content: "";
     position: absolute;
     top: 0;
@@ -364,12 +364,12 @@
     );
 }
 
-.chatterbox.cbx-mode-bubble .cbx-speech-header {
+.chatterbox.cbx-mode-bubble .cbx-message-header {
     margin-top: calc(-1 * var(--bubble-padding) / 2);
     margin-bottom: var(--bubble-content-margin);
 }
 
-.chatterbox.cbx-mode-bubble .cbx-speech-footer {
+.chatterbox.cbx-mode-bubble .cbx-message-footer {
     display: flex;
     justify-content: end;
     margin-top: var(--bubble-content-margin);
