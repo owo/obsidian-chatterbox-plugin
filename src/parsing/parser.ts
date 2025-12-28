@@ -1,4 +1,5 @@
 import { type CbxConfig, CbxConfigValidator } from "src/config";
+import { decodeHTMLEntities } from "src/utils";
 import {
     type CapsuleEntry,
     type CommentEntry,
@@ -79,8 +80,8 @@ function parseSpeechParams(params: string): SpeechParams | null {
     const subtext = (parts[1] ?? "").trim();
 
     return {
-        speaker: speaker,
-        subtext: subtext.length > 0 ? subtext : undefined,
+        speaker: decodeHTMLEntities(speaker),
+        subtext: subtext.length > 0 ? decodeHTMLEntities(subtext) : undefined,
     };
 }
 

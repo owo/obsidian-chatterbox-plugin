@@ -1,3 +1,29 @@
+let DECODE_TEXT_AREA: HTMLTextAreaElement | undefined = undefined;
+
+/**
+ * Decodes HTML entities from a given source string.
+ * 
+ * @param source Source string containing HTML entities.
+ * @returns Source string with HTML entities decoded.
+ */
+export function decodeHTMLEntities(source: string) {
+    if (source.indexOf("&") === -1) {
+        return source;
+    }
+
+    if (DECODE_TEXT_AREA === undefined) {
+        DECODE_TEXT_AREA = document.createElement("textarea");
+    }
+
+    // eslint-disable-next-line @microsoft/sdl/no-inner-html
+    DECODE_TEXT_AREA.innerHTML = source;
+
+    const decoded = DECODE_TEXT_AREA.textContent;
+
+    DECODE_TEXT_AREA.innerHTML = "";
+
+    return decoded;
+}
 
 /**
  * Applies visual fixes to HTML rendered by Obsidian's `MarkdownRenderer`.

@@ -1,6 +1,6 @@
 import { SpeechDir, SpeechEntry } from "src/entries";
+import { decodeHTMLEntities, fixObsidianRenderedMarkdown } from "src/utils";
 import { CbxRendererBase } from "./base";
-import { fixObsidianRenderedMarkdown } from "./utils";
 
 
 /**
@@ -60,7 +60,7 @@ export default class CbxBubbleRenderer extends CbxRendererBase {
             }
         }
         else {
-            contentEl.innerText = entry.content;
+            contentEl.innerText = decodeHTMLEntities(entry.content);
         }
 
         const textColor = this.config.speakers?.[entry.speaker]?.textColor ?? undefined;

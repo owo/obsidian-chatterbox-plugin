@@ -6,6 +6,7 @@ import {
 } from "obsidian";
 
 import { type CbxConfig, DEFAULT_AUTO_COLOR_NAMES } from "src/config";
+import { decodeHTMLEntities, fixObsidianRenderedMarkdown } from "src/utils";
 import {
     type CapsuleEntry,
     type CommentEntry,
@@ -17,7 +18,6 @@ import {
     SpeechDir,
 } from "src/entries";
 import { ChatterboxSettings } from "src/settings";
-import { fixObsidianRenderedMarkdown } from "./utils";
 
 
 // This should correspond to the number of `--auto-color-text-*` CSS variables (starting from 1
@@ -151,8 +151,7 @@ export abstract class CbxRendererBase {
     ): Promise<void> {
         const capsuleEl = entryContainerEl.createDiv({ cls: "cbx-capsule" });
 
-        // capsuleEl.style.maxWidth = `${this.config.maxCapsuleWidth ?? ""}`;
-        capsuleEl.innerText = entry.content;
+        capsuleEl.innerText = decodeHTMLEntities(entry.content);
     }
 
     /**
@@ -167,8 +166,7 @@ export abstract class CbxRendererBase {
     ): Promise<void> {
         const commentEl = entryContainerEl.createDiv({ cls: "cbx-comment" });
 
-        // commentEl.style.maxWidth = `${this.config.maxCommentWidth ?? ""}`;
-        commentEl.innerText = entry.content;
+        commentEl.innerText = decodeHTMLEntities(entry.content);
     }
 
     /**
@@ -263,7 +261,7 @@ export abstract class CbxRendererBase {
             }
         }
         else {
-            contentEl.innerText = entry.content;
+            contentEl.innerText = decodeHTMLEntities(entry.content);
         }
 
         const textColor = this.config.speakers?.[entry.speaker]?.textColor ?? undefined;
