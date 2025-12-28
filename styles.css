@@ -45,25 +45,6 @@
     /* General */
     --cbx-margin-amount: 1.5em;
 
-    /* Auto-colors */
-    --auto-color-rgb-1: var(--color-red-rgb);
-    --auto-color-rgb-2: var(--color-blue-rgb);
-    --auto-color-rgb-3: var(--color-orange-rgb);
-    --auto-color-rgb-4: var(--color-purple-rgb);
-    --auto-color-rgb-5: var(--color-green-rgb);
-    --auto-color-rgb-6: var(--color-pink-rgb);
-    --auto-color-rgb-7: var(--color-cyan-rgb);
-    --auto-color-rgb-8: var(--color-yellow-rgb);
-
-    --auto-color-text-1: rgb(var(--auto-color-rgb-1));
-    --auto-color-text-2: rgb(var(--auto-color-rgb-2));
-    --auto-color-text-3: rgb(var(--auto-color-rgb-3));
-    --auto-color-text-4: rgb(var(--auto-color-rgb-4));
-    --auto-color-text-5: rgb(var(--auto-color-rgb-5));
-    --auto-color-text-6: rgb(var(--auto-color-rgb-6));
-    --auto-color-text-7: rgb(var(--auto-color-rgb-7));
-    --auto-color-text-8: rgb(var(--auto-color-rgb-8));
-
     /* Capsule */
     --capsule-bg-color: transparent;
     --capsule-border: 1px solid;
@@ -107,6 +88,29 @@
  */
 .chatterbox.cbx-fix-obsidian-embed .markdown-embed .markdown-preview-view {
     padding: var(--embed-padding);
+}
+
+/* Auto colors */
+.chatterbox {
+    --auto-color-text-1: #c66300;
+    --auto-color-text-2: #1a72d4;
+    --auto-color-text-3: #e91d36;
+    --auto-color-text-4: #755dbf;
+    --auto-color-text-5: #108e42;
+    --auto-color-text-6: #cc2073;
+    --auto-color-text-7: #958509;
+    --auto-color-text-8: #05918f;
+}
+
+.theme-dark .chatterbox {
+    --auto-color-text-1: #ffb463;
+    --auto-color-text-2: #7cc5ff;
+    --auto-color-text-3: #ff8484;
+    --auto-color-text-4: #b99aff;
+    --auto-color-text-5: #7ce49b;
+    --auto-color-text-6: #fa99cd;
+    --auto-color-text-7: #e6d164;
+    --auto-color-text-8: #64d2d0;
 }
 
 /* --------------------------------- Capsule -------------------------------- */
@@ -261,15 +265,20 @@
 /* -------------------------------- Variables ------------------------------- */
 
 .chatterbox.cbx-mode-bubble {
-    --bubble-bg-color: rgba(var(--callout-quote), 0.2);
+    --bubble-bg-color: #ebebeb;
     --bubble-border-radius: var(--bubble-padding);
     --bubble-content-margin: 5px;
     --bubble-padding: 15px;
     --bubble-stem-height: 30px;
     --bubble-stem-width: 10px;
 
-    --capsule-bg-color: rgba(var(--callout-quote), 0.1);
+    --capsule-bg-color: #eaeaeacc;
     --capsule-border: 0;
+}
+
+.theme-dark .chatterbox.cbx-mode-bubble {
+    --capsule-bg-color: #2c2c2ccc;
+    --bubble-bg-color: #363636cc;
 }
 
 /* --------------------------------- Capsule -------------------------------- */
