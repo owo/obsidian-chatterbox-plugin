@@ -28,7 +28,6 @@ export function fixObsidianRenderedMarkdown(el: HTMLElement) {
             continue;
         }
 
-        // Find the first non-empty text node if present.
         if (node.nodeType === Node.TEXT_NODE) {
             if (node.nodeValue !== null && node.nodeValue.trim() === "") {
                 continue;
