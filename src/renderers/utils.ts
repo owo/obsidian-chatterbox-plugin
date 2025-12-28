@@ -39,6 +39,10 @@ export function fixObsidianRenderedMarkdown(el: HTMLElement) {
             }
 
             foundFirst = true;
+
+            if (lastEl !== null) {
+                lastEl = null;
+            }
         }
 
         if (node.nodeType === Node.ELEMENT_NODE) {
@@ -50,7 +54,6 @@ export function fixObsidianRenderedMarkdown(el: HTMLElement) {
             }
 
             lastEl = childEl;
-
         }
     }
 
