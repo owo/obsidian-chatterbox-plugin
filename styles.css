@@ -43,7 +43,7 @@
 /* -------------------------------- Variables ------------------------------- */
 .chatterbox {
     /* General */
-    --cbx-margin-amount: 20px;
+    --cbx-margin-amount: 1.5em;
 
     /* Auto-colors */
     --auto-color-rgb-1: var(--color-red-rgb);
@@ -86,13 +86,14 @@
     /* Delimiter */
     --delim-margin-amount: calc(2 * var(--cbx-margin-amount));
     --delim-margin: var(--delim-margin-amount) 0 var(--delim-margin-amount) 0;
-    --delim-dot-color: currentColor;
+    --delim-dot-color: var(--text-muted);
     --delim-dot-gap: 4px;
     --delim-dot-size: 6px;
 
     /* Speech */
     --speech-margin: var(--cbx-margin-amount) 0 var(--cbx-margin-amount) 0;
     --speech-subtext-text-color: var(--text-muted);
+    --speech-subtext-font-size: 0.85em;
     --speech-max-width: 80%;
 }
 
@@ -143,6 +144,7 @@
     margin-right: auto;
     margin-left: auto;
     text-align: center;
+    color: var(--comment-text-color);
 }
 
 /* -------------------------------- Delimiter ------------------------------- */
@@ -223,6 +225,7 @@
 
 .chatterbox .cbx-speech-subtext {
     display: inline-block;
+    font-size: var(--speech-subtext-font-size);
     color: var(--speech-subtext-text-color);
 }
 
@@ -231,33 +234,24 @@
 /* -------------------------------------------------------------------------- */
 
 .chatterbox.cbx-mode-simple {
-    --speech-margin: 10px;
-    --speech-padding: 10px;
     --speech-bg-color: transparent;
-    --indent-amount: 2.5em;
+    --speech-indent: 1.5em;
+    --speech-subtext-margin: 0.7em;
 }
 
 /* --------------------------------- Speech --------------------------------- */
 
 .chatterbox.cbx-mode-simple .cbx-speech {
     max-width: 100%;
-    padding: var(--speech-padding);
     background-color: var(--speech-bg-color);
 }
 
-.chatterbox.cbx-mode-simple .cbx-speech-header {
-    --margin-offset: calc(var(--speech-padding) / 2);
-    margin: calc(-1 * var(--margin-offset)) 0 var(--margin-offset) 0;
-}
-
 .chatterbox.cbx-mode-simple .cbx-speech-body {
-    margin: 0 0 0 var(--indent-amount);
+    margin: 0 0 0 var(--speech-indent);
 }
 
-.chatterbox.cbx-mode-simple .cbx-speech-footer {
-    --margin-offset: calc(var(--speech-padding) / 2);
-    margin: var(--margin-offset) 0 calc(-1 * var(--margin-offset))
-        var(--indent-amount);
+.chatterbox.cbx-mode-simple .cbx-speech-subtext {
+    margin-inline-start: var(--speech-subtext-margin);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -276,14 +270,6 @@
 
     --capsule-bg-color: rgba(var(--callout-quote), 0.1);
     --capsule-border: 0;
-
-    --comment-text-color: color-mix(
-        in srgb,
-        var(--text-muted) 50%,
-        var(--text-faint)
-    );
-
-    --delim-dot-color: var(--text-muted);
 }
 
 /* --------------------------------- Capsule -------------------------------- */
@@ -291,18 +277,6 @@
 .chatterbox.cbx-mode-bubble .cbx-capsule {
     border: var(--capsule-border);
     background-color: var(--capsule-bg-color);
-}
-
-/* --------------------------------- Comment -------------------------------- */
-
-.chatterbox.cbx-mode-bubble .cbx-comment {
-    color: var(--comment-text-color);
-}
-
-/* -------------------------------- Delimiter ------------------------------- */
-
-.chatterbox.cbx-mode-bubble .cbx-delim > .dot {
-    background-color: var(--delim-dot-color);
 }
 
 /* --------------------------------- Speech --------------------------------- */
