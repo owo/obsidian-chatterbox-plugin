@@ -62,7 +62,7 @@ export default class CbxSimpleRenderer extends CbxRendererBase {
                 break;
         }
 
-        const contentEl = bodyEl.createDiv({ cls: CssClasses.messageDirRight });
+        const contentEl = bodyEl.createDiv({ cls: CssClasses.messageContent });
         if (entry.renderMd) {
             await this.renderObsidianMarkDown(entry.content, contentEl);
             if (this.settings.applyObsidianMarkdownFixes) {
