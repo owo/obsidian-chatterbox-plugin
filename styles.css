@@ -251,8 +251,8 @@
 
 .chatterbox.mode-simple {
     --message-bg-color: transparent;
-    --message-indent: 1.5em;
-    --message-subtext-margin: 0.7em;
+    --message-indent: 1em;
+    --message-author-margin: 0.7em;
     --message-padding: 10px 15px 10px 15px;
 }
 
@@ -268,8 +268,8 @@
     margin: 0 0 0 var(--message-indent);
 }
 
-.chatterbox.mode-simple .message-subtext {
-    margin-inline-start: var(--message-subtext-margin);
+.chatterbox.mode-simple .message-author {
+    margin-inline-end: var(--message-author-margin);
 }
 
 /* -------------------------------------------------------------------------- */
