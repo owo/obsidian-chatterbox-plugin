@@ -253,7 +253,7 @@
     --message-bg-color: transparent;
     --message-indent: 1em;
     --message-author-margin: 0.7em;
-    --message-padding: 10px 15px 10px 15px;
+    --message-padding: 0;
 }
 
 /* --------------------------------- Message -------------------------------- */
