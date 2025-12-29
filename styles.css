@@ -274,11 +274,11 @@
 
     --message-bg-color: #ebebeb;
 
-    --bubble-border-radius: var(--bubble-padding);
     --bubble-content-margin: 5px;
     --bubble-padding: 15px;
     --bubble-stem-height: 30px;
     --bubble-stem-width: 10px;
+    --bubble-border-radius: var(--bubble-padding);
 }
 
 .theme-dark .chatterbox.mode-bubble {
@@ -324,6 +324,7 @@
 }
 
 .chatterbox.mode-bubble .message-right .message {
+    min-height: calc(var(--bubble-stem-height) + var(--bubble-border-radius));
     border-top-right-radius: 0;
 }
 
