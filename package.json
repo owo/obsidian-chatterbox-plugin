@@ -32,7 +32,6 @@
 		"typescript-eslint": "^8.50.0"
 	},
 	"dependencies": {
-		"@ctrl/tinycolor": "^4.2.0",
 		"zod": "^4.2.1"
 	}
 }

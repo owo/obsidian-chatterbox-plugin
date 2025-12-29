@@ -1,102 +1,36 @@
-import { TinyColor } from "@ctrl/tinycolor";
 import * as zod from "zod/v4-mini";
-import { CSS_LENGTH_STRING_RE } from "./parsing/patterns";
 
 zod.config(zod.locales.en());
 
+export const ChatterboxModes = ["bubble", "simple"] as const;
+export type CbxMode = typeof ChatterboxModes[number];
+
 // Config defaults
 export const DEFAULT_AUTO_COLOR_NAMES: boolean = true;
-export const DEFAULT_MODE: string = "bubble";
+export const DEFAULT_MODE: CbxMode = "bubble";
 
 // TODO: Figure out how to document all Zod objects.
-
-/**
- * Validates a color string. Should be able to accept all valid CSS color strings.
- */
-const CssColorStringValidator = zod.pipe(
-    zod.coerce.string(),
-    zod.transform((val, ctx) => {
-        const parsed = new TinyColor(val);
-
-        if (parsed.isValid) {
-            return parsed.toHex8String();
-        }
-
-        ctx.issues.push({
-            code: "custom",  // TODO: Use code "invalid-value" instead.
-            message: "Not a valid color value",
-            input: val,
-        });
-
-        return zod.NEVER;
-    })
-);
-
-/**
- * Validates a CSS length string. Accepts most useful length units.
- * Notable exceptions are relative viewport and container query length units.
- */
-const CssLengthStringValidator = zod.pipe(
-    zod.coerce.string(),
-    zod.transform((val, ctx) => {
-        const trimmed = val.trim();
-        const isValid = CSS_LENGTH_STRING_RE.test(trimmed);
-
-        if (isValid) {
-            return trimmed;
-        }
-
-        ctx.issues.push({
-            code: "custom",  // TODO: Use code "invalid-value" instead.
-            message: "Not a valid CSS length",
-            input: trimmed,
-        });
-
-        return zod.NEVER;
-    })
-);
-
 
 /**
  * Validates a author info entry.
  */
 const AuthorInfoValidator = zod.object({
-    bgColor: zod.catch(zod.optional(CssColorStringValidator), undefined),
+    bgColor: zod.catch(zod.optional(zod.string()), undefined),
     fullName: zod.catch(zod.optional(zod.string()), undefined),
-    nameColor: zod.catch(zod.optional(CssColorStringValidator), undefined),
-    textColor: zod.catch(zod.optional(CssColorStringValidator), undefined),
+    nameColor: zod.catch(zod.optional(zod.string()), undefined),
+    textColor: zod.catch(zod.optional(zod.string()), undefined),
 });
-
-function createOptionalCssLength() {
-    return zod.catch(
-        zod.optional(CssLengthStringValidator),
-        undefined
-    );
-}
-
-function createOptionalBoolean() {
-    return zod.catch(
-        zod.optional(zod.boolean()),
-        undefined,
-    );
-}
 
 /**
  * Validates an entire Chatterbox config object.
  */
 export const CbxConfigValidator = zod.object({
-    autoColorNames: createOptionalBoolean(),
-    chatterboxId: zod.catch(
-        zod.optional(zod.string()),
-        undefined,
-    ),
-    maxCapsuleWidth: createOptionalCssLength(),
-    maxCommentWidth: createOptionalCssLength(),
-    maxMessageWidth: createOptionalCssLength(),
-    mode: zod.catch(
-        zod.optional(zod.enum(["bubble", "simple"])),
-        undefined
-    ),
+    autoColorNames: zod.catch(zod.optional(zod.boolean()), undefined),
+    chatterboxId: zod.catch(zod.optional(zod.string()), undefined),
+    maxCapsuleWidth: zod.catch(zod.optional(zod.string()), undefined),
+    maxCommentWidth: zod.catch(zod.optional(zod.string()), undefined),
+    maxMessageWidth: zod.catch(zod.optional(zod.string()), undefined),
+    mode: zod.catch(zod.optional(zod.enum(ChatterboxModes)), undefined),
     authors: zod.catch(
         zod.optional(zod.record(zod.string(), AuthorInfoValidator)),
         undefined,
@@ -104,4 +38,5 @@ export const CbxConfigValidator = zod.object({
 });
 
 export type AuthorInfo = zod.infer<typeof AuthorInfoValidator>;
+
 export type CbxConfig = zod.infer<typeof CbxConfigValidator>;
