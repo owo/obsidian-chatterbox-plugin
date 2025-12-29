@@ -7,24 +7,24 @@ import { CbxRendererBase } from "./base";
  * Renderer for the "bubble" mode.
  */
 export default class CbxBubbleRenderer extends CbxRendererBase {
-    cssClass: string = "cbx-mode-bubble";
+    cssClass: string = "mode-bubble";
 
     protected override async renderMessageEntry(
         entry: MessageEntry,
         entryContainerEl: HTMLElement
     ): Promise<void> {
-        const messageEl = entryContainerEl.createDiv({ cls: "cbx-message" });
+        const messageEl = entryContainerEl.createDiv({ cls: "message" });
 
         switch (entry.dir) {
             case MessageDir.Left:
-                entryContainerEl.addClass("cbx-message-left");
+                entryContainerEl.addClass("message-left");
                 break;
             case MessageDir.Center:
-                entryContainerEl.addClass("cbx-message-center");
+                entryContainerEl.addClass("message-center");
                 break;
             case MessageDir.Right:
             default:
-                entryContainerEl.addClass("cbx-message-right");
+                entryContainerEl.addClass("message-right");
                 break;
         }
 
@@ -35,9 +35,9 @@ export default class CbxBubbleRenderer extends CbxRendererBase {
         entryContainerEl.dataset.cbxAuthorFullName = fullName;
 
         if (entry.showName && fullName.trim().length !== 0) {
-            const headerEl = messageEl.createDiv({ cls: "cbx-message-header" });
+            const headerEl = messageEl.createDiv({ cls: "message-header" });
 
-            const nameEl = headerEl.createDiv({ cls: "cbx-message-name" });
+            const nameEl = headerEl.createDiv({ cls: "message-name" });
             nameEl.innerText = fullName;
 
             const autoNameColor = this.autoNameColorMap.get(entry.author);
@@ -49,9 +49,9 @@ export default class CbxBubbleRenderer extends CbxRendererBase {
             }
         }
 
-        const bodyEl = messageEl.createDiv({ cls: "cbx-message-body" });
+        const bodyEl = messageEl.createDiv({ cls: "message-body" });
 
-        const contentEl = bodyEl.createDiv({ cls: "cbx-message-content" });
+        const contentEl = bodyEl.createDiv({ cls: "message-content" });
         if (entry.renderMd) {
             contentEl.addClass("markdown-rendered");
             await this.renderObsidianMarkDown(entry.content, contentEl);
@@ -74,8 +74,8 @@ export default class CbxBubbleRenderer extends CbxRendererBase {
         }
 
         if (entry.subtext !== undefined && entry.subtext.trim().length !== 0) {
-            const footerEl = messageEl.createDiv({ cls: "cbx-message-footer" });
-            const subtextEl = footerEl.createDiv({ cls: "cbx-message-subtext" });
+            const footerEl = messageEl.createDiv({ cls: "message-footer" });
+            const subtextEl = footerEl.createDiv({ cls: "message-subtext" });
             subtextEl.innerText = entry.subtext;
         }
     }

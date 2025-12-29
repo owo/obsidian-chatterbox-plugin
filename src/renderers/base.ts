@@ -20,7 +20,7 @@ import {
 import { ChatterboxSettings } from "src/settings";
 
 
-// This should correspond to the number of `--auto-color-text-*` CSS variables (starting from 1
+// This should correspond to the number of `--auto-color-*` CSS variables (starting from 1
 // with no holes).
 const NUM_TEXT_AUTO_COLORS: number = 8;
 
@@ -113,7 +113,7 @@ export abstract class CbxRendererBase {
 
             if (authorConfig?.nameColor === undefined && !this.autoNameColorMap.has(author)) {
                 const colorNum = (currAuthorNum % NUM_TEXT_AUTO_COLORS) + 1;
-                const autoColor = `var(--auto-color-text-${String(colorNum)})`;
+                const autoColor = `var(--auto-color-${String(colorNum)})`;
 
                 this.autoNameColorMap.set(author, autoColor);
 
@@ -149,7 +149,7 @@ export abstract class CbxRendererBase {
         entry: CapsuleEntry,
         entryContainerEl: HTMLElement
     ): Promise<void> {
-        const capsuleEl = entryContainerEl.createDiv({ cls: "cbx-capsule" });
+        const capsuleEl = entryContainerEl.createDiv({ cls: "capsule" });
 
         capsuleEl.innerText = decodeHTMLEntities(entry.content);
     }
@@ -164,7 +164,7 @@ export abstract class CbxRendererBase {
         entry: CommentEntry,
         entryContainerEl: HTMLElement
     ): Promise<void> {
-        const commentEl = entryContainerEl.createDiv({ cls: "cbx-comment" });
+        const commentEl = entryContainerEl.createDiv({ cls: "comment" });
 
         commentEl.innerText = decodeHTMLEntities(entry.content);
     }
@@ -179,7 +179,7 @@ export abstract class CbxRendererBase {
         entry: DelimiterEntry,
         entryContainerEl: HTMLElement
     ): Promise<void> {
-        const delimEl = entryContainerEl.createDiv({ cls: "cbx-delim" });
+        const delimEl = entryContainerEl.createDiv({ cls: "delim" });
 
         delimEl.createDiv({ cls: "dot" });
         delimEl.createDiv({ cls: "dot" });
@@ -196,7 +196,7 @@ export abstract class CbxRendererBase {
         entry: MarkdownEntry,
         entryContainerEl: HTMLElement
     ): Promise<void> {
-        const mdEl = entryContainerEl.createDiv({ cls: "cbx-markdown" });
+        const mdEl = entryContainerEl.createDiv({ cls: "markdown" });
 
         await this.renderObsidianMarkDown(entry.content, mdEl);
     }
@@ -211,7 +211,7 @@ export abstract class CbxRendererBase {
         entry: MessageEntry,
         entryContainerEl: HTMLElement
     ): Promise<void> {
-        const messageEl = entryContainerEl.createDiv({ cls: "cbx-message" });
+        const messageEl = entryContainerEl.createDiv({ cls: "message" });
 
         const bgColor = this.config.authors?.[entry.author]?.bgColor ?? undefined;
         if (bgColor !== undefined) {
@@ -225,9 +225,9 @@ export abstract class CbxRendererBase {
         entryContainerEl.dataset.cbxAuthorFullName = fullName;
 
         if (entry.showName && fullName.trim().length !== 0) {
-            const headerEl = messageEl.createDiv({ cls: "cbx-message-header" });
+            const headerEl = messageEl.createDiv({ cls: "message-header" });
 
-            const nameEl = headerEl.createDiv({ cls: "cbx-message-name" });
+            const nameEl = headerEl.createDiv({ cls: "message-name" });
             nameEl.innerText = fullName;
 
             const autoNameColor = this.autoNameColorMap.get(entry.author);
@@ -239,21 +239,21 @@ export abstract class CbxRendererBase {
             }
         }
 
-        const bodyEl = messageEl.createDiv({ cls: "cbx-message-body" });
+        const bodyEl = messageEl.createDiv({ cls: "message-body" });
         switch (entry.dir) {
             case MessageDir.Left:
-                entryContainerEl.addClass("cbx-message-left");
+                entryContainerEl.addClass("message-left");
                 break;
             case MessageDir.Center:
-                entryContainerEl.addClass("cbx-message-center");
+                entryContainerEl.addClass("message-center");
                 break;
             case MessageDir.Right:
             default:
-                entryContainerEl.addClass("cbx-message-right");
+                entryContainerEl.addClass("message-right");
                 break;
         }
 
-        const contentEl = bodyEl.createDiv({ cls: "cbx-message-content" });
+        const contentEl = bodyEl.createDiv({ cls: "message-content" });
         if (entry.renderMd) {
             await this.renderObsidianMarkDown(entry.content, contentEl);
             if (this.settings.applyObsidianMarkdownFixes) {
@@ -270,8 +270,8 @@ export abstract class CbxRendererBase {
         }
 
         if (entry.subtext !== undefined && entry.subtext.trim().length !== 0) {
-            const footerEl = messageEl.createDiv({ cls: "cbx-message-footer" });
-            const subtextEl = footerEl.createDiv({ cls: "cbx-message-subtext" });
+            const footerEl = messageEl.createDiv({ cls: "message-footer" });
+            const subtextEl = footerEl.createDiv({ cls: "message-subtext" });
             subtextEl.innerText = entry.subtext;
         }
     }
@@ -289,7 +289,7 @@ export abstract class CbxRendererBase {
         // HACK: This should be removed if and when the Obsidian app fixes the issue
         //       reported at https://forum.obsidian.md/t/markdownrenderer-produces-inconsistent-output-for-embedded-notes/109207/5
         if (this.settings.applyObsidianMarkdownFixes) {
-            rootEl.addClass("cbx-fix-obsidian-embed");
+            rootEl.addClass("fix-obsidian-embed");
         }
 
         if (this.config.chatterboxId !== undefined) {
@@ -316,27 +316,27 @@ export abstract class CbxRendererBase {
         const cbxContentEl = rootEl.createDiv({ cls: "chatterbox-content" });
 
         for (const entry of entries) {
-            const entryContainerEl = cbxContentEl.createDiv({ cls: "cbx-entry-container" });
+            const entryContainerEl = cbxContentEl.createDiv({ cls: "entry-container" });
 
             switch (entry.type) {
                 case EntryType.Capsule:
-                    entryContainerEl.addClass("cbx-capsule-container")
+                    entryContainerEl.addClass("capsule-container")
                     await this.renderCapsuleEntry(entry, entryContainerEl);
                     break;
                 case EntryType.Comment:
-                    entryContainerEl.addClass("cbx-comment-container")
+                    entryContainerEl.addClass("comment-container")
                     await this.renderCommentEntry(entry, entryContainerEl);
                     break;
                 case EntryType.Delimiter:
-                    entryContainerEl.addClass("cbx-delim-container")
+                    entryContainerEl.addClass("delim-container")
                     await this.renderDelimiterEntry(entry, entryContainerEl);
                     break;
                 case EntryType.Markdown:
-                    entryContainerEl.addClass("cbx-markdown-container")
+                    entryContainerEl.addClass("markdown-container")
                     await this.renderMarkdownEntry(entry, entryContainerEl);
                     break;
                 case EntryType.Message:
-                    entryContainerEl.addClass("cbx-message-container")
+                    entryContainerEl.addClass("message-container")
                     await this.renderMessageEntry(entry, entryContainerEl);
                     break;
             }

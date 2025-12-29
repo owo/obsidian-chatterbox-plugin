@@ -7,13 +7,13 @@ import { CbxRendererBase } from "./base";
  * Renderer for the "simple" mode.
  */
 export default class CbxSimpleRenderer extends CbxRendererBase {
-    cssClass: string = "cbx-mode-simple";
+    cssClass: string = "mode-simple";
 
     protected override async renderMessageEntry(
         entry: MessageEntry,
         entryContainerEl: HTMLElement
     ): Promise<void> {
-        const messageEl = entryContainerEl.createDiv({ cls: "cbx-message" });
+        const messageEl = entryContainerEl.createDiv({ cls: "message" });
 
         const bgColor = this.config.authors?.[entry.author]?.bgColor ?? undefined;
         if (bgColor !== undefined) {
@@ -26,11 +26,11 @@ export default class CbxSimpleRenderer extends CbxRendererBase {
         entryContainerEl.dataset.cbxAuthorName = entry.author;
         entryContainerEl.dataset.cbxAuthorFullName = fullName;
 
-        const headerEl = messageEl.createDiv({ cls: "cbx-message-header" });
+        const headerEl = messageEl.createDiv({ cls: "message-header" });
 
         if (entry.showName && fullName.trim().length !== 0) {
 
-            const nameEl = headerEl.createDiv({ cls: "cbx-message-name" });
+            const nameEl = headerEl.createDiv({ cls: "message-name" });
             nameEl.innerText = fullName;
 
             const autoNameColor = this.autoNameColorMap.get(entry.author);
@@ -43,25 +43,25 @@ export default class CbxSimpleRenderer extends CbxRendererBase {
         }
 
         if (entry.subtext !== undefined && entry.subtext.trim().length !== 0) {
-            const subtextEl = headerEl.createDiv({ cls: "cbx-message-subtext" });
+            const subtextEl = headerEl.createDiv({ cls: "message-subtext" });
             subtextEl.innerText = entry.subtext;
         }
 
-        const bodyEl = messageEl.createDiv({ cls: "cbx-message-body" });
+        const bodyEl = messageEl.createDiv({ cls: "message-body" });
         switch (entry.dir) {
             case MessageDir.Left:
-                entryContainerEl.addClass("cbx-message-left");
+                entryContainerEl.addClass("message-left");
                 break;
             case MessageDir.Center:
-                entryContainerEl.addClass("cbx-message-center");
+                entryContainerEl.addClass("message-center");
                 break;
             case MessageDir.Right:
             default:
-                entryContainerEl.addClass("cbx-message-right");
+                entryContainerEl.addClass("message-right");
                 break;
         }
 
-        const contentEl = bodyEl.createDiv({ cls: "cbx-message-content" });
+        const contentEl = bodyEl.createDiv({ cls: "message-content" });
         if (entry.renderMd) {
             await this.renderObsidianMarkDown(entry.content, contentEl);
             if (this.settings.applyObsidianMarkdownFixes) {

@@ -83,10 +83,10 @@ export function fixObsidianRenderedMarkdown(el: HTMLElement) {
     }
 
     if (firstEl !== null) {
-        firstEl.classList.add("cbx-md-fix-first");
+        firstEl.classList.add("md-fix-first");
     }
 
     if (lastEl !== null) {
-        lastEl.classList.add("cbx-md-fix-last");
+        lastEl.classList.add("md-fix-last");
     }
 }

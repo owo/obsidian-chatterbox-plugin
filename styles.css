@@ -11,7 +11,7 @@
 /*                           Error Rendering Styles                           */
 /* -------------------------------------------------------------------------- */
 
-.chatterbox .cbx-error-container {
+.chatterbox .error-container {
     display: block;
     width: 100%;
     padding: var(--size-4-1) var(--size-4-2);
@@ -20,19 +20,19 @@
     word-break: normal;
 }
 
-.chatterbox .cbx-error-title {
+.chatterbox .error-title {
     display: block;
     font-size: max(var(--font-ui-small), 1em);
     font-weight: var(--font-medium);
     color: var(--text-error);
 }
 
-.chatterbox ul.cbx-error-items {
+.chatterbox ul.error-items {
     display: block;
     color: var(--text-error);
 }
 
-.chatterbox ul.cbx-error-items > li::marker {
+.chatterbox ul.error-items > li::marker {
     display: list-item;
     color: color-mix(in srgb, var(--text-error) 60%, transparent);
 }
@@ -44,14 +44,13 @@
 /* -------------------------------- Variables ------------------------------- */
 .chatterbox {
     /* General */
-    --cbx-margin-amount: 1.5em;
+    --margin-amount: 1.5em;
 
     /* Capsule */
     --capsule-bg-color: transparent;
     --capsule-border: 1px solid;
     --capsule-border-radius: 1.5em;
-    --capsule-container-margin: var(--cbx-margin-amount) 0
-        var(--cbx-margin-amount) 0;
+    --capsule-container-margin: var(--margin-amount) 0 var(--margin-amount) 0;
     --capsule-padding: 0.5em 1.5em 0.5em 1.5em;
     --capsule-max-width: 80%;
 
@@ -61,19 +60,18 @@
         var(--text-muted) 50%,
         var(--text-faint)
     );
-    --comment-container-margin: var(--cbx-margin-amount) 0
-        var(--cbx-margin-amount) 0;
+    --comment-container-margin: var(--margin-amount) 0 var(--margin-amount) 0;
     --comment-max-width: 80%;
 
     /* Delimiter */
-    --delim-margin-amount: calc(2 * var(--cbx-margin-amount));
+    --delim-margin-amount: calc(2 * var(--margin-amount));
     --delim-margin: var(--delim-margin-amount) 0 var(--delim-margin-amount) 0;
     --delim-dot-color: var(--text-muted);
     --delim-dot-gap: 4px;
     --delim-dot-size: 6px;
 
     /* Message */
-    --message-margin: var(--cbx-margin-amount) 0 var(--cbx-margin-amount) 0;
+    --message-margin: var(--margin-amount) 0 var(--margin-amount) 0;
     --message-subtext-text-color: var(--text-muted);
     --message-subtext-font-size: 0.85em;
     --message-max-width: 80%;
@@ -92,42 +90,42 @@
 /* HACK: This should be removed if and when the Obsidian app fixes the issue
          reported at https://forum.obsidian.md/t/markdownrenderer-produces-inconsistent-output-for-embedded-notes/109207/5
  */
-.chatterbox.cbx-fix-obsidian-embed .markdown-embed .markdown-preview-view {
+.chatterbox.fix-obsidian-embed .markdown-embed .markdown-preview-view {
     padding: var(--embed-padding);
 }
 
 /* Auto colors */
 .chatterbox {
-    --auto-color-text-1: #c66300;
-    --auto-color-text-2: #1a72d4;
-    --auto-color-text-3: #e91d36;
-    --auto-color-text-4: #755dbf;
-    --auto-color-text-5: #108e42;
-    --auto-color-text-6: #cc2073;
-    --auto-color-text-7: #958509;
-    --auto-color-text-8: #05918f;
+    --auto-color-1: #c66300;
+    --auto-color-2: #1a72d4;
+    --auto-color-3: #e91d36;
+    --auto-color-4: #755dbf;
+    --auto-color-5: #108e42;
+    --auto-color-6: #cc2073;
+    --auto-color-7: #958509;
+    --auto-color-8: #05918f;
 }
 
 .theme-dark .chatterbox {
-    --auto-color-text-1: #ffb463;
-    --auto-color-text-2: #7cc5ff;
-    --auto-color-text-3: #ff8484;
-    --auto-color-text-4: #b99aff;
-    --auto-color-text-5: #7ce49b;
-    --auto-color-text-6: #fa99cd;
-    --auto-color-text-7: #e6d164;
-    --auto-color-text-8: #64d2d0;
+    --auto-color-1: #ffb463;
+    --auto-color-2: #7cc5ff;
+    --auto-color-3: #ff8484;
+    --auto-color-4: #b99aff;
+    --auto-color-5: #7ce49b;
+    --auto-color-6: #fa99cd;
+    --auto-color-7: #e6d164;
+    --auto-color-8: #64d2d0;
 }
 
 /* --------------------------------- Capsule -------------------------------- */
 
-.chatterbox .cbx-capsule-container {
+.chatterbox .capsule-container {
     display: block;
     width: 100%;
     margin: var(--capsule-container-margin);
 }
 
-.chatterbox .cbx-capsule {
+.chatterbox .capsule {
     display: block;
     width: fit-content;
     max-width: var(--capsule-max-width);
@@ -141,13 +139,13 @@
 
 /* --------------------------------- Comment -------------------------------- */
 
-.chatterbox .cbx-comment-container {
+.chatterbox .comment-container {
     display: block;
     width: 100%;
     margin: var(--comment-container-margin);
 }
 
-.chatterbox .cbx-comment {
+.chatterbox .comment {
     display: block;
     width: fit-content;
     max-width: var(--comment-max-width);
@@ -159,14 +157,14 @@
 
 /* -------------------------------- Delimiter ------------------------------- */
 
-.chatterbox .cbx-delim-container {
+.chatterbox .delim-container {
     display: block;
     width: 100%;
     height: fit-content;
     margin: var(--delim-margin);
 }
 
-.chatterbox .cbx-delim {
+.chatterbox .delim {
     display: block;
     align-items: center;
     width: fit-content;
@@ -174,7 +172,7 @@
     margin-left: auto;
 }
 
-.chatterbox .cbx-delim > .dot {
+.chatterbox .delim > .dot {
     display: inline-block;
     width: var(--delim-dot-size);
     height: var(--delim-dot-size);
@@ -185,55 +183,55 @@
 
 /* ----------------------------- Markdown Block ----------------------------- */
 
-.chatterbox .cbx-markdown-container {
+.chatterbox .markdown-container {
     display: block;
     width: 100%;
 }
 
-.chatterbox .cbx-markdown {
+.chatterbox .markdown {
     display: block;
     width: 100%;
 }
 
 /* --------------------------------- Message -------------------------------- */
 
-.chatterbox .cbx-message-container {
+.chatterbox .message-container {
     display: block;
     width: 100%;
     margin: var(--message-margin);
 }
 
-.chatterbox .cbx-message {
+.chatterbox .message {
     display: block;
     width: 100%;
     max-width: var(--message-max-width);
 }
 
-.chatterbox .cbx-message-header,
-.chatterbox .cbx-message-body,
-.chatterbox .cbx-message-footer {
+.chatterbox .message-header,
+.chatterbox .message-body,
+.chatterbox .message-footer {
     display: block;
 }
 
-.chatterbox .cbx-message-name {
+.chatterbox .message-name {
     display: inline-block;
     font-weight: bold;
 }
 
-.chatterbox .cbx-message-content {
+.chatterbox .message-content {
     display: block;
     width: 100%;
 }
 
-.chatterbox .cbx-message-content .cbx-md-fix-first {
+.chatterbox .message-content .md-fix-first {
     margin-top: 0;
 }
 
-.chatterbox .cbx-message-content .cbx-md-fix-last {
+.chatterbox .message-content .md-fix-last {
     margin-bottom: 0;
 }
 
-.chatterbox .cbx-message-subtext {
+.chatterbox .message-subtext {
     display: inline-block;
     font-size: var(--message-subtext-font-size);
     color: var(--message-subtext-text-color);
@@ -243,7 +241,7 @@
 /*                           Simple Rendering Styles                          */
 /* -------------------------------------------------------------------------- */
 
-.chatterbox.cbx-mode-simple {
+.chatterbox.mode-simple {
     --message-bg-color: transparent;
     --message-indent: 1.5em;
     --message-subtext-margin: 0.7em;
@@ -251,16 +249,16 @@
 
 /* --------------------------------- Message -------------------------------- */
 
-.chatterbox.cbx-mode-simple .cbx-message {
+.chatterbox.mode-simple .message {
     max-width: 100%;
     background-color: var(--message-bg-color);
 }
 
-.chatterbox.cbx-mode-simple .cbx-message-body {
+.chatterbox.mode-simple .message-body {
     margin: 0 0 0 var(--message-indent);
 }
 
-.chatterbox.cbx-mode-simple .cbx-message-subtext {
+.chatterbox.mode-simple .message-subtext {
     margin-inline-start: var(--message-subtext-margin);
 }
 
@@ -270,7 +268,7 @@
 
 /* -------------------------------- Variables ------------------------------- */
 
-.chatterbox.cbx-mode-bubble {
+.chatterbox.mode-bubble {
     --bubble-bg-color: #ebebeb;
     --bubble-border-radius: var(--bubble-padding);
     --bubble-content-margin: 5px;
@@ -282,40 +280,40 @@
     --capsule-border: 0;
 }
 
-.theme-dark .chatterbox.cbx-mode-bubble {
+.theme-dark .chatterbox.mode-bubble {
     --capsule-bg-color: #2c2c2ccc;
     --bubble-bg-color: #363636cc;
 }
 
 /* --------------------------------- Capsule -------------------------------- */
 
-.chatterbox.cbx-mode-bubble .cbx-capsule {
+.chatterbox.mode-bubble .capsule {
     border: var(--capsule-border);
     background-color: var(--capsule-bg-color);
 }
 
 /* --------------------------------- Message -------------------------------- */
 
-.chatterbox.cbx-mode-bubble .cbx-message-container {
+.chatterbox.mode-bubble .message-container {
     display: flex;
-    margin: var(--cbx-margin-amount) 0 var(--cbx-margin-amount) 0;
+    margin: var(--margin-amount) 0 var(--margin-amount) 0;
 }
 
-.chatterbox.cbx-mode-bubble .cbx-message-right {
+.chatterbox.mode-bubble .message-right {
     justify-content: end;
     padding-right: var(--bubble-stem-width);
 }
 
-.chatterbox.cbx-mode-bubble .cbx-message-center {
+.chatterbox.mode-bubble .message-center {
     justify-content: center;
 }
 
-.chatterbox.cbx-mode-bubble .cbx-message-left {
+.chatterbox.mode-bubble .message-left {
     justify-content: start;
     padding-left: var(--bubble-stem-width);
 }
 
-.chatterbox.cbx-mode-bubble .cbx-message {
+.chatterbox.mode-bubble .message {
     position: relative;
     box-sizing: border-box;
     width: fit-content;
@@ -324,12 +322,12 @@
     border-radius: var(--bubble-border-radius);
 }
 
-.chatterbox.cbx-mode-bubble .cbx-message-right .cbx-message {
+.chatterbox.mode-bubble .message-right .message {
     border-top-right-radius: 0;
 }
 
 /* Right message bubble stem */
-.chatterbox.cbx-mode-bubble .cbx-message-right .cbx-message::after {
+.chatterbox.mode-bubble .message-right .message::after {
     content: "";
     position: absolute;
     top: 0;
@@ -344,12 +342,12 @@
     );
 }
 
-.chatterbox.cbx-mode-bubble .cbx-message-left .cbx-message {
+.chatterbox.mode-bubble .message-left .message {
     border-top-left-radius: 0;
 }
 
 /* Left message bubble stem */
-.chatterbox.cbx-mode-bubble .cbx-message-left .cbx-message::after {
+.chatterbox.mode-bubble .message-left .message::after {
     content: "";
     position: absolute;
     top: 0;
@@ -364,12 +362,12 @@
     );
 }
 
-.chatterbox.cbx-mode-bubble .cbx-message-header {
+.chatterbox.mode-bubble .message-header {
     margin-top: calc(-1 * var(--bubble-padding) / 2);
     margin-bottom: var(--bubble-content-margin);
 }
 
-.chatterbox.cbx-mode-bubble .cbx-message-footer {
+.chatterbox.mode-bubble .message-footer {
     display: flex;
     justify-content: end;
     margin-top: var(--bubble-content-margin);
