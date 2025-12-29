@@ -5,7 +5,7 @@ const WS = /\s/.source;
 const WS_SEQ_OPTIONAL = /\s*/.source;
 
 const CONTENT = /(?<content>.+)/.source;
-const BLOCK_CONTENT = /(?<content>(\s.*)|(\s*))/.source;
+const BLOCK_CONTENT = /(?<content>\s.*|\s*)/.source;
 
 const COMMENT_SINGLE = /#/.source;
 const COMMENT_FENCE = /(?<fence>###+)/.source;
@@ -13,7 +13,7 @@ const CAPSULE_MARKER = /(?<capsule>\(\))?/.source;
 
 const MESSAGE_PARAMS = /(?<messageParams>.*?)/.source;
 const MESSAGE_DIR_SINGLE = /(?<messageDir>[<>^])/.source;
-const MESSAGE_DIR_FENCE = /(?<fence>(<<<+)|(>>>+)|(\^\^\^+))/.source;
+const MESSAGE_DIR_FENCE = /(?<fence><<<+|>>>+|\^\^\^+)/.source;
 const MESSAGE_HIDE_NAME_MARKER = /(?<hideName>!)?/.source;
 const MESSAGE_RENDER_MD_MARKER = /(?<renderMd>@)?/.source;
 
