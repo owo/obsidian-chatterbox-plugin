@@ -1,6 +1,7 @@
 import { MessageDir, MessageEntry } from "src/entries";
 import { decodeHTMLEntities, fixObsidianRenderedMarkdown } from "src/utils";
 import { CbxRendererBase } from "./base";
+import { CssClasses, CssProps } from "src/css_data";
 
 
 /**
@@ -13,48 +14,48 @@ export default class CbxBubbleRenderer extends CbxRendererBase {
         entry: MessageEntry,
         entryContainerEl: HTMLElement
     ): Promise<void> {
-        const messageEl = entryContainerEl.createDiv({ cls: "message" });
+        const messageEl = entryContainerEl.createDiv({ cls: CssClasses.messageElement });
 
         switch (entry.dir) {
             case MessageDir.Left:
-                entryContainerEl.addClass("message-left");
+                entryContainerEl.addClass(CssClasses.messageDirLeft);
                 break;
             case MessageDir.Center:
-                entryContainerEl.addClass("message-center");
+                entryContainerEl.addClass(CssClasses.messageDirCenter);
                 break;
             case MessageDir.Right:
             default:
-                entryContainerEl.addClass("message-right");
+                entryContainerEl.addClass(CssClasses.messageDirRight);
                 break;
         }
 
-        const fullName = this.config.authors?.[entry.author]?.fullName ?? entry.author;
+        const authorFull = this.config.authors?.[entry.author]?.authorFull ?? entry.author;
 
         entryContainerEl.dataset.cbxAuthorOrder = this.authorOrderMap.get(entry.author);
-        entryContainerEl.dataset.cbxAuthorName = entry.author;
-        entryContainerEl.dataset.cbxAuthorFullName = fullName;
+        entryContainerEl.dataset.cbxAuthor = entry.author;
+        entryContainerEl.dataset.cbxAuthorFull = authorFull;
 
-        if (entry.showName && fullName.trim().length !== 0) {
-            const headerEl = messageEl.createDiv({ cls: "message-header" });
+        if (entry.showAuthor && authorFull.trim().length !== 0) {
+            const headerEl = messageEl.createDiv({ cls: CssClasses.messageHeader });
 
-            const nameEl = headerEl.createDiv({ cls: "message-name" });
-            nameEl.innerText = fullName;
+            const authorEl = headerEl.createDiv({ cls: CssClasses.messageAuthor });
+            authorEl.innerText = authorFull;
 
-            const autoNameColor = this.autoNameColorMap.get(entry.author);
-            const configNameColor = this.config.authors?.[entry.author]?.nameColor;
-            const nameColor = configNameColor ?? autoNameColor ?? undefined;
+            const autoAuthorColor = this.autoAuthorColorMap.get(entry.author);
+            const configAuthorColor = this.config.authors?.[entry.author]?.authorColor;
+            const authorColor = configAuthorColor ?? autoAuthorColor ?? undefined;
 
-            if (nameColor !== undefined) {
-                nameEl.style.color = nameColor;
+            if (authorColor !== undefined) {
+                authorEl.style.color = authorColor;
             }
         }
 
-        const bodyEl = messageEl.createDiv({ cls: "message-body" });
+        const bodyEl = messageEl.createDiv({ cls: CssClasses.messageBody });
 
-        const contentEl = bodyEl.createDiv({ cls: "message-content" });
+        const contentEl = bodyEl.createDiv({ cls: CssClasses.messageContent });
         if (entry.renderMd) {
-            contentEl.addClass("markdown-rendered");
             await this.renderObsidianMarkDown(entry.content, contentEl);
+
             if (this.settings.applyObsidianMarkdownFixes) {
                 fixObsidianRenderedMarkdown(contentEl);
             }
@@ -70,12 +71,12 @@ export default class CbxBubbleRenderer extends CbxRendererBase {
 
         const bgColor = this.config.authors?.[entry.author]?.bgColor ?? undefined;
         if (bgColor !== undefined) {
-            messageEl?.style.setProperty("--bubble-bg-color", bgColor);
+            messageEl?.style.setProperty(CssProps.messageBgColor, bgColor);
         }
 
         if (entry.subtext !== undefined && entry.subtext.trim().length !== 0) {
-            const footerEl = messageEl.createDiv({ cls: "message-footer" });
-            const subtextEl = footerEl.createDiv({ cls: "message-subtext" });
+            const footerEl = messageEl.createDiv({ cls: CssClasses.messageFooter });
+            const subtextEl = footerEl.createDiv({ cls: CssClasses.messageSubtext });
             subtextEl.innerText = entry.subtext;
         }
     }

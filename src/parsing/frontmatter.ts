@@ -67,6 +67,6 @@ export function parseCbxFrontmatter(source: string): CbxConfigResult {
         return {
             isError: true,
             errorList,
-        }
+        };
     }
 }

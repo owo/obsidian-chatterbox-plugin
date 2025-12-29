@@ -6,7 +6,7 @@ export const ChatterboxModes = ["bubble", "simple"] as const;
 export type CbxMode = typeof ChatterboxModes[number];
 
 // Config defaults
-export const DEFAULT_AUTO_COLOR_NAMES: boolean = true;
+export const DEFAULT_AUTO_COLOR_AUTHORS: boolean = true;
 export const DEFAULT_MODE: CbxMode = "bubble";
 
 // TODO: Figure out how to document all Zod objects.
@@ -16,8 +16,8 @@ export const DEFAULT_MODE: CbxMode = "bubble";
  */
 const AuthorInfoValidator = zod.object({
     bgColor: zod.catch(zod.optional(zod.string()), undefined),
-    fullName: zod.catch(zod.optional(zod.string()), undefined),
-    nameColor: zod.catch(zod.optional(zod.string()), undefined),
+    authorFull: zod.catch(zod.optional(zod.string()), undefined),
+    authorColor: zod.catch(zod.optional(zod.string()), undefined),
     textColor: zod.catch(zod.optional(zod.string()), undefined),
 });
 
@@ -25,7 +25,7 @@ const AuthorInfoValidator = zod.object({
  * Validates an entire Chatterbox config object.
  */
 export const CbxConfigValidator = zod.object({
-    autoColorNames: zod.catch(zod.optional(zod.boolean()), undefined),
+    autoColorAuthors: zod.catch(zod.optional(zod.boolean()), undefined),
     chatterboxId: zod.catch(zod.optional(zod.string()), undefined),
     maxCapsuleWidth: zod.catch(zod.optional(zod.string()), undefined),
     maxCommentWidth: zod.catch(zod.optional(zod.string()), undefined),

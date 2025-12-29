@@ -1,5 +1,6 @@
 import { App, PluginSettingTab, Setting } from "obsidian";
 
+import { CssClasses } from "./css_data";
 import ChatterboxPlugin from "./main";
 
 
@@ -12,7 +13,7 @@ maxMessageWidth: 60
 authors:
   john:
     fullName: John Smith
-    nameColor: "#BD640B"
+    authorColor: "#BD640B"
 `;
 
 const APPLY_OBSIDIAN_MD_FIX_DESC = `Attempt to fix visual discrepancies caused when rendering text
@@ -24,7 +25,7 @@ content as Markdown.`;
 export interface ChatterboxSettings {
     defaultFrontmatter: string;
     applyObsidianMarkdownFixes: boolean;
-}
+};
 
 /**
  * Default Chatterbox plugin settings.
@@ -32,7 +33,7 @@ export interface ChatterboxSettings {
 export const CBX_DEFAULT_SETTINGS: ChatterboxSettings = {
     defaultFrontmatter: "",
     applyObsidianMarkdownFixes: true,
-}
+};
 
 /**
  * Implements the Obsidian settings tab for the Chatterbox plugin.
@@ -60,9 +61,9 @@ export class ChatterboxSettingTab extends PluginSettingTab {
                         this.plugin.settings.defaultFrontmatter = value;
                         await this.plugin.saveSettings();
                     }).then(text => {
-                        text.inputEl.addClass("cbx-setting-default-frontmatter")
+                        text.inputEl.addClass(CssClasses.settingDefaultFrontMatter);
                     });
-            })
+            });
 
         new Setting(containerEl)
             .setName("Apply Obsidian Markdown fixes")

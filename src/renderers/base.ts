@@ -5,19 +5,20 @@ import {
     MarkdownRenderChild,
 } from "obsidian";
 
-import { type CbxConfig, DEFAULT_AUTO_COLOR_NAMES } from "src/config";
+import { type CbxConfig, DEFAULT_AUTO_COLOR_AUTHORS } from "src/config";
 import { decodeHTMLEntities, fixObsidianRenderedMarkdown } from "src/utils";
 import {
+    type CbxEntry,
     type CapsuleEntry,
     type CommentEntry,
     type DelimiterEntry,
     type MarkdownEntry,
-    type CbxEntry,
     type MessageEntry,
     EntryType,
     MessageDir,
 } from "src/entries";
 import { ChatterboxSettings } from "src/settings";
+import { CssClasses, CssProps } from "src/css_data";
 
 
 // This should correspond to the number of `--auto-color-*` CSS variables (starting from 1
@@ -29,11 +30,11 @@ const NUM_TEXT_AUTO_COLORS: number = 8;
  */
 export abstract class CbxRendererBase {
     protected readonly app: App;
-    protected readonly ctx: MarkdownPostProcessorContext
+    protected readonly ctx: MarkdownPostProcessorContext;
     protected readonly config: CbxConfig;
     protected readonly settings: ChatterboxSettings;
     protected readonly authorOrderMap: Map<string, string> = new Map();
-    protected readonly autoNameColorMap: Map<string, string> = new Map();
+    protected readonly autoAuthorColorMap: Map<string, string> = new Map();
 
     /**
      * The CSS style class that will be applied to the top-level Chatterbox HTML element.
@@ -90,7 +91,7 @@ export abstract class CbxRendererBase {
     }
 
     /**
-     * Assigns an auto color to each author that doesn't have a `nameColor` value assigned in the
+     * Assigns an auto color to each author that doesn't have a `color` value assigned in the
      * config.
      * Colors are assigned based on the order of appearance of authors in the entry list and
      * cycle around a predefined set of colors.
@@ -100,7 +101,7 @@ export abstract class CbxRendererBase {
      * 
      * @param entries The list of entries used to determine the order of authors.
      */
-    protected populateAutoNameColorMap(entries: CbxEntry[]) {
+    protected populateAutoAuthorColorMap(entries: CbxEntry[]) {
         let currAuthorNum = 0;
 
         for (const entry of entries) {
@@ -111,11 +112,11 @@ export abstract class CbxRendererBase {
             const author = entry.author;
             const authorConfig = this.config.authors?.[author];
 
-            if (authorConfig?.nameColor === undefined && !this.autoNameColorMap.has(author)) {
+            if (authorConfig?.authorColor === undefined && !this.autoAuthorColorMap.has(author)) {
                 const colorNum = (currAuthorNum % NUM_TEXT_AUTO_COLORS) + 1;
                 const autoColor = `var(--auto-color-${String(colorNum)})`;
 
-                this.autoNameColorMap.set(author, autoColor);
+                this.autoAuthorColorMap.set(author, autoColor);
 
                 currAuthorNum += 1;
             }
@@ -149,7 +150,7 @@ export abstract class CbxRendererBase {
         entry: CapsuleEntry,
         entryContainerEl: HTMLElement
     ): Promise<void> {
-        const capsuleEl = entryContainerEl.createDiv({ cls: "capsule" });
+        const capsuleEl = entryContainerEl.createDiv({ cls: CssClasses.capsuleElement });
 
         capsuleEl.innerText = decodeHTMLEntities(entry.content);
     }
@@ -164,7 +165,7 @@ export abstract class CbxRendererBase {
         entry: CommentEntry,
         entryContainerEl: HTMLElement
     ): Promise<void> {
-        const commentEl = entryContainerEl.createDiv({ cls: "comment" });
+        const commentEl = entryContainerEl.createDiv({ cls: CssClasses.commentElement });
 
         commentEl.innerText = decodeHTMLEntities(entry.content);
     }
@@ -179,11 +180,11 @@ export abstract class CbxRendererBase {
         entry: DelimiterEntry,
         entryContainerEl: HTMLElement
     ): Promise<void> {
-        const delimEl = entryContainerEl.createDiv({ cls: "delim" });
+        const delimiterEl = entryContainerEl.createDiv({ cls: CssClasses.delimiterElement });
 
-        delimEl.createDiv({ cls: "dot" });
-        delimEl.createDiv({ cls: "dot" });
-        delimEl.createDiv({ cls: "dot" });
+        delimiterEl.createDiv({ cls: CssClasses.delimiterDot });
+        delimiterEl.createDiv({ cls: CssClasses.delimiterDot });
+        delimiterEl.createDiv({ cls: CssClasses.delimiterDot });
     }
 
     /**
@@ -196,9 +197,9 @@ export abstract class CbxRendererBase {
         entry: MarkdownEntry,
         entryContainerEl: HTMLElement
     ): Promise<void> {
-        const mdEl = entryContainerEl.createDiv({ cls: "markdown" });
+        const markdownEl = entryContainerEl.createDiv({ cls: CssClasses.markdownElement });
 
-        await this.renderObsidianMarkDown(entry.content, mdEl);
+        await this.renderObsidianMarkDown(entry.content, markdownEl);
     }
 
     /**
@@ -211,49 +212,49 @@ export abstract class CbxRendererBase {
         entry: MessageEntry,
         entryContainerEl: HTMLElement
     ): Promise<void> {
-        const messageEl = entryContainerEl.createDiv({ cls: "message" });
+        const messageEl = entryContainerEl.createDiv({ cls: CssClasses.messageElement });
 
         const bgColor = this.config.authors?.[entry.author]?.bgColor ?? undefined;
         if (bgColor !== undefined) {
-            messageEl.style.setProperty("--message-bg-color", bgColor);
+            messageEl.style.setProperty(CssProps.messageBgColor, bgColor);
         }
 
-        const fullName = this.config.authors?.[entry.author]?.fullName ?? entry.author;
+        const authorFull = this.config.authors?.[entry.author]?.authorFull ?? entry.author;
 
         entryContainerEl.dataset.cbxAuthorOrder = this.authorOrderMap.get(entry.author);
-        entryContainerEl.dataset.cbxAuthorName = entry.author;
-        entryContainerEl.dataset.cbxAuthorFullName = fullName;
+        entryContainerEl.dataset.cbxAuthor = entry.author;
+        entryContainerEl.dataset.cbxAuthorFull = authorFull;
 
-        if (entry.showName && fullName.trim().length !== 0) {
-            const headerEl = messageEl.createDiv({ cls: "message-header" });
+        if (entry.showAuthor && authorFull.trim().length !== 0) {
+            const headerEl = messageEl.createDiv({ cls: CssClasses.messageHeader });
 
-            const nameEl = headerEl.createDiv({ cls: "message-name" });
-            nameEl.innerText = fullName;
+            const authorEl = headerEl.createDiv({ cls: CssClasses.messageAuthor });
+            authorEl.innerText = authorFull;
 
-            const autoNameColor = this.autoNameColorMap.get(entry.author);
-            const configNameColor = this.config.authors?.[entry.author]?.nameColor;
-            const nameColor = configNameColor ?? autoNameColor ?? undefined;
+            const autoAuthorColor = this.autoAuthorColorMap.get(entry.author);
+            const configAuthorColor = this.config.authors?.[entry.author]?.authorColor;
+            const authorColor = configAuthorColor ?? autoAuthorColor ?? undefined;
 
-            if (nameColor !== undefined) {
-                nameEl.style.color = nameColor;
+            if (authorColor !== undefined) {
+                authorEl.style.color = authorColor;
             }
         }
 
-        const bodyEl = messageEl.createDiv({ cls: "message-body" });
+        const bodyEl = messageEl.createDiv({ cls: CssClasses.messageBody });
         switch (entry.dir) {
             case MessageDir.Left:
-                entryContainerEl.addClass("message-left");
+                entryContainerEl.addClass(CssClasses.messageDirLeft);
                 break;
             case MessageDir.Center:
-                entryContainerEl.addClass("message-center");
+                entryContainerEl.addClass(CssClasses.messageDirCenter);
                 break;
             case MessageDir.Right:
             default:
-                entryContainerEl.addClass("message-right");
+                entryContainerEl.addClass(CssClasses.messageDirRight);
                 break;
         }
 
-        const contentEl = bodyEl.createDiv({ cls: "message-content" });
+        const contentEl = bodyEl.createDiv({ cls: CssClasses.messageContent });
         if (entry.renderMd) {
             await this.renderObsidianMarkDown(entry.content, contentEl);
             if (this.settings.applyObsidianMarkdownFixes) {
@@ -270,8 +271,8 @@ export abstract class CbxRendererBase {
         }
 
         if (entry.subtext !== undefined && entry.subtext.trim().length !== 0) {
-            const footerEl = messageEl.createDiv({ cls: "message-footer" });
-            const subtextEl = footerEl.createDiv({ cls: "message-subtext" });
+            const footerEl = messageEl.createDiv({ cls: CssClasses.messageFooter });
+            const subtextEl = footerEl.createDiv({ cls: CssClasses.messageSubtext });
             subtextEl.innerText = entry.subtext;
         }
     }
@@ -297,9 +298,9 @@ export abstract class CbxRendererBase {
         }
 
         const cbxProps = [
-            ["--capsule-max-width", this.config.maxCapsuleWidth],
-            ["--comment-max-width", this.config.maxCommentWidth],
-            ["--message-max-width", this.config.maxMessageWidth],
+            [CssProps.capsuleMaxWidth, this.config.maxCapsuleWidth],
+            [CssProps.commentMaxWidth, this.config.maxCommentWidth],
+            [CssProps.messageMaxWidth, this.config.maxMessageWidth],
         ]
             .filter(x => x[1] !== undefined) as Iterable<readonly [PropertyKey, unknown]>;
 
@@ -309,34 +310,34 @@ export abstract class CbxRendererBase {
 
         this.populateAuthorOrderMap(entries);
 
-        if (this.config.autoColorNames ?? DEFAULT_AUTO_COLOR_NAMES) {
-            this.populateAutoNameColorMap(entries);
+        if (this.config.autoColorAuthors ?? DEFAULT_AUTO_COLOR_AUTHORS) {
+            this.populateAutoAuthorColorMap(entries);
         }
 
-        const cbxContentEl = rootEl.createDiv({ cls: "chatterbox-content" });
+        const cbxContentEl = rootEl.createDiv({ cls: CssClasses.chatterboxContent });
 
         for (const entry of entries) {
-            const entryContainerEl = cbxContentEl.createDiv({ cls: "entry-container" });
+            const entryContainerEl = cbxContentEl.createDiv({ cls: CssClasses.entryContainer });
 
             switch (entry.type) {
                 case EntryType.Capsule:
-                    entryContainerEl.addClass("capsule-container")
+                    entryContainerEl.addClass(CssClasses.capsuleContainer);
                     await this.renderCapsuleEntry(entry, entryContainerEl);
                     break;
                 case EntryType.Comment:
-                    entryContainerEl.addClass("comment-container")
+                    entryContainerEl.addClass(CssClasses.commentContainer);
                     await this.renderCommentEntry(entry, entryContainerEl);
                     break;
                 case EntryType.Delimiter:
-                    entryContainerEl.addClass("delim-container")
+                    entryContainerEl.addClass(CssClasses.delimiterContainer);
                     await this.renderDelimiterEntry(entry, entryContainerEl);
                     break;
                 case EntryType.Markdown:
-                    entryContainerEl.addClass("markdown-container")
+                    entryContainerEl.addClass(CssClasses.markdownContainer);
                     await this.renderMarkdownEntry(entry, entryContainerEl);
                     break;
                 case EntryType.Message:
-                    entryContainerEl.addClass("message-container")
+                    entryContainerEl.addClass(CssClasses.messageContainer);
                     await this.renderMessageEntry(entry, entryContainerEl);
                     break;
             }

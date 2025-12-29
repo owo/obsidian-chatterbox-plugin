@@ -112,7 +112,7 @@ class CbxParser {
     currMessageParams: MessageParams | undefined = undefined;
     currRenderMd: boolean = false;
     currMessageDir: MessageDir = MessageDir.Right;
-    currShowName: boolean | undefined = undefined;
+    currShowAuthor: boolean | undefined = undefined;
 
     /**
      * Preprocesses a given Chatterbox source string, storing the split lines in an internal
@@ -200,7 +200,7 @@ class CbxParser {
                     author: this.currMessageParams?.author ?? "",
                     subtext: this.currMessageParams?.subtext,
                     dir: this.currMessageDir,
-                    showName: this.currShowName,
+                    showAuthor: this.currShowAuthor,
                     renderMd: this.currRenderMd,
                 });
                 break;
@@ -224,14 +224,14 @@ class CbxParser {
                 const entry: CapsuleEntry = {
                     type: EntryType.Capsule,
                     content,
-                }
+                };
                 this.entries.push(entry);
             }
             else {
                 const entry: CommentEntry = {
                     type: EntryType.Comment,
                     content,
-                }
+                };
                 this.entries.push(entry);
             }
 
@@ -333,7 +333,7 @@ class CbxParser {
                 author: messageParams.author,
                 subtext: messageParams.subtext,
                 content: match.groups.content,
-                showName: match.groups.hideName !== "!",
+                showAuthor: match.groups.hideAuthor !== "!",
                 renderMd: this.currRenderMd = match.groups.renderMd === "@",
             });
 
@@ -363,7 +363,7 @@ class CbxParser {
             this.currMessageParams = messageParams;
             this.currMessageDir = DIR_MAP[match.groups.fence[0]] ?? MessageDir.Left;
             this.currFence = match.groups.fence;
-            this.currShowName = match.groups.hideName !== "!";
+            this.currShowAuthor = match.groups.hideAuthor !== "!";
             this.currRenderMd = match.groups.renderMd === "@";
 
             const content = match.groups.content.trimStart();

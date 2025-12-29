@@ -64,11 +64,11 @@
     --comment-max-width: 80%;
 
     /* Delimiter */
-    --delim-margin-amount: calc(2 * var(--margin-amount));
-    --delim-margin: var(--delim-margin-amount) 0 var(--delim-margin-amount) 0;
-    --delim-dot-color: var(--text-muted);
-    --delim-dot-gap: 4px;
-    --delim-dot-size: 6px;
+    --delimiter-margin-amount: calc(2 * var(--margin-amount));
+    --delimiter-margin: var(--delimiter-margin-amount) 0 var(--delimiter-margin-amount) 0;
+    --delimiter-dot-color: var(--text-muted);
+    --delimiter-dot-gap: 4px;
+    --delimiter-dot-size: 6px;
 
     /* Message */
     --message-margin: var(--margin-amount) 0 var(--margin-amount) 0;
@@ -157,14 +157,14 @@
 
 /* -------------------------------- Delimiter ------------------------------- */
 
-.chatterbox .delim-container {
+.chatterbox .delimiter-container {
     display: block;
     width: 100%;
     height: fit-content;
-    margin: var(--delim-margin);
+    margin: var(--delimiter-margin);
 }
 
-.chatterbox .delim {
+.chatterbox .delimiter {
     display: block;
     align-items: center;
     width: fit-content;
@@ -172,12 +172,12 @@
     margin-left: auto;
 }
 
-.chatterbox .delim > .dot {
+.chatterbox .delimiter > .dot {
     display: inline-block;
-    width: var(--delim-dot-size);
-    height: var(--delim-dot-size);
-    margin: 0px var(--delim-dot-gap);
-    background-color: var(--delim-dot-color);
+    width: var(--delimiter-dot-size);
+    height: var(--delimiter-dot-size);
+    margin: 0px var(--delimiter-dot-gap);
+    background-color: var(--delimiter-dot-color);
     border-radius: 60%;
 }
 
@@ -213,7 +213,7 @@
     display: block;
 }
 
-.chatterbox .message-name {
+.chatterbox .message-author {
     display: inline-block;
     font-weight: bold;
 }
@@ -269,20 +269,21 @@
 /* -------------------------------- Variables ------------------------------- */
 
 .chatterbox.mode-bubble {
-    --bubble-bg-color: #ebebeb;
+    --capsule-bg-color: #eaeaeacc;
+    --capsule-border: 0;
+
+    --message-bg-color: #ebebeb;
+
     --bubble-border-radius: var(--bubble-padding);
     --bubble-content-margin: 5px;
     --bubble-padding: 15px;
     --bubble-stem-height: 30px;
     --bubble-stem-width: 10px;
-
-    --capsule-bg-color: #eaeaeacc;
-    --capsule-border: 0;
 }
 
 .theme-dark .chatterbox.mode-bubble {
     --capsule-bg-color: #2c2c2ccc;
-    --bubble-bg-color: #363636cc;
+    --message-bg-color: #363636cc;
 }
 
 /* --------------------------------- Capsule -------------------------------- */
@@ -318,7 +319,7 @@
     box-sizing: border-box;
     width: fit-content;
     padding: var(--bubble-padding);
-    background-color: var(--bubble-bg-color);
+    background-color: var(--message-bg-color);
     border-radius: var(--bubble-border-radius);
 }
 
@@ -338,7 +339,7 @@
         ellipse var(--bubble-stem-width) var(--bubble-stem-height) at bottom
             right,
         transparent 99%,
-        var(--bubble-bg-color) 102%
+        var(--message-bg-color) 102%
     );
 }
 
@@ -358,7 +359,7 @@
         ellipse var(--bubble-stem-width) var(--bubble-stem-height) at bottom
             left,
         transparent 99%,
-        var(--bubble-bg-color) 102%
+        var(--message-bg-color) 102%
     );
 }
 

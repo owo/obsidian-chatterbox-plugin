@@ -58,7 +58,7 @@ export interface MessageEntry {
     content: string;
     dir: MessageDir;
     subtext?: string;
-    showName?: boolean;
+    showAuthor?: boolean;
     renderMd: boolean;
 }
 
