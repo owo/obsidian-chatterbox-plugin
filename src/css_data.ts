@@ -8,8 +8,9 @@ export const CssClasses = {
     chatterboxContent: "chatterbox-content",
 
     // Modes
-    modeSimple: "mode-simple",
+    modeBase: "mode-base",
     modeBubble: "mode-bubble",
+    modeSimple: "mode-simple",
 
     // All entries
     entryContainer: "entry-container",

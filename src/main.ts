@@ -4,8 +4,9 @@ import { CBX_DEFAULT_SETTINGS, ChatterboxSettings, ChatterboxSettingTab } from "
 import { CbxConfigValidator } from "./config";
 import { parseChatterbox } from "./parsing/parser";
 import renderCbxError from "./renderers/error";
-import CbxBubbleRenderer from "./renderers/bubble";
-import CbxSimpleRenderer from "./renderers/simple";
+import BaseRenderer from "./renderers/base";
+import BubbleRenderer from "./renderers/bubble";
+import SimpleRenderer from "./renderers/simple";
 import { parseCbxFrontmatter } from "./parsing/frontmatter";
 
 
@@ -37,18 +38,24 @@ async function parseAndRenderChatterbox(
         ...parseRes.data.config,
     };
 
+    // eslint-disable-next-line no-console
+    console.log("CONFIG: ", combinedConfig);
+
     let renderer = null;
     switch (combinedConfig.mode) {
+        case "base":
+            renderer = new BaseRenderer(app, ctx, combinedConfig, settings);
+            break;
         case "simple":
-            renderer = new CbxSimpleRenderer(app, ctx, combinedConfig, settings);
-            await renderer.render(parseRes.data.entries, rootEl);
+            renderer = new SimpleRenderer(app, ctx, combinedConfig, settings);
             break;
         case "bubble":
         default:
-            renderer = new CbxBubbleRenderer(app, ctx, combinedConfig, settings);
-            await renderer.render(parseRes.data.entries, rootEl);
+            renderer = new BubbleRenderer(app, ctx, combinedConfig, settings);
             break;
     }
+
+    await renderer.render(parseRes.data.entries, rootEl);
 }
 
 /**

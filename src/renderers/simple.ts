@@ -1,14 +1,14 @@
 import { MessageDir, MessageEntry } from "src/entries";
 import { decodeHTMLEntities, fixObsidianRenderedMarkdown } from "src/utils";
 import { CssClasses, CssProps } from "src/css_data";
-import { CbxRendererBase } from "./base";
+import { ChatterboxRenderer } from "./renderer";
 
 
 /**
  * Renderer for the "simple" mode.
  */
-export default class CbxSimpleRenderer extends CbxRendererBase {
-    cssClass: string = "mode-simple";
+export default class SimpleRenderer extends ChatterboxRenderer {
+    override readonly cssClass: string = CssClasses.modeSimple;
 
     protected override async renderMessageEntry(
         entry: MessageEntry,

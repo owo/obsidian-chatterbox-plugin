@@ -1,14 +1,14 @@
 import { MessageDir, MessageEntry } from "src/entries";
 import { decodeHTMLEntities, fixObsidianRenderedMarkdown } from "src/utils";
-import { CbxRendererBase } from "./base";
+import { ChatterboxRenderer } from "./renderer";
 import { CssClasses, CssProps } from "src/css_data";
 
 
 /**
  * Renderer for the "bubble" mode.
  */
-export default class CbxBubbleRenderer extends CbxRendererBase {
-    cssClass: string = "mode-bubble";
+export default class BubbleRenderer extends ChatterboxRenderer {
+    override readonly cssClass: string = CssClasses.modeBubble;
 
     protected override async renderMessageEntry(
         entry: MessageEntry,

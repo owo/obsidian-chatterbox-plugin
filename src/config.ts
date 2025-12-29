@@ -2,7 +2,7 @@ import * as zod from "zod/v4-mini";
 
 zod.config(zod.locales.en());
 
-export const ChatterboxModes = ["bubble", "simple"] as const;
+export const ChatterboxModes = ["base", "bubble", "simple"] as const;
 export type CbxMode = typeof ChatterboxModes[number];
 
 // Config defaults
