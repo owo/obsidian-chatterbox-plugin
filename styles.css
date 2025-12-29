@@ -73,7 +73,7 @@
     /* Message */
     --message-margin: var(--margin-amount) 0 var(--margin-amount) 0;
     --message-subtext-text-color: var(--text-muted);
-    --message-subtext-font-size: 0.85em;
+    --message-subtext-font-size: 0.90em;
     --message-max-width: 80%;
 }
 
