@@ -20,6 +20,20 @@ export default defineConfig(
                 extraFileExtensions: ['.json']
             },
         },
+        rules: {
+            "semi": ["error", "always"],
+            'max-len': [
+                'warn',
+                {
+                    code: 100,
+                    comments: 100,
+                    ignoreUrls: true,
+                    ignoreStrings: true,
+                    ignoreTemplateLiterals: true,
+                    ignoreRegExpLiterals: true,
+                }
+            ]
+        },
     },
     ...(obsidianmd.configs?.recommended as Config[]),
     globalIgnores([
