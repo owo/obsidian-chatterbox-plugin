@@ -205,6 +205,8 @@
     display: block;
     width: 100%;
     max-width: var(--message-max-width);
+    padding: 0;
+    border-radius: 0;
 }
 
 .chatterbox .message-header,
@@ -245,6 +247,7 @@
     --message-bg-color: transparent;
     --message-indent: 1.5em;
     --message-subtext-margin: 0.7em;
+    --message-padding: 10px 15px 10px 15px;
 }
 
 /* --------------------------------- Message -------------------------------- */
@@ -252,6 +255,7 @@
 .chatterbox.mode-simple .message {
     max-width: 100%;
     background-color: var(--message-bg-color);
+    padding: var(--message-padding);
 }
 
 .chatterbox.mode-simple .message-body {
