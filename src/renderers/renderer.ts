@@ -300,6 +300,7 @@ export abstract class ChatterboxRenderer {
         const cbxProps = [
             [CssProps.capsuleMaxWidth, this.config.maxCapsuleWidth],
             [CssProps.commentMaxWidth, this.config.maxCommentWidth],
+            [CssProps.messageMinWidth, this.config.minMessageWidth],
             [CssProps.messageMaxWidth, this.config.maxMessageWidth],
         ]
             .filter(x => x[1] !== undefined) as Iterable<readonly [PropertyKey, unknown]>;

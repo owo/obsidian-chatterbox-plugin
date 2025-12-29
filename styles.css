@@ -74,6 +74,7 @@
     --message-margin: var(--margin-amount) 0 var(--margin-amount) 0;
     --message-subtext-text-color: var(--text-muted);
     --message-subtext-font-size: 0.90em;
+    --message-min-width: 3em;
     --message-max-width: 80%;
 }
 
@@ -204,6 +205,7 @@
 .chatterbox .message {
     display: block;
     width: 100%;
+    min-width: var(--message-min-width);
     max-width: var(--message-max-width);
     padding: 0;
     border-radius: 0;

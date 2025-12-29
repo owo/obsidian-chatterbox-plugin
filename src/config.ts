@@ -29,6 +29,7 @@ export const CbxConfigValidator = zod.object({
     chatterboxId: zod.catch(zod.optional(zod.string()), undefined),
     maxCapsuleWidth: zod.catch(zod.optional(zod.string()), undefined),
     maxCommentWidth: zod.catch(zod.optional(zod.string()), undefined),
+    minMessageWidth: zod.catch(zod.optional(zod.string()), undefined),
     maxMessageWidth: zod.catch(zod.optional(zod.string()), undefined),
     mode: zod.catch(zod.optional(zod.enum(ChatterboxModes)), undefined),
     authors: zod.catch(

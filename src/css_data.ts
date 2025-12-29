@@ -73,6 +73,7 @@ export const CssProps = {
     commentMaxWidth: "--comment-max-width",
 
     // Message entries
+    messageMinWidth: "--message-min-width",
     messageMaxWidth: "--message-max-width",
     messageBgColor: "--message-bg-color",
 
