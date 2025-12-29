@@ -17,7 +17,7 @@
     padding: var(--size-4-1) var(--size-4-2);
     background-color: rgba(var(--callout-error), 0.1);
     border-radius: var(--callout-radius);
-    word-break: normal;
+    word-break: break-word;
 }
 
 .chatterbox .error-title {
@@ -116,6 +116,10 @@
     --auto-color-6: #fa99cd;
     --auto-color-7: #e6d164;
     --auto-color-8: #64d2d0;
+}
+
+.chatterbox .entry-container {
+    word-break: break-word;
 }
 
 /* --------------------------------- Capsule -------------------------------- */
