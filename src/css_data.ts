@@ -75,6 +75,9 @@ export const CssProps = {
     // Message entries
     messageMinWidth: "--message-min-width",
     messageMaxWidth: "--message-max-width",
-    messageBgColor: "--message-bg-color",
+    messageAuthorColor: "--message-author-color",
+    messageContentColor: "--message-content-color",
+    messageSubtextColor: "--message-subtext-color",
+    messageBackgroundColor: "--message-bg-color",
 
 } as const;

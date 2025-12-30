@@ -65,15 +65,21 @@
 
     /* Delimiter */
     --delimiter-margin-amount: calc(2 * var(--margin-amount));
-    --delimiter-margin: var(--delimiter-margin-amount) 0 var(--delimiter-margin-amount) 0;
+    --delimiter-margin: var(--delimiter-margin-amount) 0
+        var(--delimiter-margin-amount) 0;
     --delimiter-dot-color: var(--text-muted);
     --delimiter-dot-gap: 4px;
     --delimiter-dot-size: 6px;
 
     /* Message */
     --message-margin: var(--margin-amount) 0 var(--margin-amount) 0;
-    --message-subtext-text-color: var(--text-muted);
-    --message-subtext-font-size: 0.90em;
+    --message-bg-color: transparent;
+    --message-author-color: var(--text-normal);
+    --message-author-font-size: 1em;
+    --message-content-font-size: 1em;
+    --message-content-color: var(--text-normal);
+    --message-subtext-font-size: 0.9em;
+    --message-subtext-color: var(--text-muted);
     --message-min-width: 3em;
     --message-max-width: 80%;
 }
@@ -223,12 +229,16 @@
 
 .chatterbox .message-author {
     display: inline-block;
+    font-size: var(--message-author-font-size);
     font-weight: bold;
+    color: var(--message-author-color);
 }
 
 .chatterbox .message-content {
     display: block;
     width: 100%;
+    font-size: var(--message-content-font-size);
+    color: var(--message-content-color);
 }
 
 .chatterbox .message-content .md-fix-first {
@@ -242,7 +252,7 @@
 .chatterbox .message-subtext {
     display: inline-block;
     font-size: var(--message-subtext-font-size);
-    color: var(--message-subtext-text-color);
+    color: var(--message-subtext-color);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -250,7 +260,6 @@
 /* -------------------------------------------------------------------------- */
 
 .chatterbox.mode-simple {
-    --message-bg-color: transparent;
     --message-indent: 1em;
     --message-author-margin: 0.7em;
     --message-padding: 0;
@@ -260,7 +269,6 @@
 
 .chatterbox.mode-simple .message {
     max-width: 100%;
-    background-color: var(--message-bg-color);
     padding: var(--message-padding);
 }
 

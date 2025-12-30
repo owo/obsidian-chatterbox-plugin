@@ -216,7 +216,7 @@ export abstract class ChatterboxRenderer {
 
         const bgColor = this.config.authors?.[entry.author]?.bgColor ?? undefined;
         if (bgColor !== undefined) {
-            messageEl.style.setProperty(CssProps.messageBgColor, bgColor);
+            messageEl.style.setProperty(CssProps.messageBackgroundColor, bgColor);
         }
 
         const authorFull = this.config.authors?.[entry.author]?.authorFull ?? entry.author;
@@ -236,7 +236,7 @@ export abstract class ChatterboxRenderer {
             const authorColor = configAuthorColor ?? autoAuthorColor ?? undefined;
 
             if (authorColor !== undefined) {
-                authorEl.style.color = authorColor;
+                messageEl.style.setProperty(CssProps.messageAuthorColor, authorColor);
             }
         }
 
@@ -265,9 +265,9 @@ export abstract class ChatterboxRenderer {
             contentEl.innerText = decodeHTMLEntities(entry.content);
         }
 
-        const textColor = this.config.authors?.[entry.author]?.textColor ?? undefined;
-        if (textColor !== undefined) {
-            bodyEl.style.color = textColor;
+        const contentColor = this.config.authors?.[entry.author]?.textColor ?? undefined;
+        if (contentColor !== undefined) {
+            messageEl.style.setProperty(CssProps.messageContentColor, contentColor);
         }
 
         if (entry.subtext !== undefined && entry.subtext.trim().length !== 0) {
@@ -277,7 +277,7 @@ export abstract class ChatterboxRenderer {
 
             const subtextColor = this.config.authors?.[entry.author]?.subtextColor;
             if (subtextColor !== undefined) {
-                subtextEl.style.color = subtextColor;
+                messageEl.style.setProperty(CssProps.messageSubtextColor, subtextColor);
             }
         }
     }
