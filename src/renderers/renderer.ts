@@ -274,6 +274,11 @@ export abstract class ChatterboxRenderer {
             const footerEl = messageEl.createDiv({ cls: CssClasses.messageFooter });
             const subtextEl = footerEl.createDiv({ cls: CssClasses.messageSubtext });
             subtextEl.innerText = entry.subtext;
+
+            const subtextColor = this.config.authors?.[entry.author]?.subtextColor;
+            if (subtextColor !== undefined) {
+                subtextEl.style.color = subtextColor;
+            }
         }
     }
 

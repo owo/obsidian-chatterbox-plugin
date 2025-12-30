@@ -19,6 +19,7 @@ const AuthorInfoValidator = zod.object({
     authorFull: zod.catch(zod.optional(zod.string()), undefined),
     authorColor: zod.catch(zod.optional(zod.string()), undefined),
     textColor: zod.catch(zod.optional(zod.string()), undefined),
+    subtextColor: zod.catch(zod.optional(zod.string()), undefined),
 });
 
 /**

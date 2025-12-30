@@ -38,9 +38,6 @@ async function parseAndRenderChatterbox(
         ...parseRes.data.config,
     };
 
-    // eslint-disable-next-line no-console
-    console.log("CONFIG: ", combinedConfig);
-
     let renderer = null;
     switch (combinedConfig.mode) {
         case "base":

@@ -46,6 +46,11 @@ export default class SimpleRenderer extends ChatterboxRenderer {
         if (entry.subtext !== undefined && entry.subtext.trim().length !== 0) {
             const subtextEl = headerEl.createDiv({ cls: CssClasses.messageSubtext });
             subtextEl.innerText = entry.subtext;
+
+            const subtextColor = this.config.authors?.[entry.author]?.subtextColor;
+            if (subtextColor !== undefined) {
+                subtextEl.style.color = subtextColor;
+            }
         }
 
         const bodyEl = messageEl.createDiv({ cls: CssClasses.messageBody });
