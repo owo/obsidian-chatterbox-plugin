@@ -6,5 +6,5 @@ import { ChatterboxRenderer } from "./renderer";
  * Renderer for the "base" mode.
  */
 export default class BaseRenderer extends ChatterboxRenderer {
-    override readonly cssClass = CssClasses.modeBase;
+    protected override readonly cssClasses = [ CssClasses.modeBase ] as const;
 }

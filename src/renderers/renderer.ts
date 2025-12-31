@@ -26,6 +26,16 @@ import { CssClasses, CssProps } from "src/css_data";
 const NUM_TEXT_AUTO_COLORS: number = 8;
 
 /**
+ * Contains references to the individual HTML elements for each component of a message.
+ * Returned by {@link ChatterboxRenderer.generateMessageLayout}.
+ */
+export interface MessageLayout {
+    authorEl?: HTMLElement,
+    contentEl?: HTMLElement,
+    subtextEl?: HTMLElement
+}
+
+/**
  * Base class to be extended by all Chatterbox renderer classes.
  */
 export abstract class ChatterboxRenderer {
@@ -40,7 +50,43 @@ export abstract class ChatterboxRenderer {
      * The CSS style class that will be applied to the top-level Chatterbox HTML element.
      * Must be implemented by all extending classes.
      */
-    protected abstract readonly cssClass: string;
+    protected abstract readonly cssClasses: readonly string[];
+
+    /**
+     * Generates a layout for a message entry to be rendered, returning a layout object
+     * containing references to the individual HTML elements for each component of a message.
+     * 
+     * @param messageEl The message element in which the layout is to be generated.
+     * @param hasAuthor Indicates whether the message author is to be rendered.
+     * @param hasSubtext Indicates whether the message subtext is to be rendered.
+     * @returns The layout of the message.
+     */
+    protected generateMessageLayout(
+        messageEl: HTMLElement,
+        hasAuthor: boolean,
+        hasSubtext: boolean,
+    ): MessageLayout {
+        const layout: MessageLayout = {};
+
+        if (hasAuthor) {
+            const headerEl = messageEl.createDiv(CssClasses.messageHeader);
+            const authorEl = headerEl.createDiv(CssClasses.messageAuthor);
+            layout.authorEl = authorEl;
+        }
+
+        const bodyEl = messageEl.createDiv(CssClasses.messageBody);
+        const contentEl = bodyEl.createDiv(CssClasses.messageContent);
+        layout.contentEl = contentEl;
+
+
+        if (hasSubtext) {
+            const footerEl = messageEl.createDiv(CssClasses.messageFooter);
+            const subtextEl = footerEl.createDiv(CssClasses.messageSubtext);
+            layout.subtextEl = subtextEl;
+        }
+
+        return layout;
+    }
 
     /**
      * Renderer constructor.
@@ -212,35 +258,38 @@ export abstract class ChatterboxRenderer {
         entry: MessageEntry,
         entryContainerEl: HTMLElement
     ): Promise<void> {
-        const messageEl = entryContainerEl.createDiv({ cls: CssClasses.messageElement });
+        const authorConfig = this.config.authors?.[entry.author];
+        const authorFull = (authorConfig?.authorFull ?? entry.author).trim();
+        const subtext = entry.subtext?.trim() ?? "";
 
-        const bgColor = this.config.authors?.[entry.author]?.bgColor ?? undefined;
+        // Grab author-specific config
+        const bgColor = authorConfig?.bgColor ?? undefined;
+        const contentColor = authorConfig?.textColor ?? undefined;
+        const subtextColor = authorConfig?.subtextColor;
+        const autoAuthorColor = this.autoAuthorColorMap.get(entry.author);
+        const configAuthorColor = this.config.authors?.[entry.author]?.authorColor;
+        const authorColor = configAuthorColor ?? autoAuthorColor ?? undefined;
+
+        // Set author-specific properties
+        if (authorColor !== undefined) {
+            entryContainerEl.style.setProperty(CssProps.messageAuthorColor, authorColor);
+        }
         if (bgColor !== undefined) {
-            messageEl.style.setProperty(CssProps.messageBackgroundColor, bgColor);
+            entryContainerEl.style.setProperty(CssProps.messageBackgroundColor, bgColor);
+        }
+        if (contentColor !== undefined) {
+            entryContainerEl.style.setProperty(CssProps.messageContentColor, contentColor);
+        }
+        if (subtextColor !== undefined) {
+            entryContainerEl.style.setProperty(CssProps.messageSubtextColor, subtextColor);
         }
 
-        const authorFull = this.config.authors?.[entry.author]?.authorFull ?? entry.author;
-
+        // Set message data attributes
         entryContainerEl.dataset.cbxAuthorOrder = this.authorOrderMap.get(entry.author);
         entryContainerEl.dataset.cbxAuthor = entry.author;
         entryContainerEl.dataset.cbxAuthorFull = authorFull;
 
-        if (entry.showAuthor && authorFull.trim().length !== 0) {
-            const headerEl = messageEl.createDiv({ cls: CssClasses.messageHeader });
-
-            const authorEl = headerEl.createDiv({ cls: CssClasses.messageAuthor });
-            authorEl.innerText = authorFull;
-
-            const autoAuthorColor = this.autoAuthorColorMap.get(entry.author);
-            const configAuthorColor = this.config.authors?.[entry.author]?.authorColor;
-            const authorColor = configAuthorColor ?? autoAuthorColor ?? undefined;
-
-            if (authorColor !== undefined) {
-                messageEl.style.setProperty(CssProps.messageAuthorColor, authorColor);
-            }
-        }
-
-        const bodyEl = messageEl.createDiv({ cls: CssClasses.messageBody });
+        // Add message direction class
         switch (entry.dir) {
             case MessageDir.Left:
                 entryContainerEl.addClass(CssClasses.messageDirLeft);
@@ -254,30 +303,28 @@ export abstract class ChatterboxRenderer {
                 break;
         }
 
-        const contentEl = bodyEl.createDiv({ cls: CssClasses.messageContent });
-        if (entry.renderMd) {
-            await this.renderObsidianMarkDown(entry.content, contentEl);
-            if (this.settings.applyObsidianMarkdownFixes) {
-                fixObsidianRenderedMarkdown(contentEl);
+        // Generate message layout
+        const hasAuthor = (entry.showAuthor !== false) && (authorFull.length !== 0);
+        const hasSubtext = entry.subtext?.length !== 0;
+        const messageEl = entryContainerEl.createDiv({ cls: CssClasses.messageElement });
+        const layout = this.generateMessageLayout(messageEl, hasAuthor, hasSubtext);
+
+        // Populate message
+        if (layout.contentEl !== undefined) {
+            if (entry.renderMd) {
+                await this.renderObsidianMarkDown(entry.content, layout.contentEl);
+                if (this.settings.applyObsidianMarkdownFixes) {
+                    fixObsidianRenderedMarkdown(layout.contentEl);
+                }
             }
-        }
-        else {
-            contentEl.innerText = decodeHTMLEntities(entry.content);
-        }
-
-        const contentColor = this.config.authors?.[entry.author]?.textColor ?? undefined;
-        if (contentColor !== undefined) {
-            messageEl.style.setProperty(CssProps.messageContentColor, contentColor);
-        }
-
-        if (entry.subtext !== undefined && entry.subtext.trim().length !== 0) {
-            const footerEl = messageEl.createDiv({ cls: CssClasses.messageFooter });
-            const subtextEl = footerEl.createDiv({ cls: CssClasses.messageSubtext });
-            subtextEl.innerText = entry.subtext;
-
-            const subtextColor = this.config.authors?.[entry.author]?.subtextColor;
-            if (subtextColor !== undefined) {
-                messageEl.style.setProperty(CssProps.messageSubtextColor, subtextColor);
+            else {
+                layout.contentEl.innerText = decodeHTMLEntities(entry.content);
+            }
+            if (hasAuthor && layout.authorEl !== undefined) {
+                layout.authorEl.innerText = authorFull;
+            }
+            if (hasSubtext && layout.subtextEl !== undefined) {
+                layout.subtextEl.innerText = subtext;
             }
         }
     }
@@ -290,7 +337,7 @@ export abstract class ChatterboxRenderer {
      */
     public async render(entries: CbxEntry[], rootEl: HTMLElement) {
         rootEl.addClass("chatterbox");
-        rootEl.addClass(this.cssClass);
+        rootEl.addClass(...this.cssClasses);
 
         // HACK: This should be removed if and when the Obsidian app fixes the issue
         //       reported at https://forum.obsidian.md/t/markdownrenderer-produces-inconsistent-output-for-embedded-notes/109207/5
@@ -349,4 +396,6 @@ export abstract class ChatterboxRenderer {
             }
         }
     }
+
+
 }

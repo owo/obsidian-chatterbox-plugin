@@ -219,6 +219,7 @@
     max-width: var(--message-max-width);
     padding: 0;
     border-radius: 0;
+    background-color: var(--message-bg-color);
 }
 
 .chatterbox .message-header,
