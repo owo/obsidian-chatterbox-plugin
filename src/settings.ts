@@ -8,11 +8,11 @@ import ChatterboxPlugin from "./main";
 
 const DEFAULT_FRONTMATTER_DESC = `Default YAML frontmatter to include in all Chatterbox blocks.`;
 const DEFAULT_FRONTMATTER_PH = `// Example: \n
-mode: bubble
-maxMessageWidth: 60
+mode: simple
+maxMessageWidth: 60%
 authors:
   john:
-    fullName: John Smith
+    authorFull: John Smith
     authorColor: "#BD640B"
 `;
 
