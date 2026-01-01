@@ -313,9 +313,7 @@ export abstract class ChatterboxRenderer {
         if (layout.contentEl !== undefined) {
             if (entry.renderMd) {
                 await this.renderObsidianMarkDown(entry.content, layout.contentEl);
-                if (this.settings.applyObsidianMarkdownFixes) {
-                    fixObsidianRenderedMarkdown(layout.contentEl);
-                }
+                fixObsidianRenderedMarkdown(layout.contentEl);
             }
             else {
                 layout.contentEl.innerText = decodeHTMLEntities(entry.content);
@@ -341,9 +339,8 @@ export abstract class ChatterboxRenderer {
 
         // HACK: This should be removed if and when the Obsidian app fixes the issue
         //       reported at https://forum.obsidian.md/t/markdownrenderer-produces-inconsistent-output-for-embedded-notes/109207/5
-        if (this.settings.applyObsidianMarkdownFixes) {
-            rootEl.addClass("fix-obsidian-embed");
-        }
+        rootEl.addClass("fix-obsidian-embed");
+
 
         if (this.config.chatterboxId !== undefined) {
             rootEl.dataset.chatterboxId = this.config.chatterboxId;

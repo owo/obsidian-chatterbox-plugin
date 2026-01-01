@@ -16,15 +16,11 @@ authors:
     authorColor: "#BD640B"
 `;
 
-const APPLY_OBSIDIAN_MD_FIX_DESC = `Attempt to fix visual discrepancies caused when rendering text
-content as Markdown.`;
-
 /**
  * Container for Chatterbox plugin settings.
  */
 export interface ChatterboxSettings {
     defaultFrontmatter: string;
-    applyObsidianMarkdownFixes: boolean;
 };
 
 /**
@@ -32,7 +28,6 @@ export interface ChatterboxSettings {
  */
 export const CBX_DEFAULT_SETTINGS: ChatterboxSettings = {
     defaultFrontmatter: "",
-    applyObsidianMarkdownFixes: true,
 };
 
 /**
@@ -62,17 +57,6 @@ export class ChatterboxSettingTab extends PluginSettingTab {
                         await this.plugin.saveSettings();
                     }).then(text => {
                         text.inputEl.addClass(CssClasses.settingDefaultFrontMatter);
-                    });
-            });
-
-        new Setting(containerEl)
-            .setName("Apply Obsidian Markdown fixes")
-            .setDesc(APPLY_OBSIDIAN_MD_FIX_DESC)
-            .addToggle(toggle => {
-                toggle.setValue(this.plugin.settings.applyObsidianMarkdownFixes)
-                    .onChange(async (value) => {
-                        this.plugin.settings.applyObsidianMarkdownFixes = value;
-                        await this.plugin.saveSettings();
                     });
             });
     }
