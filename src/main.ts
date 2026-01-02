@@ -1,4 +1,5 @@
 import { type App, type MarkdownPostProcessorContext, Plugin } from "obsidian";
+import deepmerge from "deepmerge";
 
 import { CBX_DEFAULT_SETTINGS, ChatterboxSettings, ChatterboxSettingTab } from "./settings";
 import { CbxConfigValidator } from "./config";
@@ -33,10 +34,8 @@ async function parseAndRenderChatterbox(
 
     const fmResult = parseCbxFrontmatter(settings.defaultFrontmatter);
     const settingsConfig = fmResult.isError ? CbxConfigValidator.parse({}) : fmResult.config;
-    const combinedConfig = {
-        ...settingsConfig,
-        ...parseRes.data.config,
-    };
+
+    const combinedConfig = deepmerge(settingsConfig, parseRes.data.config);
 
     let renderer = null;
     switch (combinedConfig.mode) {
