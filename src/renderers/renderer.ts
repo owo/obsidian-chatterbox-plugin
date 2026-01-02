@@ -393,6 +393,4 @@ export abstract class ChatterboxRenderer {
             }
         }
     }
-
-
 }
