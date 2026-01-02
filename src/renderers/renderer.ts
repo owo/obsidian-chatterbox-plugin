@@ -305,7 +305,7 @@ export abstract class ChatterboxRenderer {
 
         // Generate message layout
         const hasAuthor = (entry.showAuthor !== false) && (authorFull.length !== 0);
-        const hasSubtext = entry.subtext?.length !== 0;
+        const hasSubtext = entry.subtext === undefined ? false : entry.subtext.length !== 0;
         const messageEl = entryContainerEl.createDiv({ cls: CssClasses.messageElement });
         const layout = this.generateMessageLayout(messageEl, hasAuthor, hasSubtext);
 
