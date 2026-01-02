@@ -55,7 +55,8 @@ export class ChatterboxSettingTab extends PluginSettingTab {
                     .onChange(async (value) => {
                         this.plugin.settings.defaultFrontmatter = value;
                         await this.plugin.saveSettings();
-                    }).then(text => {
+                    })
+                    .then(text => {
                         text.inputEl.addClass(CssClasses.settingDefaultFrontMatter);
                     });
             });
