@@ -14,8 +14,7 @@ const CAPSULE_MARKER = /(?<capsule>\(\))?/.source;
 const MESSAGE_PARAMS = /(?<messageParams>.*?)/.source;
 const MESSAGE_DIR_SINGLE = /(?<messageDir>[<>^])/.source;
 const MESSAGE_DIR_FENCE = /(?<fence><<<+|>>>+|\^\^\^+)/.source;
-const MESSAGE_HIDE_AUTHOR_MARKER = /(?<hideAuthor>!)?/.source;
-const MESSAGE_RENDER_MD_MARKER = /(?<renderMd>@)?/.source;
+const MESSAGE_MARKERS = /(?<messageMarkers>[@!]*)/.source;
 
 const MARKDOWN_FENCE = /(?<fence>@@@+)/.source;
 
@@ -72,8 +71,7 @@ export const MESSAGE_RE = RegExp(
     MESSAGE_PARAMS +
     WS_SEQ_OPTIONAL +
     MESSAGE_DIR_SINGLE +
-    MESSAGE_HIDE_AUTHOR_MARKER +
-    MESSAGE_RENDER_MD_MARKER +
+    MESSAGE_MARKERS +
     WS +
     CONTENT +
     END_ANCHOR
@@ -87,8 +85,7 @@ export const MESSAGE_BLOCK_RE = RegExp(
     MESSAGE_PARAMS +
     WS_SEQ_OPTIONAL +
     MESSAGE_DIR_FENCE +
-    MESSAGE_HIDE_AUTHOR_MARKER +
-    MESSAGE_RENDER_MD_MARKER +
+    MESSAGE_MARKERS +
     BLOCK_CONTENT +
     END_ANCHOR
 );
