@@ -333,8 +333,8 @@ class CbxParser {
                 author: messageParams.author,
                 subtext: messageParams.subtext,
                 content: match.groups.content,
-                showAuthor: match.groups.messageMarkers.contains("!") !== true,
-                renderMd: match.groups.messageMarkers.contains("@") === true,
+                showAuthor: match.groups.messageModifiers.contains("!") !== true,
+                renderMd: match.groups.messageModifiers.contains("@") === true,
             });
 
             return true;
@@ -363,8 +363,8 @@ class CbxParser {
             this.currMessageParams = messageParams;
             this.currMessageDir = DIR_MAP[match.groups.fence[0]] ?? MessageDir.Left;
             this.currFence = match.groups.fence;
-            this.currShowAuthor = match.groups.messageMarkers.contains("!") !== true;
-            this.currRenderMd = match.groups.messageMarkers.contains("@") === true;
+            this.currShowAuthor = match.groups.messageModifiers.contains("!") !== true;
+            this.currRenderMd = match.groups.messageModifiers.contains("@") === true;
 
             const content = match.groups.content.trimStart();
             if (content.length > 0) {

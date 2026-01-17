@@ -9,12 +9,12 @@ const BLOCK_CONTENT = /(?<content>\s.*|\s*)/.source;
 
 const COMMENT_SINGLE = /#/.source;
 const COMMENT_FENCE = /(?<fence>###+)/.source;
-const CAPSULE_MARKER = /(?<capsule>\(\))?/.source;
+const CAPSULE_MODIFIER = /(?<capsule>\(\))?/.source;
 
 const MESSAGE_PARAMS = /(?<messageParams>.*?)/.source;
 const MESSAGE_DIR_SINGLE = /(?<messageDir>[<>^])/.source;
 const MESSAGE_DIR_FENCE = /(?<fence><<<+|>>>+|\^\^\^+)/.source;
-const MESSAGE_MARKERS = /(?<messageMarkers>[@!]*)/.source;
+const MESSAGE_MODIFIERS = /(?<messageModifiers>[@!]*)/.source;
 
 const MARKDOWN_FENCE = /(?<fence>@@@+)/.source;
 
@@ -26,7 +26,7 @@ const DELIMITER_MARKER = /\.\.\./.source;
 export const COMMENT_OR_CAPSULE_RE = RegExp(
     START_ANCHOR +
     COMMENT_SINGLE +
-    CAPSULE_MARKER +
+    CAPSULE_MODIFIER +
     WS +
     CONTENT +
     END_ANCHOR
@@ -38,7 +38,7 @@ export const COMMENT_OR_CAPSULE_RE = RegExp(
 export const COMMENT_OR_CAPSULE_BLOCK_RE = RegExp(
     START_ANCHOR +
     COMMENT_FENCE +
-    CAPSULE_MARKER +
+    CAPSULE_MODIFIER +
     BLOCK_CONTENT +
     END_ANCHOR
 );
@@ -71,7 +71,7 @@ export const MESSAGE_RE = RegExp(
     MESSAGE_PARAMS +
     WS_SEQ_OPTIONAL +
     MESSAGE_DIR_SINGLE +
-    MESSAGE_MARKERS +
+    MESSAGE_MODIFIERS +
     WS +
     CONTENT +
     END_ANCHOR
@@ -85,7 +85,7 @@ export const MESSAGE_BLOCK_RE = RegExp(
     MESSAGE_PARAMS +
     WS_SEQ_OPTIONAL +
     MESSAGE_DIR_FENCE +
-    MESSAGE_MARKERS +
+    MESSAGE_MODIFIERS +
     BLOCK_CONTENT +
     END_ANCHOR
 );
