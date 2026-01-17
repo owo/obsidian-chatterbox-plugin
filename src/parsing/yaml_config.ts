@@ -4,7 +4,7 @@ import { type CbxConfig, CbxConfigValidator } from "src/config";
 
 
 /**
- * Returned by {@link parseCbxFrontmatter} when frontmatter is valid YAML.
+ * Returned by {@link parseYamlConfig} when configuration source is valid YAML.
  * The `config` property contains the parsed Chatterbox configuration.
  */
 export interface CbxConfigSuccess {
@@ -13,7 +13,7 @@ export interface CbxConfigSuccess {
 }
 
 /**
- * Returned by {@link parseCbxFrontmatter} when frontmatter is not valid YAML.
+ * Returned by {@link parseYamlConfig} when configuration source is not valid YAML.
  * The `errorList` property contains a list of error messages corresponding to each error detected.
  */
 export interface CbxConfigError {
@@ -24,13 +24,13 @@ export interface CbxConfigError {
 export type CbxConfigResult = CbxConfigSuccess | CbxConfigError;
 
 /**
- * Parses and validates Chatterbox frontmatter YAML.
+ * Parses and validates Chatterbox configuration YAML.
  * 
- * @param source Frontmatter source to parse.
+ * @param source Configuration source to parse.
  * @returns A {@link CbxConfigSuccess} instance if source is valid YAML,
  *          a {@link CbxConfigError} instance otherwise.
  */
-export function parseCbxFrontmatter(source: string): CbxConfigResult {
+export function parseYamlConfig(source: string): CbxConfigResult {
     let fmParsed: unknown = null;
 
     try {
@@ -40,7 +40,7 @@ export function parseCbxFrontmatter(source: string): CbxConfigResult {
         const errorOut: CbxConfigError = {
             isError: true,
             errorList: [
-                "Frontmatter is not valid YAML."
+                "Configuration is not valid YAML."
             ],
         };
 

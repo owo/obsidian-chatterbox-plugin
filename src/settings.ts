@@ -6,8 +6,8 @@ import ChatterboxPlugin from "./main";
 
 // TODO: Update currently rendered Chatterbox blocks when settings change.
 
-const DEFAULT_FRONTMATTER_DESC = `Default YAML frontmatter to include in all Chatterbox blocks.`;
-const DEFAULT_FRONTMATTER_PH = `// Example: \n
+const DEFAULT_CONFIG_DESC = `Default YAML configuration to include in all Chatterbox blocks.`;
+const DEFAULT_CONFIG_PH = `// Example: \n
 mode: simple
 maxMessageWidth: 60%
 authors:
@@ -20,14 +20,14 @@ authors:
  * Container for Chatterbox plugin settings.
  */
 export interface ChatterboxSettings {
-    defaultFrontmatter: string;
+    defaultConfiguration: string;
 };
 
 /**
  * Default Chatterbox plugin settings.
  */
 export const CBX_DEFAULT_SETTINGS: ChatterboxSettings = {
-    defaultFrontmatter: "",
+    defaultConfiguration: "",
 };
 
 /**
@@ -47,17 +47,17 @@ export class ChatterboxSettingTab extends PluginSettingTab {
         containerEl.empty();
 
         new Setting(containerEl)
-            .setName("Default frontmatter")
-            .setDesc(DEFAULT_FRONTMATTER_DESC)
+            .setName("Default configuration")
+            .setDesc(DEFAULT_CONFIG_DESC)
             .addTextArea(text => {
-                text.setValue(this.plugin.settings.defaultFrontmatter)
-                    .setPlaceholder(DEFAULT_FRONTMATTER_PH)
+                text.setValue(this.plugin.settings.defaultConfiguration)
+                    .setPlaceholder(DEFAULT_CONFIG_PH)
                     .onChange(async (value) => {
-                        this.plugin.settings.defaultFrontmatter = value;
+                        this.plugin.settings.defaultConfiguration = value;
                         await this.plugin.saveSettings();
                     })
                     .then(text => {
-                        text.inputEl.addClass(CssClasses.settingDefaultFrontMatter);
+                        text.inputEl.addClass(CssClasses.settingDefaultConfiguration);
                     });
             });
     }

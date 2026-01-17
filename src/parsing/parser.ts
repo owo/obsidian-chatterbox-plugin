@@ -7,7 +7,7 @@ import {
     EntryType,
     MessageDir,
 } from "src/entries";
-import { CbxConfigError, parseCbxFrontmatter } from "./frontmatter";
+import { CbxConfigError, parseYamlConfig } from "./yaml_config";
 import {
     COMMENT_OR_CAPSULE_BLOCK_RE,
     COMMENT_OR_CAPSULE_RE,
@@ -138,7 +138,7 @@ class CbxParser {
             for (let i = 1; i < lines.length; ++i) {
                 if (lines[i] === "---") {
                     const fmRaw = lines.slice(1, i).join("\n");
-                    const configRes = parseCbxFrontmatter(fmRaw);
+                    const configRes = parseYamlConfig(fmRaw);
 
                     if (configRes.isError) {
                         return configRes;

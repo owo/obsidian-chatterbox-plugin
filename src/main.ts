@@ -8,7 +8,7 @@ import renderCbxError from "./renderers/error";
 import BaseRenderer from "./renderers/base";
 import BubbleRenderer from "./renderers/bubble";
 import SimpleRenderer from "./renderers/simple";
-import { parseCbxFrontmatter } from "./parsing/frontmatter";
+import { parseYamlConfig } from "./parsing/yaml_config";
 
 
 /**
@@ -32,7 +32,7 @@ async function parseAndRenderChatterbox(
         return;
     }
 
-    const fmResult = parseCbxFrontmatter(settings.defaultFrontmatter);
+    const fmResult = parseYamlConfig(settings.defaultConfiguration);
     const settingsConfig = fmResult.isError ? CbxConfigValidator.parse({}) : fmResult.config;
 
     const combinedConfig = deepmerge(settingsConfig, parseRes.data.config);

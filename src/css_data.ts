@@ -55,7 +55,7 @@ export const CssClasses = {
     fixObsidianEmbed: "fix-obsidian-embed",
 
     // Plugin settings
-    settingDefaultFrontMatter: "cbx-setting-default-frontmatter",
+    settingDefaultConfiguration: "cbx-setting-default-configuration",
 
 } as const;
 
