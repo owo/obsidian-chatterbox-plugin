@@ -73,8 +73,8 @@
     --message-bg-color: transparent;
     --message-author-color: var(--text-normal);
     --message-author-font-size: 1em;
-    --message-content-font-size: 1em;
-    --message-content-color: var(--text-normal);
+    --message-text-font-size: 1em;
+    --message-text-color: var(--text-normal);
     --message-subtext-font-size: 0.9em;
     --message-subtext-color: var(--text-muted);
     --message-min-width: 3em;
@@ -235,8 +235,8 @@
 .chatterbox .message-content {
     display: block;
     width: 100%;
-    font-size: var(--message-content-font-size);
-    color: var(--message-content-color);
+    font-size: var(--message-text-font-size);
+    color: var(--message-text-color);
 }
 
 .chatterbox .message-content .md-fix-first {
