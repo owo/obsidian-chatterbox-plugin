@@ -6,8 +6,8 @@ import ChatterboxPlugin from "./main";
 
 // TODO: Update currently rendered Chatterbox blocks when settings change.
 
-const DEFAULT_CONFIG_DESC = `Default YAML configuration to include in all Chatterbox blocks.`;
-const DEFAULT_CONFIG_PH = `// Example: \n
+const _DEFAULT_CONFIG_DESC = `Default YAML configuration to include in all Chatterbox blocks.`;
+const _DEFAULT_CONFIG_PH = `// Example: \n
 mode: simple
 maxMessageWidth: 60%
 authors:
@@ -48,10 +48,10 @@ export class ChatterboxSettingTab extends PluginSettingTab {
 
         new Setting(containerEl)
             .setName("Default configuration")
-            .setDesc(DEFAULT_CONFIG_DESC)
+            .setDesc(_DEFAULT_CONFIG_DESC)
             .addTextArea(text => {
                 text.setValue(this.plugin.settings.defaultConfiguration)
-                    .setPlaceholder(DEFAULT_CONFIG_PH)
+                    .setPlaceholder(_DEFAULT_CONFIG_PH)
                     .onChange(async (value) => {
                         this.plugin.settings.defaultConfiguration = value;
                         await this.plugin.saveSettings();

@@ -23,7 +23,7 @@ import { CssClasses, CssProps } from "src/css_data";
 
 // This should correspond to the number of `--auto-color-*` CSS variables (starting from 1
 // with no holes).
-const NUM_TEXT_AUTO_COLORS: number = 8;
+const _NUM_TEXT_AUTO_COLORS: number = 8;
 
 /**
  * Contains references to the individual HTML elements for each component of a message.
@@ -159,7 +159,7 @@ export abstract class ChatterboxRenderer {
             const authorConfig = this.config.authors?.[author];
 
             if (authorConfig?.authorColor === undefined && !this.autoAuthorColorMap.has(author)) {
-                const colorNum = (currAuthorNum % NUM_TEXT_AUTO_COLORS) + 1;
+                const colorNum = (currAuthorNum % _NUM_TEXT_AUTO_COLORS) + 1;
                 const autoColor = `var(--auto-color-${String(colorNum)})`;
 
                 this.autoAuthorColorMap.set(author, autoColor);
