@@ -1,13 +1,13 @@
-import { type CbxConfig, CbxConfigValidator } from "src/config";
+import { type ChatterboxConfig, ChatterboxConfigValidator } from "src/config";
 import { decodeHTMLEntities } from "src/utils";
 import {
     type CapsuleEntry,
     type CommentEntry,
-    type CbxEntry,
+    type ChatterboxEntry,
     EntryType,
     MessageDir,
 } from "src/entries";
-import { CbxConfigError, parseYamlConfig } from "./yaml_config";
+import { ConfigError, parseYamlConfig } from "./yaml_config";
 import {
     COMMENT_OR_CAPSULE_BLOCK_RE,
     COMMENT_OR_CAPSULE_RE,
@@ -21,21 +21,21 @@ import {
 /**
  * Contains all parsed data from a Chatterbox block.
  */
-export interface CbxData {
-    config: CbxConfig;
-    entries: CbxEntry[];
+export interface ChatterboxData {
+    config: ChatterboxConfig;
+    entries: ChatterboxEntry[];
 }
 
 /**
- * Returned by {@link CbxParser} when parsing was successful without any errors.
+ * Returned by {@link ChatterboxParser} when parsing was successful without any errors.
  */
 export interface ParseSuccess {
     isError: false,
-    data: CbxData,
+    data: ChatterboxData,
 }
 
 /**
- * Returned by {@link CbxParser} when parsing was unsuccessful.
+ * Returned by {@link ChatterboxParser} when parsing was unsuccessful.
  */
 export interface ParseError {
     isError: true,
@@ -43,7 +43,7 @@ export interface ParseError {
 }
 
 /**
- * Enumeration of {@link CbxParser} output types which can be discriminated using the
+ * Enumeration of {@link ChatterboxParser} output types which can be discriminated using the
  * `isError` boolean property.
  */
 export type ParseResult = ParseSuccess | ParseError;
@@ -100,11 +100,11 @@ const DIR_MAP: Record<string, MessageDir> = {
  * 
  * [WARNING] Each instance should only be used once per Chatterbox source string.
  */
-class CbxParser {
+class ChatterboxParser {
     state: ParserState = ParserState.Single;
     lines: string[] = [];
-    config: CbxConfig = CbxConfigValidator.parse({});
-    entries: CbxEntry[] = [];
+    config: ChatterboxConfig = ChatterboxConfigValidator.parse({});
+    entries: ChatterboxEntry[] = [];
     currLine: number = 0;
     currContent: string[] = [];
     currEntryType: EntryType | null = null;
@@ -127,11 +127,11 @@ class CbxParser {
     /**
      * Parses Chatterbox YAML frontmatter.
      * 
-     * @returns A {@link CbxConfigError} instance  containing the list of parsing errors if the
+     * @returns A {@link ConfigError} instance  containing the list of parsing errors if the
      *          frontmatter YAML is invalid, otherwise `null` while updating the internal 
      *          parser state with the parsed data.
      */
-    private parseFrontmatter(): CbxConfigError | null {
+    private parseFrontmatter(): ConfigError | null {
         const lines = this.lines;
 
         if (lines.length > 1 && lines[0] == "---") {
@@ -382,7 +382,7 @@ class CbxParser {
     /**
      * Parses a given source string as Chatterbox syntax.
      * 
-     * [WARNING] Should only be used once per instance of {@link CbxParser}.
+     * [WARNING] Should only be used once per instance of {@link ChatterboxParser}.
      * 
      * @param source The source string to be parsed.
      * @returns A {@link ParseSuccess} instance containing the parsed data if the given source is
@@ -450,7 +450,7 @@ class CbxParser {
  *          otherwise.
  */
 export function parseChatterbox(source: string): ParseResult {
-    const parser = new CbxParser();
+    const parser = new ChatterboxParser();
 
     return parser.parse(source);
 }

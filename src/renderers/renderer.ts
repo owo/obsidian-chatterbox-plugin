@@ -5,10 +5,10 @@ import {
     MarkdownRenderChild,
 } from "obsidian";
 
-import { type CbxConfig, DEFAULT_AUTO_COLOR_AUTHORS } from "src/config";
+import { type ChatterboxConfig, DEFAULT_AUTO_COLOR_AUTHORS } from "src/config";
 import { decodeHTMLEntities, fixObsidianRenderedMarkdown } from "src/utils";
 import {
-    type CbxEntry,
+    type ChatterboxEntry,
     type CapsuleEntry,
     type CommentEntry,
     type DelimiterEntry,
@@ -41,7 +41,7 @@ export interface MessageLayout {
 export abstract class ChatterboxRenderer {
     protected readonly app: App;
     protected readonly ctx: MarkdownPostProcessorContext;
-    protected readonly config: CbxConfig;
+    protected readonly config: ChatterboxConfig;
     protected readonly settings: ChatterboxSettings;
     protected readonly authorOrderMap: Map<string, string> = new Map();
     protected readonly autoAuthorColorMap: Map<string, string> = new Map();
@@ -98,7 +98,7 @@ export abstract class ChatterboxRenderer {
     constructor(
         app: App,
         ctx: MarkdownPostProcessorContext,
-        config: CbxConfig,
+        config: ChatterboxConfig,
         settings: ChatterboxSettings,
     ) {
         this.app = app;
@@ -116,7 +116,7 @@ export abstract class ChatterboxRenderer {
      * 
      * @param entries The list of entries used to determine the order of authors.
      */
-    protected populateAuthorOrderMap(entries: CbxEntry[]) {
+    protected populateAuthorOrderMap(entries: ChatterboxEntry[]) {
         this.authorOrderMap.set("", "0");
 
         let currOrder = 1;
@@ -147,7 +147,7 @@ export abstract class ChatterboxRenderer {
      * 
      * @param entries The list of entries used to determine the order of authors.
      */
-    protected populateAutoAuthorColorMap(entries: CbxEntry[]) {
+    protected populateAutoAuthorColorMap(entries: ChatterboxEntry[]) {
         let currAuthorNum = 0;
 
         for (const entry of entries) {
@@ -333,7 +333,7 @@ export abstract class ChatterboxRenderer {
      * @param entries Entries to be rendered.
      * @param rootEl The HTML element to render to.
      */
-    public async render(entries: CbxEntry[], rootEl: HTMLElement) {
+    public async render(entries: ChatterboxEntry[], rootEl: HTMLElement) {
         rootEl.addClass("chatterbox");
         rootEl.addClass(...this.cssClasses);
 

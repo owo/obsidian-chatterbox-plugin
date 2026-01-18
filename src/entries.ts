@@ -1,5 +1,5 @@
 /**
- * Represents the type of an entry. Primarily used as a discriminator for {@link CbxEntry}.
+ * Represents the type of an entry. Primarily used as a discriminator for {@link ChatterboxEntry}.
  */
 export enum EntryType {
     Capsule,
@@ -65,7 +65,7 @@ export interface MessageEntry {
 /**
  * Enumeration of all entry types.
  */
-export type CbxEntry =
+export type ChatterboxEntry =
     CapsuleEntry |
     CommentEntry |
     DelimiterEntry |

@@ -7,9 +7,9 @@ import { CssClasses } from "src/css_data";
  * @param errorList List of individual error messages to be rendered.
  * @param containerEl The HTML element to render to.
  */
-export default function renderCbxError(errorList: string[], containerEl: HTMLElement) {
-    const cbxRootEl = containerEl.createDiv({ cls: CssClasses.chatterboxRoot });
-    const errContainerEl = cbxRootEl.createDiv({ cls: CssClasses.errorContainer });
+export default function renderError(errorList: string[], containerEl: HTMLElement) {
+    const rootEl = containerEl.createDiv({ cls: CssClasses.chatterboxRoot });
+    const errContainerEl = rootEl.createDiv({ cls: CssClasses.errorContainer });
 
     const errTitleEl = errContainerEl.createDiv({ cls: CssClasses.errorTitle });
     errTitleEl.textContent = "Chatterbox error";

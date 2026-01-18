@@ -1,18 +1,18 @@
 import * as zod from "zod/v4-mini";
 
+
 zod.config(zod.locales.en());
 
-export const ChatterboxModes = ["base", "bubble", "simple"] as const;
-export type CbxMode = typeof ChatterboxModes[number];
+export const CHATTERBOX_MODES = ["base", "bubble", "simple"] as const;
+
+export type ChatterboxMode = typeof CHATTERBOX_MODES[number];
 
 // Config defaults
 export const DEFAULT_AUTO_COLOR_AUTHORS: boolean = true;
-export const DEFAULT_MODE: CbxMode = "bubble";
-
-// TODO: Figure out how to document all Zod objects.
+export const DEFAULT_MODE: ChatterboxMode = "bubble";
 
 /**
- * Validates a author info entry.
+ * Validates an author info entry.
  */
 const AuthorInfoValidator = zod.object({
     bgColor: zod.catch(zod.optional(zod.string()), undefined),
@@ -25,14 +25,14 @@ const AuthorInfoValidator = zod.object({
 /**
  * Validates an entire Chatterbox config object.
  */
-export const CbxConfigValidator = zod.object({
+export const ChatterboxConfigValidator = zod.object({
     autoColorAuthors: zod.catch(zod.optional(zod.boolean()), undefined),
     chatterboxId: zod.catch(zod.optional(zod.string()), undefined),
     maxCapsuleWidth: zod.catch(zod.optional(zod.string()), undefined),
     maxCommentWidth: zod.catch(zod.optional(zod.string()), undefined),
     minMessageWidth: zod.catch(zod.optional(zod.string()), undefined),
     maxMessageWidth: zod.catch(zod.optional(zod.string()), undefined),
-    mode: zod.catch(zod.optional(zod.enum(ChatterboxModes)), undefined),
+    mode: zod.catch(zod.optional(zod.enum(CHATTERBOX_MODES)), undefined),
     authors: zod.catch(
         zod.optional(zod.record(zod.string(), AuthorInfoValidator)),
         undefined,
@@ -41,4 +41,4 @@ export const CbxConfigValidator = zod.object({
 
 export type AuthorInfo = zod.infer<typeof AuthorInfoValidator>;
 
-export type CbxConfig = zod.infer<typeof CbxConfigValidator>;
+export type ChatterboxConfig = zod.infer<typeof ChatterboxConfigValidator>;

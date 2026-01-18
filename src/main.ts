@@ -1,10 +1,10 @@
 import { type App, type MarkdownPostProcessorContext, Plugin } from "obsidian";
 import deepmerge from "deepmerge";
 
-import { CBX_DEFAULT_SETTINGS, ChatterboxSettings, ChatterboxSettingTab } from "./settings";
-import { CbxConfigValidator } from "./config";
+import { CHATTERBOX_DEFAULT_SETTINGS, ChatterboxSettings, ChatterboxSettingTab } from "./settings";
+import { ChatterboxConfigValidator } from "./config";
 import { parseChatterbox } from "./parsing/parser";
-import renderCbxError from "./renderers/error";
+import renderError from "./renderers/error";
 import BaseRenderer from "./renderers/base";
 import BubbleRenderer from "./renderers/bubble";
 import SimpleRenderer from "./renderers/simple";
@@ -28,12 +28,12 @@ async function parseAndRenderChatterbox(
 ) {
     const parseRes = parseChatterbox(source);
     if (parseRes.isError) {
-        renderCbxError(parseRes.errorList, rootEl);
+        renderError(parseRes.errorList, rootEl);
         return;
     }
 
     const fmResult = parseYamlConfig(settings.defaultConfiguration);
-    const settingsConfig = fmResult.isError ? CbxConfigValidator.parse({}) : fmResult.config;
+    const settingsConfig = fmResult.isError ? ChatterboxConfigValidator.parse({}) : fmResult.config;
 
     const combinedConfig = deepmerge(settingsConfig, parseRes.data.config);
 
@@ -77,7 +77,7 @@ export default class ChatterboxPlugin extends Plugin {
      */
     async loadSettings() {
         const data = await this.loadData() as Partial<ChatterboxSettings>;
-        this.settings = Object.assign({}, CBX_DEFAULT_SETTINGS, data);
+        this.settings = Object.assign({}, CHATTERBOX_DEFAULT_SETTINGS, data);
     }
 
     /**

@@ -26,7 +26,7 @@ export interface ChatterboxSettings {
 /**
  * Default Chatterbox plugin settings.
  */
-export const CBX_DEFAULT_SETTINGS: ChatterboxSettings = {
+export const CHATTERBOX_DEFAULT_SETTINGS: ChatterboxSettings = {
     defaultConfiguration: "",
 };
 

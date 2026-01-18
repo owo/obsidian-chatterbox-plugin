@@ -1,43 +1,43 @@
 import { parseYaml } from "obsidian";
 
-import { type CbxConfig, CbxConfigValidator } from "src/config";
+import { type ChatterboxConfig, ChatterboxConfigValidator } from "src/config";
 
 
 /**
  * Returned by {@link parseYamlConfig} when configuration source is valid YAML.
  * The `config` property contains the parsed Chatterbox configuration.
  */
-export interface CbxConfigSuccess {
+export interface ConfigSuccess {
     isError: false;
-    config: CbxConfig;
+    config: ChatterboxConfig;
 }
 
 /**
  * Returned by {@link parseYamlConfig} when configuration source is not valid YAML.
  * The `errorList` property contains a list of error messages corresponding to each error detected.
  */
-export interface CbxConfigError {
+export interface ConfigError {
     isError: true;
     errorList: string[];
 }
 
-export type CbxConfigResult = CbxConfigSuccess | CbxConfigError;
+export type ConfigResult = ConfigSuccess | ConfigError;
 
 /**
  * Parses and validates Chatterbox configuration YAML.
  * 
  * @param source Configuration source to parse.
- * @returns A {@link CbxConfigSuccess} instance if source is valid YAML,
- *          a {@link CbxConfigError} instance otherwise.
+ * @returns A {@link ConfigSuccess} instance if source is valid YAML,
+ *          a {@link ConfigError} instance otherwise.
  */
-export function parseYamlConfig(source: string): CbxConfigResult {
+export function parseYamlConfig(source: string): ConfigResult {
     let fmParsed: unknown = null;
 
     try {
         fmParsed = parseYaml(source);
     }
     catch {
-        const errorOut: CbxConfigError = {
+        const errorOut: ConfigError = {
             isError: true,
             errorList: [
                 "Configuration is not valid YAML."
@@ -47,12 +47,12 @@ export function parseYamlConfig(source: string): CbxConfigResult {
         return errorOut;
     }
 
-    const fmValidated = CbxConfigValidator.safeParse(fmParsed);
+    const fmValidated = ChatterboxConfigValidator.safeParse(fmParsed);
 
     if (fmValidated.success) {
         return {
             isError: false,
-            config: fmValidated.data as unknown as CbxConfig,
+            config: fmValidated.data as unknown as ChatterboxConfig,
         };
     }
     else {
