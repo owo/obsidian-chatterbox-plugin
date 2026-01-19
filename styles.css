@@ -94,13 +94,6 @@
     }
 }
 
-/* HACK: This should be removed if and when the Obsidian app fixes the issue
-         reported at https://forum.obsidian.md/t/markdownrenderer-produces-inconsistent-output-for-embedded-notes/109207/5
- */
-.chatterbox.fix-obsidian-embed .markdown-embed .markdown-preview-view {
-    padding: var(--embed-padding);
-}
-
 /* ------------------------------- Auto Colors ------------------------------ */
 
 .chatterbox {

@@ -337,10 +337,6 @@ export abstract class ChatterboxRenderer {
         rootEl.addClass("chatterbox");
         rootEl.addClass(...this.cssClasses);
 
-        // HACK: This should be removed if and when the Obsidian app fixes the issue
-        //       reported at https://forum.obsidian.md/t/markdownrenderer-produces-inconsistent-output-for-embedded-notes/109207/5
-        rootEl.addClass("fix-obsidian-embed");
-
         if (this.config.chatterboxId !== undefined) {
             rootEl.dataset.chatterboxId = this.config.chatterboxId;
         }

@@ -51,9 +51,6 @@ export const CssClasses = {
     errorTitle: "error-title",
     errorItems: "error-items",
 
-    // Fixes
-    fixObsidianEmbed: "fix-obsidian-embed",
-
     // Plugin settings
     settingDefaultConfiguration: "cbx-setting-default-configuration",
 
