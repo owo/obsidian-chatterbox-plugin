@@ -586,7 +586,91 @@ configuration of each individual block.
 ## Styling
 
 Chatterbox was designed to be easily customizable through CSS snippets.
-See [STYLING.md](STYLING.md) for more details.
+
+First, you can provide custom CSS classes to a Chatterbox block using the `classes` config option.
+For example,
+
+````
+```chatterbox
+---
+classes: "my-class"
+---
+
+...
+
+```
+````
+
+or
+
+````
+```chatterbox
+---
+classes:
+  - "my-class-1"
+  - "my-class-2"
+  - "my-class-3"
+---
+
+...
+
+```
+````
+
+You can then refer to them in CSS as:
+
+```css
+.chatterbox.my-class {
+    ...
+}
+
+/* or */
+
+.chatterbox.my-class-1 {
+    ...
+}
+
+.chatterbox.my-class-2 {
+    ...
+}
+
+.chatterbox.my-class-3 {
+    ...
+}
+```
+
+Additionally, each message entry is provided the following
+[data attributes](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/data-*)
+to allow styling messages by specific authors across all Chatterbox blocks:
+
+- **`data-cbx-author`:** The author name of the current message.
+- **`data-cbx-author-full`:** The author's full name of the current message as set using the 
+  [`authorFull`](#authorfull) config option.
+  If `authorFull` is not specified then this will have the same value as `data-cbx-author`.
+- **`data-cbx-author-order`:** The order of appearance of the author of the current message.
+  The anonymous author always has a value of "0" while all other authors have an integer value
+  starting from "1" onwards depending on the order of their appearance in a conversation.
+
+These can be used as follows:
+
+```css
+.message-container[data-cbx-author="bilbo"] {
+    ...
+}
+
+/* or */
+
+.message-container[data-cbx-author-full="Bilbo Baggins"] {
+    ...
+}
+
+/* or */
+
+.message-container[data-cbx-author-order="1"] {
+    ...
+}
+
+```
 
 <!-- ------------------------------------------------------------------------------------------- -->
 

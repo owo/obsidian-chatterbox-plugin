@@ -1,3 +1,0 @@
-# Chatterbox Styling Guide
-
-TODO
