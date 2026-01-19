@@ -3,6 +3,11 @@ import * as zod from "zod/v4-mini";
 
 zod.config(zod.locales.en());
 
+const _ZOD_STRING_ONLY_ARRAY = zod.pipe(
+    zod.array(zod.unknown()),
+    zod.transform((arr) => arr.filter((x) => typeof x === "string"))
+);
+
 export const CHATTERBOX_MODES = ["base", "bubble", "simple"] as const;
 
 export type ChatterboxMode = typeof CHATTERBOX_MODES[number];
@@ -27,7 +32,10 @@ const AuthorInfoValidator = zod.object({
  */
 export const ChatterboxConfigValidator = zod.object({
     autoColorAuthors: zod.catch(zod.optional(zod.boolean()), undefined),
-    chatterboxId: zod.catch(zod.optional(zod.string()), undefined),
+    classes: zod.catch(
+        zod.optional(zod.union([zod.string(), _ZOD_STRING_ONLY_ARRAY])),
+        undefined
+    ),
     maxCapsuleWidth: zod.catch(zod.optional(zod.string()), undefined),
     maxCommentWidth: zod.catch(zod.optional(zod.string()), undefined),
     minMessageWidth: zod.catch(zod.optional(zod.string()), undefined),

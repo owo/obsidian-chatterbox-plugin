@@ -337,8 +337,16 @@ export abstract class ChatterboxRenderer {
         rootEl.addClass("chatterbox");
         rootEl.addClass(...this.cssClasses);
 
-        if (this.config.chatterboxId !== undefined) {
-            rootEl.dataset.chatterboxId = this.config.chatterboxId;
+        if (this.config.classes !== undefined) {
+            const classes = this.config.classes;
+            if (typeof classes === "string") {
+                try { rootEl.addClass(classes); } catch { /* empty */ };
+            }
+            else if (typeof classes === "object"){
+                for (const cls of classes) {
+                    try {  rootEl.addClass(cls); } catch { /* empty */ };
+                }
+            }
         }
 
         const cbxProps = [

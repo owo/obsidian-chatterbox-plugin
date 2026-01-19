@@ -484,13 +484,10 @@ There are a total of 8 colors which cycle over when the number of unique authors
 You can also use these pre-defined colors as values for `authorColor`, `bgColor`, and `textColor`
 using their respective CSS variables: `var(--auto-color-1)` to `var(--auto-color-8)`.
 
-### **`chatterboxId`**
+### **`classes`**
 
-Sets the `data-chatterbox-id`
-[data attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/data-*)
-of the current Chatterbox block to a given string.
-This can be used to create custom themes and styling for conversations that share the same
-`chatterboxId` value.
+Adds a given CSS class or list of CSS classes to the root Chatterbox HTML element.
+This allows for custom theming of individual Chatterbox blocks in Obsidian CSS snippets.
 
 ### **`maxCapsuleWidth`**
 
