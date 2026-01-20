@@ -415,12 +415,12 @@ class ChatterboxParser {
             }
 
             // In Single mode we iteratively try to match the current line to a valid pattern.
-            if (this.tryParseMessageBlock(line)) { continue; }
-            else if (this.tryParseCommentOrCapsuleBlock(line)) { continue; }
+            if (this.tryParseCommentOrCapsuleBlock(line)) { continue; }
+            else if (this.tryParseMessageBlock(line)) { continue; }
             else if (this.tryParseMarkdownBlock(line)) { continue; }
             else if (this.tryParseDelimiter(line)) { continue; }
-            else if (this.tryParseMessage(line)) { continue; }
             else if (this.tryParseCommentOrCapsule(line)) { continue; }
+            else if (this.tryParseMessage(line)) { continue; }
         }
 
         // Push any unclosed blocks if parser is in Block mode.
