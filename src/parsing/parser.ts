@@ -1,5 +1,6 @@
+import { decodeHTML } from 'entities';
+
 import { type ChatterboxConfig, ChatterboxConfigValidator } from "src/config";
-import { decodeHTMLEntities } from "src/utils";
 import {
     type CapsuleEntry,
     type CommentEntry,
@@ -80,8 +81,8 @@ function parseMessageParams(params: string): MessageParams | null {
     const subtext = (parts[1] ?? "").trim();
 
     return {
-        author: decodeHTMLEntities(author),
-        subtext: subtext.length > 0 ? decodeHTMLEntities(subtext) : undefined,
+        author: decodeHTML(author),
+        subtext: subtext.length > 0 ? decodeHTML(subtext) : undefined,
     };
 }
 

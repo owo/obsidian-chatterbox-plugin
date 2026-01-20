@@ -33,6 +33,7 @@
 	},
 	"dependencies": {
 		"deepmerge": "^4.3.1",
+		"entities": "^7.0.0",
 		"zod": "^4.2.1"
 	}
 }

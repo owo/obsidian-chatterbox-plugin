@@ -4,9 +4,10 @@ import {
     MarkdownRenderer,
     MarkdownRenderChild,
 } from "obsidian";
+import { decodeHTML } from 'entities';
 
 import { type ChatterboxConfig, DEFAULT_AUTO_COLOR_AUTHORS } from "src/config";
-import { decodeHTMLEntities, fixObsidianRenderedMarkdown } from "src/utils";
+import { fixObsidianRenderedMarkdown } from "src/utils";
 import {
     type ChatterboxEntry,
     type CapsuleEntry,
@@ -24,6 +25,8 @@ import { CssClasses, CssProps, generateCssAutoColor } from "src/css_data";
 // This should correspond to the number of `--auto-color-*` CSS variables (starting from 1
 // with no holes).
 const _NUM_TEXT_AUTO_COLORS: number = 8;
+
+const _NOOP = async () => { };
 
 /**
  * Contains references to the individual HTML elements for each component of a message.
@@ -196,7 +199,9 @@ export abstract class ChatterboxRenderer {
     ): Promise<void> {
         const capsuleEl = entryContainerEl.createDiv({ cls: CssClasses.capsuleElement });
 
-        capsuleEl.innerText = decodeHTMLEntities(entry.content);
+        capsuleEl.innerText = decodeHTML(entry.content);
+
+        await _NOOP();
     }
 
     /**
@@ -211,7 +216,9 @@ export abstract class ChatterboxRenderer {
     ): Promise<void> {
         const commentEl = entryContainerEl.createDiv({ cls: CssClasses.commentElement });
 
-        commentEl.innerText = decodeHTMLEntities(entry.content);
+        commentEl.innerText = decodeHTML(entry.content);
+
+        await _NOOP();
     }
 
     /**
@@ -229,6 +236,8 @@ export abstract class ChatterboxRenderer {
         delimiterEl.createDiv({ cls: CssClasses.delimiterDot });
         delimiterEl.createDiv({ cls: CssClasses.delimiterDot });
         delimiterEl.createDiv({ cls: CssClasses.delimiterDot });
+
+        await _NOOP();
     }
 
     /**
@@ -314,7 +323,7 @@ export abstract class ChatterboxRenderer {
                 fixObsidianRenderedMarkdown(layout.contentEl);
             }
             else {
-                layout.contentEl.innerText = decodeHTMLEntities(entry.content);
+                layout.contentEl.innerText = decodeHTML(entry.content);
             }
             if (hasAuthor && layout.authorEl !== undefined) {
                 layout.authorEl.innerText = authorFull;
@@ -340,9 +349,9 @@ export abstract class ChatterboxRenderer {
             if (typeof classes === "string") {
                 try { rootEl.addClass(classes); } catch { /* empty */ };
             }
-            else if (typeof classes === "object"){
+            else if (typeof classes === "object") {
                 for (const cls of classes) {
-                    try {  rootEl.addClass(cls); } catch { /* empty */ };
+                    try { rootEl.addClass(cls); } catch { /* empty */ };
                 }
             }
         }
