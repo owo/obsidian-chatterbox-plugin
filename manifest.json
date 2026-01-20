@@ -1,9 +1,9 @@
 {
 	"id": "chatterbox",
 	"name": "Chatterbox",
-	"version": "0.1.0",
-	"minAppVersion": "1.10.0",
-	"description": "Render chat logs and dialogues in Obsidian.",
+	"version": "1.0.0",
+	"minAppVersion": "1.11.0",
+	"description": "Render chat logs and dialogues in the style of messaging apps.",
 	"author": "Ossama W. Obeid",
 	"authorUrl": "https://github.com/owo",
 	"isDesktopOnly": false

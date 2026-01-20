@@ -1,7 +1,7 @@
 {
 	"name": "obsidian-chatterbox-plugin",
-	"version": "0.1.0",
-	"description": "Render chat logs and dialogues in Obsidian.",
+	"version": "1.0.0",
+	"description": "Render chat logs and dialogues in the style of messaging apps.",
 	"main": "main.js",
 	"scripts": {
 		"dev": "rollup --watch --config",
