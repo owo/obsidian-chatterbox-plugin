@@ -1,7 +1,7 @@
 # Chatterbox Plugin for Obsidian
 
-Chatterbox is an Obsidian plugin for rendering dialogues and conversations.
-It is designed to be easily customizable through CSS snippets and reusable configuration options.
+Chatterbox is an Obsidian plugin for rendering dialogues and conversations in the style of
+messaging apps.
 
 <p align="center">
   <img style="width: 800px;" alt="Chatterbox in action." src="images/intro.png"/>
