@@ -78,3 +78,13 @@ export const CssProps = {
     messageBackgroundColor: "--message-bg-color",
 
 } as const;
+
+/**
+ * Generates a CSS color value given an auto-color number.
+ * 
+ * @param colorNum The color number.
+ * @returns The generated CSS color value if `colorNum` is defined, otherwise undefined.
+ */
+export function generateCssAutoColor(colorNum?: number): string | undefined {
+    return colorNum === undefined ? undefined : `var(--auto-color-${String(colorNum)})`;
+}

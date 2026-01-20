@@ -18,7 +18,7 @@ import {
     MessageDir,
 } from "src/entries";
 import { ChatterboxSettings } from "src/settings";
-import { CssClasses, CssProps } from "src/css_data";
+import { CssClasses, CssProps, generateCssAutoColor } from "src/css_data";
 
 
 // This should correspond to the number of `--auto-color-*` CSS variables (starting from 1
@@ -44,7 +44,7 @@ export abstract class ChatterboxRenderer {
     protected readonly config: ChatterboxConfig;
     protected readonly settings: ChatterboxSettings;
     protected readonly authorOrderMap: Map<string, string> = new Map();
-    protected readonly autoAuthorColorMap: Map<string, string> = new Map();
+    protected readonly autoAuthorColorMap: Map<string, number> = new Map();
 
     /**
      * The CSS style class that will be applied to the top-level Chatterbox HTML element.
@@ -160,9 +160,7 @@ export abstract class ChatterboxRenderer {
 
             if (authorConfig?.authorColor === undefined && !this.autoAuthorColorMap.has(author)) {
                 const colorNum = (currAuthorNum % _NUM_TEXT_AUTO_COLORS) + 1;
-                const autoColor = `var(--auto-color-${String(colorNum)})`;
-
-                this.autoAuthorColorMap.set(author, autoColor);
+                this.autoAuthorColorMap.set(author, colorNum);
 
                 currAuthorNum += 1;
             }
@@ -266,7 +264,7 @@ export abstract class ChatterboxRenderer {
         const bgColor = authorConfig?.bgColor ?? undefined;
         const contentColor = authorConfig?.textColor ?? undefined;
         const subtextColor = authorConfig?.subtextColor;
-        const autoAuthorColor = this.autoAuthorColorMap.get(entry.author);
+        const autoAuthorColor = generateCssAutoColor(this.autoAuthorColorMap.get(entry.author));
         const configAuthorColor = this.config.authors?.[entry.author]?.authorColor;
         const authorColor = configAuthorColor ?? autoAuthorColor ?? undefined;
 
