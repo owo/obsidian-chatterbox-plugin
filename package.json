@@ -1,6 +1,6 @@
 {
 	"name": "obsidian-chatterbox-plugin",
-	"version": "1.1.0",
+	"version": "1.1.1",
 	"description": "Render dialogues and conversations in the style of messaging apps.",
 	"main": "main.js",
 	"scripts": {
