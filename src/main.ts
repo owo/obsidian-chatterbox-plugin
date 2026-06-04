@@ -58,7 +58,7 @@ async function parseAndRenderChatterbox(
  * Implements the Chatterbox plugin.
  */
 export default class ChatterboxPlugin extends Plugin {
-    settings: ChatterboxSettings;
+    settings!: ChatterboxSettings;
 
     async onload() {
         await this.loadSettings();

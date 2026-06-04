@@ -1,9 +1,11 @@
 {
 	"compilerOptions": {
-		"baseUrl": "",
+		"paths": {
+			"*": ["./*"],
+		},
 		"outDir": "",
 		"module": "esnext",
-		"target": "ES2018",
+		"target": "ES2021",
 		"allowJs": true,
 		"noEmit": true,
 		"noImplicitAny": true,
@@ -13,14 +15,12 @@
 		"strictNullChecks": true,
 		"lib": [
 			"DOM",
-			"ES5",
-			"ES6",
-			"ES7",
+			"ES2021",
 			"dom.iterable"
 		]
 	},
 	"include": [
-		"src/**/*.ts",
+		"./src/**/*.ts",
 	],
 	"exclude": []
 }
