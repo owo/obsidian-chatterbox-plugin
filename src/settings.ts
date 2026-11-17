@@ -1,4 +1,4 @@
-import { App, PluginSettingTab, Setting } from "obsidian";
+import { App, PluginSettingTab, Setting, SettingDefinitionItem } from "obsidian";
 
 import { CssClasses } from "./css_data";
 import ChatterboxPlugin from "./main";
@@ -60,5 +60,20 @@ export class ChatterboxSettingTab extends PluginSettingTab {
                         text.inputEl.addClass(CssClasses.settingDefaultConfiguration);
                     });
             });
+    }
+
+    getSettingDefinitions(): SettingDefinitionItem<string>[] {
+        return [
+            {
+                name: "Default configuration",
+                desc: _DEFAULT_CONFIG_DESC,
+                control: {
+                    type: "textarea",
+                    placeholder: _DEFAULT_CONFIG_PH,
+                    key: "defaultConfiguration",
+                    rows: 10,
+                }
+            }
+        ];
     }
 }
