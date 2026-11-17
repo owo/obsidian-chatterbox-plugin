@@ -215,6 +215,7 @@
         > .message-body,
         > .message-footer {
             display: block;
+            text-align: start;
         }
 
         .message-author {
