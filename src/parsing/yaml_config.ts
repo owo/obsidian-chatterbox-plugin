@@ -52,7 +52,7 @@ export function parseYamlConfig(source: string): ConfigResult {
     if (fmValidated.success) {
         return {
             isError: false,
-            config: fmValidated.data as unknown as ChatterboxConfig,
+            config: fmValidated.data,
         };
     }
     else {
