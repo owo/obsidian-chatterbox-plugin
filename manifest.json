@@ -1,7 +1,7 @@
 {
 	"id": "chatterbox",
 	"name": "Chatterbox",
-	"version": "1.1.2",
+	"version": "1.1.3",
 	"minAppVersion": "1.12.7",
 	"description": "Render dialogues and conversations in the style of messaging apps.",
 	"author": "Ossama W. Obeid",
