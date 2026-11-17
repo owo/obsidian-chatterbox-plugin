@@ -12,7 +12,7 @@ export default defineConfig(
             parserOptions: {
                 projectService: {
                     allowDefaultProject: [
-                        'eslint.config.js',
+                        'rollup.config.mjs',
                         'manifest.json'
                     ]
                 },
@@ -40,7 +40,7 @@ export default defineConfig(
         "node_modules",
         "build",
         "esbuild.config.mjs",
-        "eslint.config.js",
+        "eslint.config.mts",
         "version-bump.mjs",
         "versions.json",
         "main.js",
